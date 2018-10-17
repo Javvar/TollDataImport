@@ -1,0 +1,19 @@
+﻿The following is how card numbers from the ESA database are decrypted:
+
+1. ESA supplied a dll(PCI_utilities.dll) to be used to do decryption
+2. We wrapped the dll in an exe (DecryptUtil.exe), to be called by the import process
+
+
+Using DecryptUtil.exe:
+
+1. App takes a filename as an argument. The file passed in should be a text file that contains encrypted card pans(line by line)
+2. The app will read all lines (encrypted card numbers) into memory and process them one by one
+3. In processing each line, the app calls the Decrypt function on PCI_utilities.dll.
+4. The drypted card numbers are conveyed back to the import service using text files. The app creates a text file for each line.
+
+Processing the card numbers:
+
+1. The import service looks for the decrypted cards by lloking for a text file with a particular name.
+
+
+ 

@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PCSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TransactionImages">
+          <Key>
+            <PropertyRef Name="TransactionImageGUID" />
+          </Key>
+          <Property Name="TransactionImageGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ImageDate" Type="datetime" Nullable="false" />
+          <Property Name="Image" Type="varbinary(max)" Nullable="false" />
+          <Property Name="LicensePlate" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="TransGUID" />
+          </Key>
+          <Property Name="TransGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransStartDate" Type="datetime" Nullable="false" />
+          <Property Name="TransDate" Type="datetime" Nullable="false" />
+          <Property Name="ColClassGUID" Type="uniqueidentifier" />
+          <Property Name="AVCClassGUID" Type="uniqueidentifier" />
+          <Property Name="RealClassGUID" Type="uniqueidentifier" />
+          <Property Name="AppliedClassGUID" Type="uniqueidentifier" />
+          <Property Name="TariffGUID" Type="uniqueidentifier" />
+          <Property Name="TariffAmount" Type="money" Nullable="false" />
+          <Property Name="TariffVat" Type="money" Nullable="false" />
+          <Property Name="ChangeAmount" Type="money" />
+          <Property Name="TenderedAmount" Type="money" />
+          <Property Name="CurrencyGUID" Type="uniqueidentifier" />
+          <Property Name="LaneStatusGUID" Type="uniqueidentifier" />
+          <Property Name="SessionGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LaneTransSeqNr" Type="int" Nullable="false" />
+          <Property Name="AVCSeqNr" Type="int" Nullable="false" />
+          <Property Name="AvcStatusGUID" Type="uniqueidentifier" />
+          <Property Name="PaymentMethodGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentGroupGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentMechGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentTypeGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentDetail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LicensePlate" Type="nvarchar" MaxLength="1000" />
+          <Property Name="TaxInvNr" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReceiptCount" Type="int" />
+          <Property Name="AdditionalTransactionDetail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="AccountUserGUID" Type="uniqueidentifier" />
+          <Property Name="SupervisorLoginGUID" Type="uniqueidentifier" />
+          <Property Name="IsKeyed" Type="bit" Nullable="false" />
+          <Property Name="ImageID" Type="int" />
+          <Property Name="AVCDetail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="AccountGUID" Type="uniqueidentifier" />
+          <Property Name="ExchangeRate" Type="uniqueidentifier" />
+          <Property Name="TotalInLocalCurrency" Type="money" Nullable="false" />
+          <Property Name="PreviousLicensePlate" Type="nvarchar" MaxLength="64" />
+          <Property Name="PreviousPaymentMethodGUID" Type="uniqueidentifier" />
+          <Property Name="ReceiptTaxInvoiceDate" Type="datetime" />
+          <Property Name="ANPRLicensePlate" Type="varchar" MaxLength="50" />
+          <Property Name="ETCTransactionGuid" Type="uniqueidentifier" />
+          <Property Name="CardNumber" Type="varchar" MaxLength="25" />
+          <Property Name="BCCTransferStatus" Type="int" />
+        </EntityType>
+        <EntityContainer Name="PCSModelStoreContainer">
+          <EntitySet Name="TransactionImages" EntityType="Self.TransactionImages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PCSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TransactionImage">
+          <Key>
+            <PropertyRef Name="TransactionImageGUID" />
+          </Key>
+          <Property Name="TransactionImageGUID" Type="Guid" Nullable="false" />
+          <Property Name="TransGUID" Type="Guid" Nullable="false" />
+          <Property Name="ImageDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="LicensePlate" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransGUID" />
+          </Key>
+          <Property Name="TransGUID" Type="Guid" Nullable="false" />
+          <Property Name="TransStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ColClassGUID" Type="Guid" />
+          <Property Name="AVCClassGUID" Type="Guid" />
+          <Property Name="RealClassGUID" Type="Guid" />
+          <Property Name="AppliedClassGUID" Type="Guid" />
+          <Property Name="TariffGUID" Type="Guid" />
+          <Property Name="TariffAmount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="TariffVat" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="ChangeAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TenderedAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CurrencyGUID" Type="Guid" />
+          <Property Name="LaneStatusGUID" Type="Guid" />
+          <Property Name="SessionGUID" Type="Guid" Nullable="false" />
+          <Property Name="LaneTransSeqNr" Type="Int32" Nullable="false" />
+          <Property Name="AVCSeqNr" Type="Int32" Nullable="false" />
+          <Property Name="AvcStatusGUID" Type="Guid" />
+          <Property Name="PaymentMethodGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentGroupGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentMechGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentTypeGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentDetail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LicensePlate" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="TaxInvNr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiptCount" Type="Int32" />
+          <Property Name="AdditionalTransactionDetail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AccountUserGUID" Type="Guid" />
+          <Property Name="SupervisorLoginGUID" Type="Guid" />
+          <Property Name="IsKeyed" Type="Boolean" Nullable="false" />
+          <Property Name="ImageID" Type="Int32" />
+          <Property Name="AVCDetail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AccountGUID" Type="Guid" />
+          <Property Name="ExchangeRate" Type="Guid" />
+          <Property Name="TotalInLocalCurrency" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+          <Property Name="PreviousLicensePlate" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousPaymentMethodGUID" Type="Guid" />
+          <Property Name="ReceiptTaxInvoiceDate" Type="DateTime" Precision="3" />
+          <Property Name="ANPRLicensePlate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ETCTransactionGuid" Type="Guid" />
+          <Property Name="CardNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="BCCTransferStatus" Type="Int32" />
+        </EntityType>
+        <EntityContainer Name="PCSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TransactionImages" EntityType="Self.TransactionImage" />
+          <EntitySet Name="Transactions" EntityType="Self.Transaction" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PCSModelStoreContainer" CdmEntityContainer="PCSEntities">
+          <EntitySetMapping Name="TransactionImages">
+            <EntityTypeMapping TypeName="PCSModel.TransactionImage">
+              <MappingFragment StoreEntitySet="TransactionImages">
+                <ScalarProperty Name="TransactionImageGUID" ColumnName="TransactionImageGUID" />
+                <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
+                <ScalarProperty Name="ImageDate" ColumnName="ImageDate" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="PCSModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
+                <ScalarProperty Name="TransStartDate" ColumnName="TransStartDate" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="ColClassGUID" ColumnName="ColClassGUID" />
+                <ScalarProperty Name="AVCClassGUID" ColumnName="AVCClassGUID" />
+                <ScalarProperty Name="RealClassGUID" ColumnName="RealClassGUID" />
+                <ScalarProperty Name="AppliedClassGUID" ColumnName="AppliedClassGUID" />
+                <ScalarProperty Name="TariffGUID" ColumnName="TariffGUID" />
+                <ScalarProperty Name="TariffAmount" ColumnName="TariffAmount" />
+                <ScalarProperty Name="TariffVat" ColumnName="TariffVat" />
+                <ScalarProperty Name="ChangeAmount" ColumnName="ChangeAmount" />
+                <ScalarProperty Name="TenderedAmount" ColumnName="TenderedAmount" />
+                <ScalarProperty Name="CurrencyGUID" ColumnName="CurrencyGUID" />
+                <ScalarProperty Name="LaneStatusGUID" ColumnName="LaneStatusGUID" />
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+                <ScalarProperty Name="LaneTransSeqNr" ColumnName="LaneTransSeqNr" />
+                <ScalarProperty Name="AVCSeqNr" ColumnName="AVCSeqNr" />
+                <ScalarProperty Name="AvcStatusGUID" ColumnName="AvcStatusGUID" />
+                <ScalarProperty Name="PaymentMethodGUID" ColumnName="PaymentMethodGUID" />
+                <ScalarProperty Name="PaymentGroupGUID" ColumnName="PaymentGroupGUID" />
+                <ScalarProperty Name="PaymentMechGUID" ColumnName="PaymentMechGUID" />
+                <ScalarProperty Name="PaymentTypeGUID" ColumnName="PaymentTypeGUID" />
+                <ScalarProperty Name="PaymentDetail" ColumnName="PaymentDetail" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+                <ScalarProperty Name="TaxInvNr" ColumnName="TaxInvNr" />
+                <ScalarProperty Name="ReceiptCount" ColumnName="ReceiptCount" />
+                <ScalarProperty Name="AdditionalTransactionDetail" ColumnName="AdditionalTransactionDetail" />
+                <ScalarProperty Name="AccountUserGUID" ColumnName="AccountUserGUID" />
+                <ScalarProperty Name="SupervisorLoginGUID" ColumnName="SupervisorLoginGUID" />
+                <ScalarProperty Name="IsKeyed" ColumnName="IsKeyed" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="AVCDetail" ColumnName="AVCDetail" />
+                <ScalarProperty Name="AccountGUID" ColumnName="AccountGUID" />
+                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
+                <ScalarProperty Name="TotalInLocalCurrency" ColumnName="TotalInLocalCurrency" />
+                <ScalarProperty Name="PreviousLicensePlate" ColumnName="PreviousLicensePlate" />
+                <ScalarProperty Name="PreviousPaymentMethodGUID" ColumnName="PreviousPaymentMethodGUID" />
+                <ScalarProperty Name="ReceiptTaxInvoiceDate" ColumnName="ReceiptTaxInvoiceDate" />
+                <ScalarProperty Name="ANPRLicensePlate" ColumnName="ANPRLicensePlate" />
+                <ScalarProperty Name="ETCTransactionGuid" ColumnName="ETCTransactionGuid" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="BCCTransferStatus" ColumnName="BCCTransferStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

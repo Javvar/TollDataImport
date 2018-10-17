@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5D1CEECA-B0ED-4DEA-904D-A3BB15A0B642}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Intertoll.TollDataImport.DataRequest.Data</RootNamespace>
+    <AssemblyName>Intertoll.TollDataImport.DataRequest.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.Data">
+      <HintPath>..\packages\Intertoll.Lane.Sync.Client.2.0.0.0\lib\net45\Intertoll.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Model\Incident.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Lane.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSAudit.cs">
+      <DependentUpon>PCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSIncident.cs">
+      <DependentUpon>PCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSLane.cs">
+      <DependentUpon>PCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PCSModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PCSModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSSession.cs">
+      <DependentUpon>PCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSStaffLogin.cs">
+      <DependentUpon>PCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSTransaction.cs">
+      <DependentUpon>PCSModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Session.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\StaffLogin.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Transaction.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspGetAuditByLaneAndHour_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspGetIncidentByLaneAndSeq_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspGetTransactionByLaneAndSeq_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspIncidentTypesGet_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PCSDataContext.cs" />
+    <Compile Include="PCSStagingDataContext.cs" />
+    <Compile Include="Entities\GenericRepository.cs" />
+    <Compile Include="BaseDataContext.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="Model\HourlyAudit.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PaymentGroupsMapping.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PaymentMechMapping.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PaymentMethodsMapping.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PaymentTypesMapping.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSStaging.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PCSStaging.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSStaging.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PCSStaging.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PCSStaging.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\ProcessedItem.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Shift.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\StaffIdToGuidMapping.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\TariffMapping.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\UserMaping.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspAccountUserDetailsGet_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspGetSessionAfter_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspGetSessionBefore_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspGetSessionsToSlice_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspSessionsGet_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\uspShiftsGet_Result.cs">
+      <DependentUpon>PCSStaging.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="Model\PCSStaging.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PCSStaging.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="Model\PCSModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PCSModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Model\PCSModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PCSModel.edmx</DependentUpon>
+      <LastGenOutput>PCSModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Model\PCSModel.edmx.diagram">
+      <DependentUpon>PCSModel.edmx</DependentUpon>
+    </None>
+    <None Include="Model\PCSModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PCSModel.edmx</DependentUpon>
+      <LastGenOutput>PCSModel.cs</LastGenOutput>
+    </None>
+    <None Include="Model\PCSStaging.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PCSStaging.edmx</DependentUpon>
+      <LastGenOutput>PCSStaging.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Model\PCSStaging.edmx.diagram">
+      <DependentUpon>PCSStaging.edmx</DependentUpon>
+    </None>
+    <None Include="Model\PCSStaging.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PCSStaging.edmx</DependentUpon>
+      <LastGenOutput>PCSStaging.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

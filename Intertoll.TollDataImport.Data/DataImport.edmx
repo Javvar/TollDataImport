@@ -1,0 +1,1123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DataImportModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Audits">
+          <Key>
+            <PropertyRef Name="AuditID" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="AuditID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LaneCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="LaneGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AuditDate" Type="date" Nullable="false" />
+          <Property Name="AuditHour" Type="int" Nullable="false" />
+          <Property Name="TransStartSeqNumber" Type="int" Nullable="false" />
+          <Property Name="TransEndSeqNumber" Type="int" Nullable="false" />
+          <Property Name="TransRecordCount" Type="int" Nullable="false" />
+          <Property Name="TransDifferenceNumber" Type="int" Nullable="false" />
+          <Property Name="IncidentStartSeqNumber" Type="int" Nullable="false" />
+          <Property Name="IncidentEndSeqNumber" Type="int" Nullable="false" />
+          <Property Name="IncidentRecordCount" Type="int" Nullable="false" />
+          <Property Name="IncidentDifferenceNumber" Type="int" Nullable="false" />
+          <Property Name="SessionStartSeqNumber" Type="int" Nullable="false" />
+          <Property Name="SessionEndSeqNumber" Type="int" Nullable="false" />
+          <Property Name="SessionRecordCount" Type="int" Nullable="false" />
+          <Property Name="SessionDifferenceNumber" Type="int" Nullable="false" />
+          <Property Name="StaffLoginRecordCount" Type="int" Nullable="false" />
+          <Property Name="StaffLoginDifferenceNumber" Type="int" Nullable="false" />
+          <Property Name="TransAuditStatus" Type="int" Nullable="false" />
+          <Property Name="IncidentAuditStatus" Type="int" Nullable="false" />
+          <Property Name="SessionAuditStatus" Type="int" Nullable="false" />
+          <Property Name="StaffLoginAuditStatus" Type="int" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="LaneMode" Type="int" Nullable="false" />
+          <Property Name="IsSent" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Incidents">
+          <Key>
+            <PropertyRef Name="IncidentID" />
+          </Key>
+          <Property Name="IncidentID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LaneCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="IncidentSeqNr" Type="int" />
+          <Property Name="IncidentCode" Type="int" />
+          <Property Name="IncidentSetDate" Type="datetime" Nullable="false" />
+          <Property Name="LaneSeqNr" Type="int" Nullable="false" />
+          <Property Name="TransactionID" Type="varchar" MaxLength="50" />
+          <Property Name="StaffID" Type="varchar" MaxLength="50" />
+          <Property Name="IncidentGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StaffLoginGUID" Type="uniqueidentifier" />
+          <Property Name="IncidentTypeGUID" Type="uniqueidentifier" />
+          <Property Name="IncidentStatusGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" />
+          <Property Name="TransactionGUID" Type="uniqueidentifier" />
+          <Property Name="LastIncidentSeqNr" Type="int" />
+          <Property Name="IsSent" Type="bit" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sessions">
+          <Key>
+            <PropertyRef Name="SessionGUID" />
+          </Key>
+          <Property Name="SessionGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="SessionSeq" Type="int" Nullable="false" />
+          <Property Name="LaneCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="StaffLoginGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LaneGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="IsSent" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StaffLogins">
+          <Key>
+            <PropertyRef Name="StaffLoginGUID" />
+          </Key>
+          <Property Name="StaffLoginGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StaffGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" Nullable="false" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="RoleGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LocationGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LocationTypeGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="IsSent" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StagingIncidents">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="in_seq_nr" />
+          </Key>
+          <Property Name="pl_id" Type="varchar" MaxLength="9" />
+          <Property Name="ln_id" Type="varchar" MaxLength="9" Nullable="false" />
+          <Property Name="dt_generated" Type="datetime" />
+          <Property Name="in_seq_nr" Type="int" Nullable="false" />
+          <Property Name="ir_type" Type="varchar" MaxLength="3" />
+          <Property Name="ir_subtype" Type="varchar" MaxLength="3" />
+          <Property Name="tx_seq_nr" Type="int" />
+          <Property Name="ts_seq_nr" Type="int" />
+          <Property Name="us_id" Type="varchar" MaxLength="31" />
+          <Property Name="ft_id" Type="int" />
+          <Property Name="pg_group" Type="int" />
+          <Property Name="cg_group" Type="int" />
+          <Property Name="vg_group" Type="varchar" MaxLength="9" />
+          <Property Name="mvc" Type="varchar" MaxLength="9" />
+          <Property Name="avc" Type="varchar" MaxLength="9" />
+          <Property Name="svc" Type="varchar" MaxLength="9" />
+          <Property Name="er_id" Type="int" />
+          <Property Name="pm_id" Type="varchar" MaxLength="2" />
+          <Property Name="card_nr" Type="varchar" MaxLength="176" />
+          <Property Name="mask_nr" Type="varchar" MaxLength="21" />
+          <Property Name="ca_id" Type="varchar" MaxLength="2" />
+          <Property Name="ct_id" Type="varchar" MaxLength="2" />
+          <Property Name="tx_indic" Type="varchar" MaxLength="2" />
+          <Property Name="lm_id" Type="varchar" MaxLength="2" />
+          <Property Name="as_id" Type="varchar" MaxLength="2" />
+          <Property Name="rep_indic" Type="varchar" MaxLength="2" />
+          <Property Name="rd_id" Type="varchar" MaxLength="2" />
+          <Property Name="maint_indic" Type="varchar" MaxLength="2" />
+          <Property Name="req_indic" Type="int" />
+          <Property Name="ts_dt_started" Type="datetime" />
+          <Property Name="in_amt" Type="varchar" MaxLength="50" />
+          <Property Name="in_data" Type="varchar" MaxLength="256" />
+          <Property Name="tg_bl_id" Type="varchar" MaxLength="3" />
+          <Property Name="tg_mfg_id" Type="varchar" MaxLength="11" />
+          <Property Name="tg_card_type" Type="varchar" MaxLength="2" />
+          <Property Name="tg_reader" Type="varchar" MaxLength="9" />
+          <Property Name="tg_tx_seq_nr" Type="int" />
+          <Property Name="avc_in_seq_nr" Type="int" />
+          <Property Name="avc_in_type_id" Type="int" />
+          <Property Name="avc_dt_generated" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Transactions">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LaneCode" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="TransGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="TransStartDate" Type="datetime" Nullable="false" />
+          <Property Name="TransDate" Type="datetime" Nullable="false" />
+          <Property Name="ColClassGUID" Type="uniqueidentifier" />
+          <Property Name="AVCClassGUID" Type="uniqueidentifier" />
+          <Property Name="RealClassGUID" Type="uniqueidentifier" />
+          <Property Name="AppliedClassGUID" Type="uniqueidentifier" />
+          <Property Name="TariffGUID" Type="uniqueidentifier" />
+          <Property Name="TariffAmount" Type="money" Nullable="false" />
+          <Property Name="TariffVat" Type="money" Nullable="false" />
+          <Property Name="ChangeAmount" Type="money" />
+          <Property Name="TenderedAmount" Type="money" />
+          <Property Name="CurrencyGUID" Type="uniqueidentifier" />
+          <Property Name="LaneStatusGUID" Type="uniqueidentifier" />
+          <Property Name="SessionGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="LaneTransSeqNr" Type="int" Nullable="false" />
+          <Property Name="AVCSeqNr" Type="int" Nullable="false" />
+          <Property Name="AvcStatusGUID" Type="uniqueidentifier" />
+          <Property Name="PaymentMethodGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentGroupGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentMechGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentTypeGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PaymentDetail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="LicensePlate" Type="nvarchar" MaxLength="1000" />
+          <Property Name="TaxInvNr" Type="nvarchar" MaxLength="50" />
+          <Property Name="ReceiptCount" Type="int" />
+          <Property Name="AdditionalTransactionDetail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="AccountUserGUID" Type="uniqueidentifier" />
+          <Property Name="SupervisorLoginGUID" Type="uniqueidentifier" />
+          <Property Name="IsKeyed" Type="bit" Nullable="false" />
+          <Property Name="ImageID" Type="int" />
+          <Property Name="AVCDetail" Type="nvarchar" MaxLength="1000" />
+          <Property Name="AccountGUID" Type="uniqueidentifier" />
+          <Property Name="ExchangeRate" Type="uniqueidentifier" />
+          <Property Name="TotalInLocalCurrency" Type="money" Nullable="false" />
+          <Property Name="PreviousLicensePlate" Type="nvarchar" MaxLength="64" />
+          <Property Name="PreviousPaymentMethodGUID" Type="uniqueidentifier" />
+          <Property Name="ReceiptTaxInvoiceDate" Type="datetime" />
+          <Property Name="ANPRLicensePlate" Type="varchar" MaxLength="50" />
+          <Property Name="ETCTransactionGuid" Type="uniqueidentifier" />
+          <Property Name="CardNumber" Type="varchar" MaxLength="25" />
+          <Property Name="BCCTransferStatus" Type="int" />
+          <Property Name="ContextMarkId" Type="smallint" />
+          <Property Name="PAN" Type="bigint" />
+          <Property Name="CONV" Type="bigint" />
+          <Property Name="IDVL" Type="bigint" />
+          <Property Name="VehichleState" Type="varchar" MaxLength="50" />
+          <Property Name="IsSent" Type="bit" Nullable="false" />
+          <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Sessions_StaffLogins">
+          <End Role="StaffLogins" Type="Self.StaffLogins" Multiplicity="1" />
+          <End Role="Sessions" Type="Self.Sessions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StaffLogins">
+              <PropertyRef Name="StaffLoginGUID" />
+            </Principal>
+            <Dependent Role="Sessions">
+              <PropertyRef Name="StaffLoginGUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="uspGetIncident" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LaneCode" Type="varchar" Mode="In" />
+          <Parameter Name="SequenceNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="uspGetLaneAliveStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uspGetLaneSession" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="laneCode" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="uspGetNextHourlyAuditBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="date" Type="date" Mode="In" />
+        </Function>
+        <Function Name="uspGetNextIncidentBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uspGetNextTransactionBatch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uspGetTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LaneCode" Type="varchar" Mode="In" />
+          <Parameter Name="SequenceNumber" Type="int" Mode="In" />
+        </Function>
+        <Function Name="uspImportNewStaff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="DataImportModelStoreContainer">
+          <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Incidents" EntityType="Self.Incidents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StaffLogins" EntityType="Self.StaffLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingIncidents" EntityType="Self.StagingIncidents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Sessions_StaffLogins" Association="Self.FK_Sessions_StaffLogins">
+            <End Role="StaffLogins" EntitySet="StaffLogins" />
+            <End Role="Sessions" EntitySet="Sessions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DataImportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="DataImportEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Sessions" EntityType="DataImportModel.Session" />
+          <EntitySet Name="StaffLogins" EntityType="DataImportModel.StaffLogin" />
+          <FunctionImport Name="uspGetLaneSession" ReturnType="Collection(DataImportModel.uspGetLaneSession_Result)">
+          <Parameter Name="laneCode" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetSessionFollowingSession">
+            <Parameter Name="laneCode" Mode="In" Type="String" />
+            <Parameter Name="transactionTime" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetSessionPrecedingSession">
+            <Parameter Name="laneCode" Mode="In" Type="String" />
+            <Parameter Name="transactionTime" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetIncidentBatchGreaterThanTime" ReturnType="Collection(DataImportModel.uspGetIncidentBatchGreaterThanTime_Result)">
+          <Parameter Name="dateFrom" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetTransactionBatchGreaterThanTime" ReturnType="Collection(DataImportModel.uspGetTransactionBatchGreaterThanTime_Result)">
+          <Parameter Name="dateFrom" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetNextIncidentBatch" ReturnType="Collection(DataImportModel.uspGetNextIncidentBatch_Result)" />
+          <EntitySet Name="Incidents" EntityType="DataImportModel.Incident" />
+          <AssociationSet Name="FK_Sessions_StaffLogins" Association="DataImportModel.FK_Sessions_StaffLogins">
+            <End Role="StaffLogin" EntitySet="StaffLogins" />
+            <End Role="Session" EntitySet="Sessions" />
+          </AssociationSet>
+          <FunctionImport Name="uspGetNextHourlyAuditBatch" ReturnType="Collection(DataImportModel.uspGetNextHourlyAuditBatch_Result)" >
+          <Parameter Name="date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="Audits" EntityType="DataImportModel.Audit" />
+          <FunctionImport Name="uspGetLaneAliveStatus" ReturnType="Collection(DataImportModel.uspGetLaneAliveStatus_Result)" />
+          <FunctionImport Name="uspImportNewStaff" ReturnType="Collection(String)" />
+          <FunctionImport Name="uspGetIncident" ReturnType="Collection(DataImportModel.uspGetNextIncidentBatch_Result)">
+            <Parameter Name="LaneCode" Mode="In" Type="String" />
+            <Parameter Name="SequenceNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetTransaction" ReturnType="Collection(DataImportModel.uspGetNextTransactionBatch_Result)">
+            <Parameter Name="LaneCode" Mode="In" Type="String" />
+            <Parameter Name="SequenceNumber" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="uspGetNextTransactionBatch" ReturnType="Collection(DataImportModel.uspGetNextTransactionBatch_Result)" />
+          <EntitySet Name="Transactions" EntityType="DataImportModel.Transaction" />
+          <EntitySet Name="StagingIncidents" EntityType="DataImportModel.StagingIncident" />
+        </EntityContainer>
+        <EntityType Name="Session">
+          <Key>
+            <PropertyRef Name="SessionGUID" />
+          </Key>
+          <Property Name="SessionGUID" Type="Guid" Nullable="false" />
+          <Property Name="SessionSeq" Type="Int32" Nullable="false" />
+          <Property Name="LaneCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="StaffLoginGUID" Type="Guid" Nullable="false" />
+          <Property Name="LaneGUID" Type="Guid" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsSent" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="StaffLogin" Relationship="DataImportModel.FK_Sessions_StaffLogins" FromRole="Session" ToRole="StaffLogin" />
+        </EntityType>
+        <EntityType Name="StaffLogin">
+          <Key>
+            <PropertyRef Name="StaffLoginGUID" />
+          </Key>
+          <Property Name="StaffLoginGUID" Type="Guid" Nullable="false" />
+          <Property Name="StaffGUID" Type="Guid" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="RoleGUID" Type="Guid" Nullable="false" />
+          <Property Name="LocationGUID" Type="Guid" Nullable="false" />
+          <Property Name="LocationTypeGUID" Type="Guid" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsSent" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Sessions" Relationship="DataImportModel.FK_Sessions_StaffLogins" FromRole="StaffLogin" ToRole="Session" />
+        </EntityType>
+        <ComplexType Name="uspGetIncidentsGreaterThanTime_Result">
+          <Property Type="String" Name="ID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="IncidentSeqNr" Nullable="false" />
+          <Property Type="Int32" Name="IncidentCode" Nullable="false" />
+          <Property Type="DateTime" Name="IncidentSetDate" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="LaneSeqNr" Nullable="false" />
+          <Property Type="String" Name="TransactionID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CollectorID" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="SavedTimeStamp" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="IncidentGUID" Nullable="false" />
+          <Property Type="Guid" Name="StaffLoginGUID" Nullable="false" />
+          <Property Type="Guid" Name="IncidentTypeGUID" Nullable="false" />
+          <Property Type="Guid" Name="IncidentStatusGUID" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="4000" />
+          <Property Type="Guid" Name="TransactionGUID" Nullable="true" />
+          <Property Type="Int32" Name="LastIncidentSeqNr" Nullable="true" />
+          <Property Type="Boolean" Name="IsSent" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="uspGetLaneSession_Result">
+          <Property Type="Guid" Name="SessionGUID" Nullable="false" />
+          <Property Type="Int32" Name="SessionSeq" Nullable="false" />
+          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
+          <Property Type="Guid" Name="StaffLoginGUID" Nullable="false" />
+          <Property Type="Guid" Name="LaneGUID" Nullable="false" />
+          <Property Type="DateTime" Name="StartDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="uspGetIncidentBatchGreaterThanTime_Result">
+          <Property Type="String" Name="ID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
+          <Property Type="Int32" Name="IncidentSeqNr" Nullable="false" />
+          <Property Type="Int32" Name="IncidentCode" Nullable="false" />
+          <Property Type="DateTime" Name="IncidentSetDate" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="LaneSeqNr" Nullable="false" />
+          <Property Type="String" Name="TransactionID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CollectorID" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="SavedTimeStamp" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="IncidentGUID" Nullable="false" />
+          <Property Type="Guid" Name="StaffLoginGUID" Nullable="false" />
+          <Property Type="Guid" Name="IncidentTypeGUID" Nullable="false" />
+          <Property Type="Guid" Name="IncidentStatusGUID" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="4000" />
+          <Property Type="Guid" Name="TransactionGUID" Nullable="true" />
+          <Property Type="Int32" Name="LastIncidentSeqNr" Nullable="true" />
+          <Property Type="Boolean" Name="IsSent" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="uspGetTransactionBatchGreaterThanTime_Result">
+          <Property Type="String" Name="TransactionID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
+          <Property Type="Guid" Name="TransGUID" Nullable="false" />
+          <Property Type="DateTime" Name="TransStartDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="TransDate" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="ColClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="AVCClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="RealClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="AppliedClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="TariffGUID" Nullable="true" />
+          <Property Type="Decimal" Name="TariffAmount" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="TariffVat" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="ChangeAmount" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="TenderedAmount" Nullable="true" Precision="19" />
+          <Property Type="Guid" Name="CurrencyGUID" Nullable="true" />
+          <Property Type="Guid" Name="LaneStatusGUID" Nullable="true" />
+          <Property Type="Guid" Name="SessionGUID" Nullable="false" />
+          <Property Type="Int32" Name="LaneTransSeqNr" Nullable="false" />
+          <Property Type="Int32" Name="AVCSeqNr" Nullable="false" />
+          <Property Type="Guid" Name="AvcStatusGUID" Nullable="true" />
+          <Property Type="Guid" Name="PaymentMethodGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentGroupGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentMechGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentTypeGUID" Nullable="false" />
+          <Property Type="String" Name="PaymentDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="TaxInvNr" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ReceiptCount" Nullable="true" />
+          <Property Type="String" Name="AdditionalTransactionDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="Guid" Name="AccountUserGUID" Nullable="true" />
+          <Property Type="Guid" Name="SupervisorLoginGUID" Nullable="true" />
+          <Property Type="Boolean" Name="IsKeyed" Nullable="false" />
+          <Property Type="Int32" Name="ImageID" Nullable="true" />
+          <Property Type="String" Name="AVCDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="Guid" Name="AccountGUID" Nullable="true" />
+          <Property Type="Guid" Name="ExchangeRate" Nullable="true" />
+          <Property Type="Decimal" Name="TotalInLocalCurrency" Nullable="false" Precision="19" />
+          <Property Type="String" Name="PreviousLicensePlate" Nullable="true" MaxLength="64" />
+          <Property Type="Guid" Name="PreviousPaymentMethodGUID" Nullable="true" />
+          <Property Type="DateTime" Name="ReceiptTaxInvoiceDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ANPRLicensePlate" Nullable="true" MaxLength="50" />
+          <Property Type="Guid" Name="ETCTransactionGuid" Nullable="true" />
+          <Property Type="String" Name="CardNumber" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="BCCTransferStatus" Nullable="true" />
+          <Property Type="Boolean" Name="IsSent" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="uspGetNextIncidentBatch_Result">
+          <Property Type="String" Name="IncidentID" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="LaneCode" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="StaffID" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="IncidentSeqNr" Nullable="true" />
+          <Property Type="Int32" Name="IncidentCode" Nullable="true" />
+          <Property Type="DateTime" Name="IncidentSetDate" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="LaneSeqNr" Nullable="false" />
+          <Property Type="String" Name="TransactionID" Nullable="true" MaxLength="50" />
+          <Property Type="Guid" Name="IncidentGUID" Nullable="false" />
+          <Property Type="Guid" Name="StaffLoginGUID" Nullable="true" />
+          <Property Type="Guid" Name="IncidentTypeGUID" Nullable="true" />
+          <Property Type="Guid" Name="IncidentStatusGUID" Nullable="false" />
+          <Property Type="String" Name="Description" Nullable="true" MaxLength="4000" />
+          <Property Type="Guid" Name="TransactionGUID" Nullable="true" />
+          <Property Type="Int32" Name="LastIncidentSeqNr" Nullable="true" />
+          <Property Type="Boolean" Name="IsSent" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+        </ComplexType>
+        <EntityType Name="Incident">
+          <Key>
+            <PropertyRef Name="IncidentID" />
+          </Key>
+          <Property Name="IncidentID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LaneCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="IncidentSeqNr" Type="Int32" />
+          <Property Name="IncidentCode" Type="Int32" />
+          <Property Name="IncidentSetDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LaneSeqNr" Type="Int32" Nullable="false" />
+          <Property Name="TransactionID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StaffID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IncidentGUID" Type="Guid" Nullable="false" />
+          <Property Name="StaffLoginGUID" Type="Guid" />
+          <Property Name="IncidentTypeGUID" Type="Guid" />
+          <Property Name="IncidentStatusGUID" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="TransactionGUID" Type="Guid" />
+          <Property Name="LastIncidentSeqNr" Type="Int32" />
+          <Property Name="IsSent" Type="Boolean" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Sessions_StaffLogins">
+          <End Type="DataImportModel.StaffLogin" Role="StaffLogin" Multiplicity="1" />
+          <End Type="DataImportModel.Session" Role="Session" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="StaffLogin">
+              <PropertyRef Name="StaffLoginGUID" />
+            </Principal>
+            <Dependent Role="Session">
+              <PropertyRef Name="StaffLoginGUID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="uspGetNextHourlyAuditBatch_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="AuditID" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
+          <Property Type="Guid" Name="LaneGuid" Nullable="false" />
+          <Property Type="DateTime" Name="AuditDate" Nullable="false" />
+          <Property Type="Int32" Name="AuditHour" Nullable="false" />
+          <Property Type="Int32" Name="TransStartSeqNumber" Nullable="false" />
+          <Property Type="Int32" Name="TransEndSeqNumber" Nullable="false" />
+          <Property Type="Int32" Name="TransRecordCount" Nullable="false" />
+          <Property Type="Int32" Name="TransDifferenceNumber" Nullable="false" />
+          <Property Type="Int32" Name="IncidentStartSeqNumber" Nullable="false" />
+          <Property Type="Int32" Name="IncidentEndSeqNumber" Nullable="false" />
+          <Property Type="Int32" Name="IncidentRecordCount" Nullable="false" />
+          <Property Type="Int32" Name="IncidentDifferenceNumber" Nullable="false" />
+          <Property Type="Int32" Name="SessionStartSeqNumber" Nullable="false" />
+          <Property Type="Int32" Name="SessionEndSeqNumber" Nullable="false" />
+          <Property Type="Int32" Name="SessionRecordCount" Nullable="false" />
+          <Property Type="Int32" Name="SessionDifferenceNumber" Nullable="false" />
+          <Property Type="Int32" Name="StaffLoginRecordCount" Nullable="false" />
+          <Property Type="Int32" Name="StaffLoginDifferenceNumber" Nullable="false" />
+          <Property Type="Int32" Name="TransAuditStatus" Nullable="false" />
+          <Property Type="Int32" Name="IncidentAuditStatus" Nullable="false" />
+          <Property Type="Int32" Name="SessionAuditStatus" Nullable="false" />
+          <Property Type="Int32" Name="StaffLoginAuditStatus" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="LaneMode" Nullable="false" />
+          <Property Type="Boolean" Name="IsSent" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="Audit">
+          <Key>
+            <PropertyRef Name="AuditID" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="AuditID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LaneCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="LaneGuid" Type="Guid" Nullable="false" />
+          <Property Name="AuditDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="AuditHour" Type="Int32" Nullable="false" />
+          <Property Name="TransStartSeqNumber" Type="Int32" Nullable="false" />
+          <Property Name="TransEndSeqNumber" Type="Int32" Nullable="false" />
+          <Property Name="TransRecordCount" Type="Int32" Nullable="false" />
+          <Property Name="TransDifferenceNumber" Type="Int32" Nullable="false" />
+          <Property Name="IncidentStartSeqNumber" Type="Int32" Nullable="false" />
+          <Property Name="IncidentEndSeqNumber" Type="Int32" Nullable="false" />
+          <Property Name="IncidentRecordCount" Type="Int32" Nullable="false" />
+          <Property Name="IncidentDifferenceNumber" Type="Int32" Nullable="false" />
+          <Property Name="SessionStartSeqNumber" Type="Int32" Nullable="false" />
+          <Property Name="SessionEndSeqNumber" Type="Int32" Nullable="false" />
+          <Property Name="SessionRecordCount" Type="Int32" Nullable="false" />
+          <Property Name="SessionDifferenceNumber" Type="Int32" Nullable="false" />
+          <Property Name="StaffLoginRecordCount" Type="Int32" Nullable="false" />
+          <Property Name="StaffLoginDifferenceNumber" Type="Int32" Nullable="false" />
+          <Property Name="TransAuditStatus" Type="Int32" Nullable="false" />
+          <Property Name="IncidentAuditStatus" Type="Int32" Nullable="false" />
+          <Property Name="SessionAuditStatus" Type="Int32" Nullable="false" />
+          <Property Name="StaffLoginAuditStatus" Type="Int32" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LaneMode" Type="Int32" Nullable="false" />
+          <Property Name="IsSent" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="uspGetLaneAliveStatus_Result">
+          <Property Type="Guid" Name="LaneGuid" Nullable="false" />
+          <Property Type="Int32" Name="CNT" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="uspGetNextTransactionBatch_Result">
+          <Property Type="String" Name="TransactionID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
+          <Property Type="Guid" Name="TransGUID" Nullable="false" />
+          <Property Type="DateTime" Name="TransStartDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="TransDate" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="ColClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="AVCClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="RealClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="AppliedClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="TariffGUID" Nullable="true" />
+          <Property Type="Decimal" Name="TariffAmount" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="TariffVat" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="ChangeAmount" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="TenderedAmount" Nullable="true" Precision="19" />
+          <Property Type="Guid" Name="CurrencyGUID" Nullable="true" />
+          <Property Type="Guid" Name="LaneStatusGUID" Nullable="true" />
+          <Property Type="Guid" Name="SessionGUID" Nullable="false" />
+          <Property Type="Int32" Name="LaneTransSeqNr" Nullable="false" />
+          <Property Type="Int32" Name="AVCSeqNr" Nullable="false" />
+          <Property Type="Guid" Name="AvcStatusGUID" Nullable="true" />
+          <Property Type="Guid" Name="PaymentMethodGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentGroupGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentMechGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentTypeGUID" Nullable="false" />
+          <Property Type="String" Name="PaymentDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="TaxInvNr" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ReceiptCount" Nullable="true" />
+          <Property Type="String" Name="AdditionalTransactionDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="Guid" Name="AccountUserGUID" Nullable="true" />
+          <Property Type="Guid" Name="SupervisorLoginGUID" Nullable="true" />
+          <Property Type="Boolean" Name="IsKeyed" Nullable="false" />
+          <Property Type="Int32" Name="ImageID" Nullable="true" />
+          <Property Type="String" Name="AVCDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="Guid" Name="AccountGUID" Nullable="true" />
+          <Property Type="Guid" Name="ExchangeRate" Nullable="true" />
+          <Property Type="Decimal" Name="TotalInLocalCurrency" Nullable="false" Precision="19" />
+          <Property Type="String" Name="PreviousLicensePlate" Nullable="true" MaxLength="64" />
+          <Property Type="Guid" Name="PreviousPaymentMethodGUID" Nullable="true" />
+          <Property Type="DateTime" Name="ReceiptTaxInvoiceDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ANPRLicensePlate" Nullable="true" MaxLength="50" />
+          <Property Type="Guid" Name="ETCTransactionGuid" Nullable="true" />
+          <Property Type="String" Name="CardNumber" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="BCCTransferStatus" Nullable="true" />
+          <Property Type="Int16" Name="ContextMarkId" Nullable="true" />
+          <Property Type="Int64" Name="PAN" Nullable="true" />
+          <Property Type="Int64" Name="CONV" Nullable="true" />
+          <Property Type="Int64" Name="IDVL" Nullable="true" />
+          <Property Type="String" Name="VehichleState" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsSent" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+          <Property Type="String" Name="StaffID" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AccountIdentifier" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="Transaction">
+          <Key>
+            <PropertyRef Name="TransactionID" />
+          </Key>
+          <Property Name="TransactionID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LaneCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="TransGUID" Type="Guid" Nullable="false" />
+          <Property Name="TransStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TransDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ColClassGUID" Type="Guid" />
+          <Property Name="AVCClassGUID" Type="Guid" />
+          <Property Name="RealClassGUID" Type="Guid" />
+          <Property Name="AppliedClassGUID" Type="Guid" />
+          <Property Name="TariffGUID" Type="Guid" />
+          <Property Name="TariffAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="TariffVat" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ChangeAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="TenderedAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CurrencyGUID" Type="Guid" />
+          <Property Name="LaneStatusGUID" Type="Guid" />
+          <Property Name="SessionGUID" Type="Guid" Nullable="false" />
+          <Property Name="LaneTransSeqNr" Type="Int32" Nullable="false" />
+          <Property Name="AVCSeqNr" Type="Int32" Nullable="false" />
+          <Property Name="AvcStatusGUID" Type="Guid" />
+          <Property Name="PaymentMethodGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentGroupGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentMechGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentTypeGUID" Type="Guid" Nullable="false" />
+          <Property Name="PaymentDetail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="LicensePlate" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="TaxInvNr" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiptCount" Type="Int32" />
+          <Property Name="AdditionalTransactionDetail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AccountUserGUID" Type="Guid" />
+          <Property Name="SupervisorLoginGUID" Type="Guid" />
+          <Property Name="IsKeyed" Type="Boolean" Nullable="false" />
+          <Property Name="ImageID" Type="Int32" />
+          <Property Name="AVCDetail" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="AccountGUID" Type="Guid" />
+          <Property Name="ExchangeRate" Type="Guid" />
+          <Property Name="TotalInLocalCurrency" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="PreviousLicensePlate" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="PreviousPaymentMethodGUID" Type="Guid" />
+          <Property Name="ReceiptTaxInvoiceDate" Type="DateTime" Precision="3" />
+          <Property Name="ANPRLicensePlate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ETCTransactionGuid" Type="Guid" />
+          <Property Name="CardNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="BCCTransferStatus" Type="Int32" />
+          <Property Name="ContextMarkId" Type="Int16" />
+          <Property Name="PAN" Type="Int64" />
+          <Property Name="CONV" Type="Int64" />
+          <Property Name="IDVL" Type="Int64" />
+          <Property Name="VehichleState" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsSent" Type="Boolean" Nullable="false" />
+          <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="StagingIncident">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="in_seq_nr" />
+          </Key>
+          <Property Name="pl_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ln_id" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="dt_generated" Type="DateTime" Precision="3" />
+          <Property Name="in_seq_nr" Type="Int32" Nullable="false" />
+          <Property Name="ir_type" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="ir_subtype" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="tx_seq_nr" Type="Int32" />
+          <Property Name="ts_seq_nr" Type="Int32" />
+          <Property Name="us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ft_id" Type="Int32" />
+          <Property Name="pg_group" Type="Int32" />
+          <Property Name="cg_group" Type="Int32" />
+          <Property Name="vg_group" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="mvc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="avc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="svc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="er_id" Type="Int32" />
+          <Property Name="pm_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="card_nr" Type="String" MaxLength="176" FixedLength="false" Unicode="false" />
+          <Property Name="mask_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="ca_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ct_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="tx_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="lm_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="as_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="rep_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="rd_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="maint_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="req_indic" Type="Int32" />
+          <Property Name="ts_dt_started" Type="DateTime" Precision="3" />
+          <Property Name="in_amt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="in_data" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="tg_bl_id" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="tg_mfg_id" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="tg_card_type" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="tg_reader" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="tg_tx_seq_nr" Type="Int32" />
+          <Property Name="avc_in_seq_nr" Type="Int32" />
+          <Property Name="avc_in_type_id" Type="Int32" />
+          <Property Name="avc_dt_generated" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DataImportModelStoreContainer" CdmEntityContainer="DataImportEntities">
+          <EntitySetMapping Name="Sessions">
+            <EntityTypeMapping TypeName="DataImportModel.Session">
+              <MappingFragment StoreEntitySet="Sessions">
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="LaneGUID" ColumnName="LaneGUID" />
+                <ScalarProperty Name="StaffLoginGUID" ColumnName="StaffLoginGUID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="SessionSeq" ColumnName="SessionSeq" />
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StaffLogins">
+            <EntityTypeMapping TypeName="DataImportModel.StaffLogin">
+              <MappingFragment StoreEntitySet="StaffLogins">
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="LocationTypeGUID" ColumnName="LocationTypeGUID" />
+                <ScalarProperty Name="LocationGUID" ColumnName="LocationGUID" />
+                <ScalarProperty Name="RoleGUID" ColumnName="RoleGUID" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="StaffGUID" ColumnName="StaffGUID" />
+                <ScalarProperty Name="StaffLoginGUID" ColumnName="StaffLoginGUID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspGetLaneSession" FunctionName="DataImportModel.Store.uspGetLaneSession">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetLaneSession_Result">
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+                <ScalarProperty Name="SessionSeq" ColumnName="SessionSeq" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="StaffLoginGUID" ColumnName="StaffLoginGUID" />
+                <ScalarProperty Name="LaneGUID" ColumnName="LaneGUID" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspGetNextIncidentBatch" FunctionName="DataImportModel.Store.uspGetNextIncidentBatch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetNextIncidentBatch_Result">
+                <ScalarProperty Name="IncidentID" ColumnName="IncidentID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="IncidentSeqNr" ColumnName="IncidentSeqNr" />
+                <ScalarProperty Name="IncidentCode" ColumnName="IncidentCode" />
+                <ScalarProperty Name="IncidentSetDate" ColumnName="IncidentSetDate" />
+                <ScalarProperty Name="LaneSeqNr" ColumnName="LaneSeqNr" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="IncidentGUID" ColumnName="IncidentGUID" />
+                <ScalarProperty Name="StaffLoginGUID" ColumnName="StaffLoginGUID" />
+                <ScalarProperty Name="IncidentTypeGUID" ColumnName="IncidentTypeGUID" />
+                <ScalarProperty Name="IncidentStatusGUID" ColumnName="IncidentStatusGUID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TransactionGUID" ColumnName="TransactionGUID" />
+                <ScalarProperty Name="LastIncidentSeqNr" ColumnName="LastIncidentSeqNr" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Incidents">
+            <EntityTypeMapping TypeName="DataImportModel.Incident">
+              <MappingFragment StoreEntitySet="Incidents">
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="LastIncidentSeqNr" ColumnName="LastIncidentSeqNr" />
+                <ScalarProperty Name="TransactionGUID" ColumnName="TransactionGUID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IncidentStatusGUID" ColumnName="IncidentStatusGUID" />
+                <ScalarProperty Name="IncidentTypeGUID" ColumnName="IncidentTypeGUID" />
+                <ScalarProperty Name="StaffLoginGUID" ColumnName="StaffLoginGUID" />
+                <ScalarProperty Name="IncidentGUID" ColumnName="IncidentGUID" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="LaneSeqNr" ColumnName="LaneSeqNr" />
+                <ScalarProperty Name="IncidentSetDate" ColumnName="IncidentSetDate" />
+                <ScalarProperty Name="IncidentCode" ColumnName="IncidentCode" />
+                <ScalarProperty Name="IncidentSeqNr" ColumnName="IncidentSeqNr" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="IncidentID" ColumnName="IncidentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspGetNextHourlyAuditBatch" FunctionName="DataImportModel.Store.uspGetNextHourlyAuditBatch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetNextHourlyAuditBatch_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AuditID" ColumnName="AuditID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="LaneGuid" ColumnName="LaneGuid" />
+                <ScalarProperty Name="AuditDate" ColumnName="AuditDate" />
+                <ScalarProperty Name="AuditHour" ColumnName="AuditHour" />
+                <ScalarProperty Name="TransStartSeqNumber" ColumnName="TransStartSeqNumber" />
+                <ScalarProperty Name="TransEndSeqNumber" ColumnName="TransEndSeqNumber" />
+                <ScalarProperty Name="TransRecordCount" ColumnName="TransRecordCount" />
+                <ScalarProperty Name="TransDifferenceNumber" ColumnName="TransDifferenceNumber" />
+                <ScalarProperty Name="IncidentStartSeqNumber" ColumnName="IncidentStartSeqNumber" />
+                <ScalarProperty Name="IncidentEndSeqNumber" ColumnName="IncidentEndSeqNumber" />
+                <ScalarProperty Name="IncidentRecordCount" ColumnName="IncidentRecordCount" />
+                <ScalarProperty Name="IncidentDifferenceNumber" ColumnName="IncidentDifferenceNumber" />
+                <ScalarProperty Name="SessionStartSeqNumber" ColumnName="SessionStartSeqNumber" />
+                <ScalarProperty Name="SessionEndSeqNumber" ColumnName="SessionEndSeqNumber" />
+                <ScalarProperty Name="SessionRecordCount" ColumnName="SessionRecordCount" />
+                <ScalarProperty Name="SessionDifferenceNumber" ColumnName="SessionDifferenceNumber" />
+                <ScalarProperty Name="StaffLoginRecordCount" ColumnName="StaffLoginRecordCount" />
+                <ScalarProperty Name="StaffLoginDifferenceNumber" ColumnName="StaffLoginDifferenceNumber" />
+                <ScalarProperty Name="TransAuditStatus" ColumnName="TransAuditStatus" />
+                <ScalarProperty Name="IncidentAuditStatus" ColumnName="IncidentAuditStatus" />
+                <ScalarProperty Name="SessionAuditStatus" ColumnName="SessionAuditStatus" />
+                <ScalarProperty Name="StaffLoginAuditStatus" ColumnName="StaffLoginAuditStatus" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="LaneMode" ColumnName="LaneMode" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Audits">
+            <EntityTypeMapping TypeName="DataImportModel.Audit">
+              <MappingFragment StoreEntitySet="Audits">
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="LaneMode" ColumnName="LaneMode" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="StaffLoginAuditStatus" ColumnName="StaffLoginAuditStatus" />
+                <ScalarProperty Name="SessionAuditStatus" ColumnName="SessionAuditStatus" />
+                <ScalarProperty Name="IncidentAuditStatus" ColumnName="IncidentAuditStatus" />
+                <ScalarProperty Name="TransAuditStatus" ColumnName="TransAuditStatus" />
+                <ScalarProperty Name="StaffLoginDifferenceNumber" ColumnName="StaffLoginDifferenceNumber" />
+                <ScalarProperty Name="StaffLoginRecordCount" ColumnName="StaffLoginRecordCount" />
+                <ScalarProperty Name="SessionDifferenceNumber" ColumnName="SessionDifferenceNumber" />
+                <ScalarProperty Name="SessionRecordCount" ColumnName="SessionRecordCount" />
+                <ScalarProperty Name="SessionEndSeqNumber" ColumnName="SessionEndSeqNumber" />
+                <ScalarProperty Name="SessionStartSeqNumber" ColumnName="SessionStartSeqNumber" />
+                <ScalarProperty Name="IncidentDifferenceNumber" ColumnName="IncidentDifferenceNumber" />
+                <ScalarProperty Name="IncidentRecordCount" ColumnName="IncidentRecordCount" />
+                <ScalarProperty Name="IncidentEndSeqNumber" ColumnName="IncidentEndSeqNumber" />
+                <ScalarProperty Name="IncidentStartSeqNumber" ColumnName="IncidentStartSeqNumber" />
+                <ScalarProperty Name="TransDifferenceNumber" ColumnName="TransDifferenceNumber" />
+                <ScalarProperty Name="TransRecordCount" ColumnName="TransRecordCount" />
+                <ScalarProperty Name="TransEndSeqNumber" ColumnName="TransEndSeqNumber" />
+                <ScalarProperty Name="TransStartSeqNumber" ColumnName="TransStartSeqNumber" />
+                <ScalarProperty Name="AuditHour" ColumnName="AuditHour" />
+                <ScalarProperty Name="AuditDate" ColumnName="AuditDate" />
+                <ScalarProperty Name="LaneGuid" ColumnName="LaneGuid" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="AuditID" ColumnName="AuditID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspGetLaneAliveStatus" FunctionName="DataImportModel.Store.uspGetLaneAliveStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetLaneAliveStatus_Result">
+                <ScalarProperty Name="LaneGuid" ColumnName="LaneGuid" />
+                <ScalarProperty Name="CNT" ColumnName="CNT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspImportNewStaff" FunctionName="DataImportModel.Store.uspImportNewStaff" />
+          <FunctionImportMapping FunctionImportName="uspGetIncident" FunctionName="DataImportModel.Store.uspGetIncident">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetNextIncidentBatch_Result">
+                <ScalarProperty Name="IncidentID" ColumnName="IncidentID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="IncidentSeqNr" ColumnName="IncidentSeqNr" />
+                <ScalarProperty Name="IncidentCode" ColumnName="IncidentCode" />
+                <ScalarProperty Name="IncidentSetDate" ColumnName="IncidentSetDate" />
+                <ScalarProperty Name="LaneSeqNr" ColumnName="LaneSeqNr" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="IncidentGUID" ColumnName="IncidentGUID" />
+                <ScalarProperty Name="StaffLoginGUID" ColumnName="StaffLoginGUID" />
+                <ScalarProperty Name="IncidentTypeGUID" ColumnName="IncidentTypeGUID" />
+                <ScalarProperty Name="IncidentStatusGUID" ColumnName="IncidentStatusGUID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TransactionGUID" ColumnName="TransactionGUID" />
+                <ScalarProperty Name="LastIncidentSeqNr" ColumnName="LastIncidentSeqNr" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspGetTransaction" FunctionName="DataImportModel.Store.uspGetTransaction">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetNextTransactionBatch_Result">
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
+                <ScalarProperty Name="TransStartDate" ColumnName="TransStartDate" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="ColClassGUID" ColumnName="ColClassGUID" />
+                <ScalarProperty Name="AVCClassGUID" ColumnName="AVCClassGUID" />
+                <ScalarProperty Name="RealClassGUID" ColumnName="RealClassGUID" />
+                <ScalarProperty Name="AppliedClassGUID" ColumnName="AppliedClassGUID" />
+                <ScalarProperty Name="TariffGUID" ColumnName="TariffGUID" />
+                <ScalarProperty Name="TariffAmount" ColumnName="TariffAmount" />
+                <ScalarProperty Name="TariffVat" ColumnName="TariffVat" />
+                <ScalarProperty Name="ChangeAmount" ColumnName="ChangeAmount" />
+                <ScalarProperty Name="TenderedAmount" ColumnName="TenderedAmount" />
+                <ScalarProperty Name="CurrencyGUID" ColumnName="CurrencyGUID" />
+                <ScalarProperty Name="LaneStatusGUID" ColumnName="LaneStatusGUID" />
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+                <ScalarProperty Name="LaneTransSeqNr" ColumnName="LaneTransSeqNr" />
+                <ScalarProperty Name="AVCSeqNr" ColumnName="AVCSeqNr" />
+                <ScalarProperty Name="AvcStatusGUID" ColumnName="AvcStatusGUID" />
+                <ScalarProperty Name="PaymentMethodGUID" ColumnName="PaymentMethodGUID" />
+                <ScalarProperty Name="PaymentGroupGUID" ColumnName="PaymentGroupGUID" />
+                <ScalarProperty Name="PaymentMechGUID" ColumnName="PaymentMechGUID" />
+                <ScalarProperty Name="PaymentTypeGUID" ColumnName="PaymentTypeGUID" />
+                <ScalarProperty Name="PaymentDetail" ColumnName="PaymentDetail" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+                <ScalarProperty Name="TaxInvNr" ColumnName="TaxInvNr" />
+                <ScalarProperty Name="ReceiptCount" ColumnName="ReceiptCount" />
+                <ScalarProperty Name="AdditionalTransactionDetail" ColumnName="AdditionalTransactionDetail" />
+                <ScalarProperty Name="AccountUserGUID" ColumnName="AccountUserGUID" />
+                <ScalarProperty Name="SupervisorLoginGUID" ColumnName="SupervisorLoginGUID" />
+                <ScalarProperty Name="IsKeyed" ColumnName="IsKeyed" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="AVCDetail" ColumnName="AVCDetail" />
+                <ScalarProperty Name="AccountGUID" ColumnName="AccountGUID" />
+                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
+                <ScalarProperty Name="TotalInLocalCurrency" ColumnName="TotalInLocalCurrency" />
+                <ScalarProperty Name="PreviousLicensePlate" ColumnName="PreviousLicensePlate" />
+                <ScalarProperty Name="PreviousPaymentMethodGUID" ColumnName="PreviousPaymentMethodGUID" />
+                <ScalarProperty Name="ReceiptTaxInvoiceDate" ColumnName="ReceiptTaxInvoiceDate" />
+                <ScalarProperty Name="ANPRLicensePlate" ColumnName="ANPRLicensePlate" />
+                <ScalarProperty Name="ETCTransactionGuid" ColumnName="ETCTransactionGuid" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="BCCTransferStatus" ColumnName="BCCTransferStatus" />
+                <ScalarProperty Name="ContextMarkId" ColumnName="ContextMarkId" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="CONV" ColumnName="CONV" />
+                <ScalarProperty Name="IDVL" ColumnName="IDVL" />
+                <ScalarProperty Name="VehichleState" ColumnName="VehichleState" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="AccountIdentifier" ColumnName="AccountIdentifier" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspGetNextTransactionBatch" FunctionName="DataImportModel.Store.uspGetNextTransactionBatch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetNextTransactionBatch_Result">
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
+                <ScalarProperty Name="TransStartDate" ColumnName="TransStartDate" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="ColClassGUID" ColumnName="ColClassGUID" />
+                <ScalarProperty Name="AVCClassGUID" ColumnName="AVCClassGUID" />
+                <ScalarProperty Name="RealClassGUID" ColumnName="RealClassGUID" />
+                <ScalarProperty Name="AppliedClassGUID" ColumnName="AppliedClassGUID" />
+                <ScalarProperty Name="TariffGUID" ColumnName="TariffGUID" />
+                <ScalarProperty Name="TariffAmount" ColumnName="TariffAmount" />
+                <ScalarProperty Name="TariffVat" ColumnName="TariffVat" />
+                <ScalarProperty Name="ChangeAmount" ColumnName="ChangeAmount" />
+                <ScalarProperty Name="TenderedAmount" ColumnName="TenderedAmount" />
+                <ScalarProperty Name="CurrencyGUID" ColumnName="CurrencyGUID" />
+                <ScalarProperty Name="LaneStatusGUID" ColumnName="LaneStatusGUID" />
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+                <ScalarProperty Name="LaneTransSeqNr" ColumnName="LaneTransSeqNr" />
+                <ScalarProperty Name="AVCSeqNr" ColumnName="AVCSeqNr" />
+                <ScalarProperty Name="AvcStatusGUID" ColumnName="AvcStatusGUID" />
+                <ScalarProperty Name="PaymentMethodGUID" ColumnName="PaymentMethodGUID" />
+                <ScalarProperty Name="PaymentGroupGUID" ColumnName="PaymentGroupGUID" />
+                <ScalarProperty Name="PaymentMechGUID" ColumnName="PaymentMechGUID" />
+                <ScalarProperty Name="PaymentTypeGUID" ColumnName="PaymentTypeGUID" />
+                <ScalarProperty Name="PaymentDetail" ColumnName="PaymentDetail" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+                <ScalarProperty Name="TaxInvNr" ColumnName="TaxInvNr" />
+                <ScalarProperty Name="ReceiptCount" ColumnName="ReceiptCount" />
+                <ScalarProperty Name="AdditionalTransactionDetail" ColumnName="AdditionalTransactionDetail" />
+                <ScalarProperty Name="AccountUserGUID" ColumnName="AccountUserGUID" />
+                <ScalarProperty Name="SupervisorLoginGUID" ColumnName="SupervisorLoginGUID" />
+                <ScalarProperty Name="IsKeyed" ColumnName="IsKeyed" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="AVCDetail" ColumnName="AVCDetail" />
+                <ScalarProperty Name="AccountGUID" ColumnName="AccountGUID" />
+                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
+                <ScalarProperty Name="TotalInLocalCurrency" ColumnName="TotalInLocalCurrency" />
+                <ScalarProperty Name="PreviousLicensePlate" ColumnName="PreviousLicensePlate" />
+                <ScalarProperty Name="PreviousPaymentMethodGUID" ColumnName="PreviousPaymentMethodGUID" />
+                <ScalarProperty Name="ReceiptTaxInvoiceDate" ColumnName="ReceiptTaxInvoiceDate" />
+                <ScalarProperty Name="ANPRLicensePlate" ColumnName="ANPRLicensePlate" />
+                <ScalarProperty Name="ETCTransactionGuid" ColumnName="ETCTransactionGuid" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="BCCTransferStatus" ColumnName="BCCTransferStatus" />
+                <ScalarProperty Name="ContextMarkId" ColumnName="ContextMarkId" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="CONV" ColumnName="CONV" />
+                <ScalarProperty Name="IDVL" ColumnName="IDVL" />
+                <ScalarProperty Name="VehichleState" ColumnName="VehichleState" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="AccountIdentifier" ColumnName="AccountIdentifier" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Transactions">
+            <EntityTypeMapping TypeName="DataImportModel.Transaction">
+              <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="VehichleState" ColumnName="VehichleState" />
+                <ScalarProperty Name="IDVL" ColumnName="IDVL" />
+                <ScalarProperty Name="CONV" ColumnName="CONV" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="ContextMarkId" ColumnName="ContextMarkId" />
+                <ScalarProperty Name="BCCTransferStatus" ColumnName="BCCTransferStatus" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="ETCTransactionGuid" ColumnName="ETCTransactionGuid" />
+                <ScalarProperty Name="ANPRLicensePlate" ColumnName="ANPRLicensePlate" />
+                <ScalarProperty Name="ReceiptTaxInvoiceDate" ColumnName="ReceiptTaxInvoiceDate" />
+                <ScalarProperty Name="PreviousPaymentMethodGUID" ColumnName="PreviousPaymentMethodGUID" />
+                <ScalarProperty Name="PreviousLicensePlate" ColumnName="PreviousLicensePlate" />
+                <ScalarProperty Name="TotalInLocalCurrency" ColumnName="TotalInLocalCurrency" />
+                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
+                <ScalarProperty Name="AccountGUID" ColumnName="AccountGUID" />
+                <ScalarProperty Name="AVCDetail" ColumnName="AVCDetail" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="IsKeyed" ColumnName="IsKeyed" />
+                <ScalarProperty Name="SupervisorLoginGUID" ColumnName="SupervisorLoginGUID" />
+                <ScalarProperty Name="AccountUserGUID" ColumnName="AccountUserGUID" />
+                <ScalarProperty Name="AdditionalTransactionDetail" ColumnName="AdditionalTransactionDetail" />
+                <ScalarProperty Name="ReceiptCount" ColumnName="ReceiptCount" />
+                <ScalarProperty Name="TaxInvNr" ColumnName="TaxInvNr" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+                <ScalarProperty Name="PaymentDetail" ColumnName="PaymentDetail" />
+                <ScalarProperty Name="PaymentTypeGUID" ColumnName="PaymentTypeGUID" />
+                <ScalarProperty Name="PaymentMechGUID" ColumnName="PaymentMechGUID" />
+                <ScalarProperty Name="PaymentGroupGUID" ColumnName="PaymentGroupGUID" />
+                <ScalarProperty Name="PaymentMethodGUID" ColumnName="PaymentMethodGUID" />
+                <ScalarProperty Name="AvcStatusGUID" ColumnName="AvcStatusGUID" />
+                <ScalarProperty Name="AVCSeqNr" ColumnName="AVCSeqNr" />
+                <ScalarProperty Name="LaneTransSeqNr" ColumnName="LaneTransSeqNr" />
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+                <ScalarProperty Name="LaneStatusGUID" ColumnName="LaneStatusGUID" />
+                <ScalarProperty Name="CurrencyGUID" ColumnName="CurrencyGUID" />
+                <ScalarProperty Name="TenderedAmount" ColumnName="TenderedAmount" />
+                <ScalarProperty Name="ChangeAmount" ColumnName="ChangeAmount" />
+                <ScalarProperty Name="TariffVat" ColumnName="TariffVat" />
+                <ScalarProperty Name="TariffAmount" ColumnName="TariffAmount" />
+                <ScalarProperty Name="TariffGUID" ColumnName="TariffGUID" />
+                <ScalarProperty Name="AppliedClassGUID" ColumnName="AppliedClassGUID" />
+                <ScalarProperty Name="RealClassGUID" ColumnName="RealClassGUID" />
+                <ScalarProperty Name="AVCClassGUID" ColumnName="AVCClassGUID" />
+                <ScalarProperty Name="ColClassGUID" ColumnName="ColClassGUID" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="TransStartDate" ColumnName="TransStartDate" />
+                <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingIncidents">
+            <EntityTypeMapping TypeName="DataImportModel.StagingIncident">
+              <MappingFragment StoreEntitySet="StagingIncidents">
+                <ScalarProperty Name="avc_dt_generated" ColumnName="avc_dt_generated" />
+                <ScalarProperty Name="avc_in_type_id" ColumnName="avc_in_type_id" />
+                <ScalarProperty Name="avc_in_seq_nr" ColumnName="avc_in_seq_nr" />
+                <ScalarProperty Name="tg_tx_seq_nr" ColumnName="tg_tx_seq_nr" />
+                <ScalarProperty Name="tg_reader" ColumnName="tg_reader" />
+                <ScalarProperty Name="tg_card_type" ColumnName="tg_card_type" />
+                <ScalarProperty Name="tg_mfg_id" ColumnName="tg_mfg_id" />
+                <ScalarProperty Name="tg_bl_id" ColumnName="tg_bl_id" />
+                <ScalarProperty Name="in_data" ColumnName="in_data" />
+                <ScalarProperty Name="in_amt" ColumnName="in_amt" />
+                <ScalarProperty Name="ts_dt_started" ColumnName="ts_dt_started" />
+                <ScalarProperty Name="req_indic" ColumnName="req_indic" />
+                <ScalarProperty Name="maint_indic" ColumnName="maint_indic" />
+                <ScalarProperty Name="rd_id" ColumnName="rd_id" />
+                <ScalarProperty Name="rep_indic" ColumnName="rep_indic" />
+                <ScalarProperty Name="as_id" ColumnName="as_id" />
+                <ScalarProperty Name="lm_id" ColumnName="lm_id" />
+                <ScalarProperty Name="tx_indic" ColumnName="tx_indic" />
+                <ScalarProperty Name="ct_id" ColumnName="ct_id" />
+                <ScalarProperty Name="ca_id" ColumnName="ca_id" />
+                <ScalarProperty Name="mask_nr" ColumnName="mask_nr" />
+                <ScalarProperty Name="card_nr" ColumnName="card_nr" />
+                <ScalarProperty Name="pm_id" ColumnName="pm_id" />
+                <ScalarProperty Name="er_id" ColumnName="er_id" />
+                <ScalarProperty Name="svc" ColumnName="svc" />
+                <ScalarProperty Name="avc" ColumnName="avc" />
+                <ScalarProperty Name="mvc" ColumnName="mvc" />
+                <ScalarProperty Name="vg_group" ColumnName="vg_group" />
+                <ScalarProperty Name="cg_group" ColumnName="cg_group" />
+                <ScalarProperty Name="pg_group" ColumnName="pg_group" />
+                <ScalarProperty Name="ft_id" ColumnName="ft_id" />
+                <ScalarProperty Name="us_id" ColumnName="us_id" />
+                <ScalarProperty Name="ts_seq_nr" ColumnName="ts_seq_nr" />
+                <ScalarProperty Name="tx_seq_nr" ColumnName="tx_seq_nr" />
+                <ScalarProperty Name="ir_subtype" ColumnName="ir_subtype" />
+                <ScalarProperty Name="ir_type" ColumnName="ir_type" />
+                <ScalarProperty Name="in_seq_nr" ColumnName="in_seq_nr" />
+                <ScalarProperty Name="dt_generated" ColumnName="dt_generated" />
+                <ScalarProperty Name="ln_id" ColumnName="ln_id" />
+                <ScalarProperty Name="pl_id" ColumnName="pl_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

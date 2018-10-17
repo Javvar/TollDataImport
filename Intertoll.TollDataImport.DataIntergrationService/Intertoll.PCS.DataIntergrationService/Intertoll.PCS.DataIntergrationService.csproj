@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{74D5EBDE-6969-4C92-AB9D-D7A3E0F60DBE}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Intertoll.PCS.DataIntergrationService</RootNamespace>
+    <AssemblyName>Intertoll.PCS.DataIntergrationService</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.1\lib\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Intertoll.Common, Version=1.0.6009.28830, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Lane.Sync.Client.2.0.0.0\lib\net45\Intertoll.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Intertoll.Data, Version=1.0.6009.28830, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Lane.Sync.Client.2.0.0.0\lib\net45\Intertoll.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Intertoll.Encryption">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Encryption.1.0.3\lib\4.5\Intertoll.Encryption.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.Lane.Sync.Client, Version=1.0.6009.28831, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Lane.Sync.Client.2.0.0.0\lib\net45\Intertoll.Lane.Sync.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Intertoll.Lane.Sync.Common, Version=1.0.6009.28830, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Lane.Sync.Client.2.0.0.0\lib\net45\Intertoll.Lane.Sync.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Intertoll.Mail">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Mail.1.0.3\lib\net45\Intertoll.Mail.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.NLogger">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Logging.1.0.11\lib\net45\Intertoll.NLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.PCS.TSSUpdater.Client">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.PCS.TSSUpdater.Client.1.0.5\lib\net45\Intertoll.PCS.TSSUpdater.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.PCS.TSSUpdater.Common">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.PCS.TSSUpdater.Client.1.0.5\lib\net45\Intertoll.PCS.TSSUpdater.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.TSS2.Client, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Intertoll.TSS2.Client.1.0.0\lib\net45\Intertoll.TSS2.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Intertoll.TSS2.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Intertoll.TSS2.Client.1.0.0\lib\net45\Intertoll.TSS2.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MailKit">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\MailKit.1.4.0\lib\net45\MailKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SQLServer.ManagedDTS, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\Microsoft.SQLServer.ManagedDTS.dll</HintPath>
+    </Reference>
+    <Reference Include="MimeKit">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\MimeKit.1.4.0\lib\net45\MimeKit.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Logging.1.0.11\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended">
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Intertoll.Logging.1.0.11\lib\net45\NLog.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz, Version=2.4.1.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Intertoll.TollDataImport.DataRequest\packages\Quartz.2.4.1\lib\net40\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Managers\LookupManager.cs" />
+    <Compile Include="Managers\ServiceAgentManager.cs" />
+    <Compile Include="Managers\Extentions.cs" />
+    <Compile Include="Managers\NetworkManager.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Schedule\DailyJob.cs" />
+    <Compile Include="Schedule\DailyScheduler.cs" />
+    <Compile Include="Schedule\DailyProcessor.cs" />
+    <Compile Include="Managers\SettingsManager.cs" />
+    <Compile Include="DataIntergrationService.cs" />
+    <Compile Include="DataIntergrationServiceHost.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DataIntergrationServiceHost.Designer.cs">
+      <DependentUpon>DataIntergrationServiceHost.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="NLog.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Managers\TempDLLFolder\Intertoll.Lane.Sync.Client.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Intertoll.PCS.DataIntergration.Common\Intertoll.PCS.DataIntergration.Common.csproj">
+      <Project>{c3db2e4b-62fb-473b-ba93-5ebb4ae11329}</Project>
+      <Name>Intertoll.PCS.DataIntergration.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Intertoll.PCS.DataIntergration.Data\Intertoll.PCS.DataIntergration.Data.csproj">
+      <Project>{3c3ee2ea-0bd6-430d-9015-742c01033027}</Project>
+      <Name>Intertoll.PCS.DataIntergration.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

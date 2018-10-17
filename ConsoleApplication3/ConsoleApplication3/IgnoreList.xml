@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Lanes>
+  <Lane code="10MS">
+    <Printer/>
+  </Lane>
+  <Lane code="11MN">
+    <Printer/>
+  </Lane>
+</Lanes>

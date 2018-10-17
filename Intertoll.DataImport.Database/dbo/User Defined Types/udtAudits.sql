@@ -1,0 +1,31 @@
+﻿CREATE TYPE [dbo].[udtAudits] AS TABLE (
+    [Id]                         INT              NOT NULL,
+    [AuditID]                    VARCHAR (30)     NULL,
+    [LaneCode]                   VARCHAR (10)     NOT NULL,
+    [LaneGuid]                   UNIQUEIDENTIFIER NOT NULL,
+    [AuditDate]                  DATE             NOT NULL,
+    [AuditHour]                  INT              NOT NULL,
+    [TransStartSeqNumber]        INT              NULL,
+    [TransEndSeqNumber]          INT              NULL,
+    [TransRecordCount]           INT              NOT NULL,
+    [TransDifferenceNumber]      INT              NOT NULL,
+    [IncidentStartSeqNumber]     INT              NULL,
+    [IncidentEndSeqNumber]       INT              NULL,
+    [IncidentRecordCount]        INT              NOT NULL,
+    [IncidentDifferenceNumber]   INT              NOT NULL,
+    [SessionStartSeqNumber]      INT              NOT NULL,
+    [SessionEndSeqNumber]        INT              NOT NULL,
+    [SessionRecordCount]         INT              NOT NULL,
+    [SessionDifferenceNumber]    INT              NOT NULL,
+    [StaffLoginRecordCount]      INT              NOT NULL,
+    [StaffLoginDifferenceNumber] INT              NOT NULL,
+    [TransAuditStatus]           INT              NOT NULL,
+    [IncidentAuditStatus]        INT              NOT NULL,
+    [SessionAuditStatus]         INT              NOT NULL,
+    [StaffLoginAuditStatus]      INT              NOT NULL,
+    [TimeStamp]                  DATETIME         NULL,
+    [LaneMode]                   INT              NOT NULL,
+    [IsSent]                     BIT              NOT NULL);
+
+
+

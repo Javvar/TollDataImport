@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D80E6648-82CE-44D6-9EC1-B0D4E63F8B74}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Intertoll.Toll.DataImport.Interfaces</RootNamespace>
+    <AssemblyName>Intertoll.Toll.DataImport.Interfaces</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Intertoll.EFDbContext.GenericWrapper">
+      <HintPath>..\..\..\Shared Libraries\Intertoll.DbContext.Wrapper\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Entities\IETCTollTransaction.cs" />
+    <Compile Include="Entities\ILaneStatus.cs" />
+    <Compile Include="Entities\ITollEntityBuilder.cs" />
+    <Compile Include="Entities\ITollEtcTransaction.cs" />
+    <Compile Include="Entities\ITollStaffLogin.cs" />
+    <Compile Include="EntityBuilders\ITransactionCardDetailBuilder.cs" />
+    <Compile Include="EntityBuilders\IHourlyAuditEntityBuilder.cs" />
+    <Compile Include="EntityBuilders\IIncidentEntityBuilder.cs" />
+    <Compile Include="IEntitySubmiter.cs" />
+    <Compile Include="IMailClient.cs" />
+    <Compile Include="ISettingsProvider.cs" />
+    <Compile Include="ITollDataProvider.cs" />
+    <Compile Include="Entities\ITollEntity.cs" />
+    <Compile Include="Entities\ITollHourlyAudit.cs" />
+    <Compile Include="Entities\ITollIncident.cs" />
+    <Compile Include="Entities\ITollSession.cs" />
+    <Compile Include="Entities\ITollTransaction.cs" />
+    <Compile Include="EntityBuilders\ITransactionEntityBuilder.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

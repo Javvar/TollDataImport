@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Intertoll.DataImport.Database</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{619fdf8c-05b6-405b-afcf-6e41bbf4bbd2}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql120DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Intertoll.DataImport.Database</RootNamespace>
+    <AssemblyName>Intertoll.DataImport.Database</AssemblyName>
+    <ModelCollation>1033,CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+    <DefaultCollation>Latin1_General_CI_AS</DefaultCollation>
+    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\User Defined Types\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Audits.sql" />
+    <Build Include="dbo\Tables\Incidents.sql" />
+    <Build Include="dbo\Tables\Sessions.sql" />
+    <Build Include="dbo\Tables\StaffLogins.sql" />
+    <Build Include="dbo\Tables\Transactions.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetNextTransactionBatch.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetNextIncidentBatch.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetLaneSession.sql" />
+    <Build Include="dbo\Tables\MappingStaff.sql" />
+    <Build Include="dbo\Tables\MappingLanes.sql" />
+    <Build Include="dbo\Functions\ufGetTransactionPaymentFieldTypeGuid.sql" />
+    <Build Include="dbo\Functions\ufGetTariffGuid.sql" />
+    <Build Include="dbo\Functions\ufGetClassGuid.sql" />
+    <Build Include="dbo\Stored Procedures\uspStartNewSession.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetSessionGuidAndStaffLoginGuid.sql" />
+    <Build Include="dbo\Tables\StagingTransactions.sql" />
+    <Build Include="dbo\Tables\StagingIncidents.sql" />
+    <Build Include="dbo\Tables\MappingTariffs.sql" />
+    <Build Include="dbo\Functions\ufCalculateTariffVAT.sql" />
+    <Build Include="dbo\User Defined Types\udtTransactions.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetAccountDetails.sql" />
+    <Build Include="dbo\Functions\ufGetIncidentTypeGUID.sql" />
+    <Build Include="dbo\Functions\ufGetIncideCode.sql" />
+    <Build Include="dbo\User Defined Types\udtIncidents.sql" />
+    <Build Include="dbo\Tables\MappingIncidentTypes.sql" />
+    <Build Include="dbo\Tables\StagingTimeSlices.sql" />
+    <Build Include="dbo\Functions\ufAuditGetTransactionStartSequenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetTransactionRecordCount.sql" />
+    <Build Include="dbo\Functions\ufAuditGetTransactionEndSequenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetTransactionDifferenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetStaffLoginRecordCount.sql" />
+    <Build Include="dbo\Functions\ufAuditGetStaffLoginDifferenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetSessionStartSequenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetSessionRecordCount.sql" />
+    <Build Include="dbo\Functions\ufAuditGetSessionEndSequenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetSessionDifferenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetIncidentStartSequenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetIncidentRecordCount.sql" />
+    <Build Include="dbo\Functions\ufAuditGetIncidentEndSequenceNumber.sql" />
+    <Build Include="dbo\Functions\ufAuditGetIncidentDifferenceNumber.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetNextHourlyAuditBatch.sql" />
+    <Build Include="dbo\User Defined Types\udtAudits.sql" />
+    <Build Include="dbo\Functions\ufTimeSlicesComplete.sql" />
+    <Build Include="dbo\Functions\ufGetHourTime.sql" />
+    <Build Include="dbo\Functions\ufCombineDateAndTime.sql" />
+    <Build Include="dbo\Functions\ufRemoveNonNumericCharacters.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetLaneAliveStatus.sql" />
+    <Build Include="dbo\Stored Procedures\uspImportNewStaff.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetTransaction.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetIncident.sql" />
+    <Build Include="dbo\Tables\StagingETCTransactions.sql" />
+    <Build Include="dbo\Functions\ufGetETCTransactionGuid.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SchemaCompare.scmp" />
+  </ItemGroup>
+</Project>

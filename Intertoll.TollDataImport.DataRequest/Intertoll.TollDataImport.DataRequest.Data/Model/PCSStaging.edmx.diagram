@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c262196d2a5b494b84a4f8ff4ba82041" Name="Diagram1" ZoomLevel="65">
+        <EntityTypeShape EntityType="DataImportModel.HourlyAudit" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.Lane" Width="1.5" PointX="7.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.ProcessedItem" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.Session" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.Shift" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.StaffIdToGuidMapping" Width="1.5" PointX="5.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.StaffLogin" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.TariffMapping" Width="1.5" PointX="9.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.PaymentGroupsMapping" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.PaymentMechMapping" Width="1.5" PointX="7.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.PaymentMethodsMapping" Width="1.5" PointX="9.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.PaymentTypesMapping" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DataImportModel.UserMaping" Width="1.5" PointX="11.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="DataImportModel.FK_Sessions_StaffLogins" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DataImportModel.Incident" Width="1.5" PointX="7.625" PointY="0.75" />
+        <EntityTypeShape EntityType="DataImportModel.Transaction" Width="1.5" PointX="12.375" PointY="6.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

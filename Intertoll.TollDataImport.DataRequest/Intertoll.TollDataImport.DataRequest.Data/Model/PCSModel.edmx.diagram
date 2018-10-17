@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f4dd99aaf7e843c280d9ebf31a7f5dc2" Name="Diagram1">
+        <EntityTypeShape EntityType="PCSModel.PCSAudit" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PCSModel.PCSLane" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <AssociationConnector Association="PCSModel.FK_Audits_Lanes" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="PCSModel.PCSIncident" Width="1.5" PointX="5.375" PointY="0.75" />
+        <EntityTypeShape EntityType="PCSModel.PCSTransaction" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="PCSModel.PCSSession" Width="1.5" PointX="3" PointY="10.75" />
+        <AssociationConnector Association="PCSModel.FK_StaffSessions_Lanes" />
+        <AssociationConnector Association="PCSModel.FK_Transactions_Sessions" />
+        <EntityTypeShape EntityType="PCSModel.PCSStaffLogin" Width="1.5" PointX="7.375" PointY="1" />
+        <AssociationConnector Association="PCSModel.FK_Sessions_StaffLogins" />
+        <AssociationConnector Association="PCSModel.FK_Transactions_StaffLogins" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
