@@ -33,7 +33,6 @@ namespace Intertoll.DataImport.Data
         public virtual DbSet<Incident> Incidents { get; set; }
         public virtual DbSet<Audit> Audits { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
-        public virtual DbSet<StagingIncident> StagingIncidents { get; set; }
     
         public virtual ObjectResult<uspGetLaneSession_Result> uspGetLaneSession(string laneCode)
         {

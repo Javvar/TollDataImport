@@ -26,5 +26,8 @@ namespace Intertoll.DataImport.Database.Sync.Data
         }
     
         public virtual DbSet<StagingIncident> StagingIncidents { get; set; }
+        public virtual DbSet<StagingETCTransaction> StagingETCTransactions { get; set; }
+        public virtual DbSet<StagingTimeSlice> StagingTimeSlices { get; set; }
+        public virtual DbSet<StagingTransaction> StagingTransactions { get; set; }
     }
 }

@@ -4,14 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DatabaseSyncModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'TollDataImport.dbo.StagingETCTransactions' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+    <Schema Namespace="DatabaseSyncModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="StagingETCTransactions">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="tx_seq_nr" />
+          </Key>
           <Property Name="pl_id" Type="varchar" MaxLength="9" />
-          <Property Name="ln_id" Type="varchar" MaxLength="9" />
+          <Property Name="ln_id" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="dt_concluded" Type="datetime" />
-          <Property Name="tx_seq_nr" Type="int" />
+          <Property Name="tx_seq_nr" Type="int" Nullable="false" />
           <Property Name="ops_dt" Type="date" />
           <Property Name="ops_sh" Type="int" />
           <Property Name="ts_seq_nr" Type="int" />
@@ -62,7 +64,7 @@ warning 6013: The table/view 'TollDataImport.dbo.StagingETCTransactions' does no
           <Property Name="id_vl" Type="varchar" MaxLength="21" />
           <Property Name="loc_tax" Type="varchar" MaxLength="100" />
           <Property Name="act_disc" Type="varchar" MaxLength="100" />
-        </EntityType>-->
+        </EntityType>
         <EntityType Name="StagingIncidents">
           <Key>
             <PropertyRef Name="ln_id" />
@@ -109,12 +111,14 @@ warning 6013: The table/view 'TollDataImport.dbo.StagingETCTransactions' does no
           <Property Name="avc_in_type_id" Type="int" />
           <Property Name="avc_dt_generated" Type="datetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'TollDataImport.dbo.StagingTimeSlices' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="StagingTimeSlices">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="ts_seq_nr" />
+          </Key>
           <Property Name="pl_id" Type="varchar" MaxLength="9" />
-          <Property Name="ln_id" Type="varchar" MaxLength="9" />
-          <Property Name="ts_seq_nr" Type="int" />
+          <Property Name="ln_id" Type="varchar" MaxLength="9" Nullable="false" />
+          <Property Name="ts_seq_nr" Type="int" Nullable="false" />
           <Property Name="dt_started" Type="datetime" />
           <Property Name="dt_ended" Type="datetime" />
           <Property Name="us_id" Type="varchar" MaxLength="31" />
@@ -152,14 +156,16 @@ warning 6013: The table/view 'TollDataImport.dbo.StagingTimeSlices' does not hav
           <Property Name="rd_id" Type="varchar" MaxLength="2" />
           <Property Name="maint_indic" Type="varchar" MaxLength="2" />
           <Property Name="req_indic" Type="int" />
-        </EntityType>-->
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'TollDataImport.dbo.StagingTransactions' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        </EntityType>
         <EntityType Name="StagingTransactions">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="tx_seq_nr" />
+          </Key>
           <Property Name="pl_id" Type="varchar" MaxLength="9" />
-          <Property Name="ln_id" Type="varchar" MaxLength="9" />
+          <Property Name="ln_id" Type="varchar" MaxLength="9" Nullable="false" />
           <Property Name="dt_concluded" Type="datetime" />
-          <Property Name="tx_seq_nr" Type="int" />
+          <Property Name="tx_seq_nr" Type="int" Nullable="false" />
           <Property Name="ts_seq_nr" Type="int" />
           <Property Name="us_id" Type="varchar" MaxLength="31" />
           <Property Name="ent_plz_id" Type="varchar" MaxLength="9" />
@@ -233,12 +239,14 @@ warning 6013: The table/view 'TollDataImport.dbo.StagingTransactions' does not h
           <Property Name="id_vl" Type="varchar" MaxLength="21" />
           <Property Name="vl_vln" Type="varchar" MaxLength="21" />
           <Property Name="anpr_seq_nr" Type="int" />
-        </EntityType>-->
+        </EntityType>
         <EntityContainer Name="DatabaseSyncModelStoreContainer">
+          <EntitySet Name="StagingETCTransactions" EntityType="Self.StagingETCTransactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingIncidents" EntityType="Self.StagingIncidents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingTimeSlices" EntityType="Self.StagingTimeSlices" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingTransactions" EntityType="Self.StagingTransactions" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseSyncModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -290,7 +298,199 @@ warning 6013: The table/view 'TollDataImport.dbo.StagingTransactions' does not h
         </EntityType>
         <EntityContainer Name="DatabaseSyncEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="StagingIncidents" EntityType="Self.StagingIncident" />
+          <EntitySet Name="StagingETCTransactions" EntityType="DatabaseSyncModel.StagingETCTransaction" />
+          <EntitySet Name="StagingTimeSlices" EntityType="DatabaseSyncModel.StagingTimeSlice" />
+          <EntitySet Name="StagingTransactions" EntityType="DatabaseSyncModel.StagingTransaction" />
         </EntityContainer>
+        <EntityType Name="StagingETCTransaction">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="tx_seq_nr" />
+          </Key>
+          <Property Name="pl_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ln_id" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="dt_concluded" Type="DateTime" Precision="3" />
+          <Property Name="tx_seq_nr" Type="Int32" Nullable="false" />
+          <Property Name="ops_dt" Type="DateTime" Precision="0" />
+          <Property Name="ops_sh" Type="Int32" />
+          <Property Name="ts_seq_nr" Type="Int32" />
+          <Property Name="ent_plz_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ent_lane_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="dt_started" Type="DateTime" Precision="3" />
+          <Property Name="cg_group" Type="Int32" />
+          <Property Name="vg_group" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="mvc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="avc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="lvc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="svc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="loc_curr" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="loc_value" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="variance" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="er_id" Type="Int32" />
+          <Property Name="it_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="sec_card_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="reg_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="vl_vln" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="vouch_nr" Type="Int32" />
+          <Property Name="rec_nr" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="tick_nr" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="fg_id" Type="Int32" />
+          <Property Name="bp_id" Type="Int32" />
+          <Property Name="dg_id" Type="Int32" />
+          <Property Name="disc_value" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ft_id" Type="Int32" />
+          <Property Name="pg_group" Type="Int32" />
+          <Property Name="ts_dt_started" Type="DateTime" Precision="3" />
+          <Property Name="us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="count_for_disc" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="iv_prt_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="iv_nr" Type="Int32" />
+          <Property Name="nom_value" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="update_us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="etc_contect_mrk" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="etc_manufac_id" Type="Int32" />
+          <Property Name="etc_contract_pv" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="etc_beacon_id" Type="Int32" />
+          <Property Name="avc_dt_concluded" Type="DateTime" Precision="3" />
+          <Property Name="ca_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ct_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="td_id" Type="Int32" />
+          <Property Name="ac_nr" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="card_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="inc_ind" Type="Int32" />
+          <Property Name="id_vl" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="loc_tax" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="act_disc" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StagingTimeSlice">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="ts_seq_nr" />
+          </Key>
+          <Property Name="pl_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ln_id" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ts_seq_nr" Type="Int32" Nullable="false" />
+          <Property Name="dt_started" Type="DateTime" Precision="3" />
+          <Property Name="dt_ended" Type="DateTime" Precision="3" />
+          <Property Name="us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="lm_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="next_tx" Type="Int32" />
+          <Property Name="prev_tx" Type="Int32" />
+          <Property Name="tx_count" Type="Int32" />
+          <Property Name="next_inc" Type="Int32" />
+          <Property Name="prev_inc" Type="Int32" />
+          <Property Name="inc_count" Type="Int32" />
+          <Property Name="next_bo" Type="Int32" />
+          <Property Name="prev_bo" Type="Int32" />
+          <Property Name="bo_count" Type="Int32" />
+          <Property Name="next_sp" Type="Int32" />
+          <Property Name="prev_sp" Type="Int32" />
+          <Property Name="sp_count" Type="Int32" />
+          <Property Name="next_vat" Type="Int32" />
+          <Property Name="prev_vat" Type="Int32" />
+          <Property Name="vat_count" Type="Int32" />
+          <Property Name="next_avc" Type="Int32" />
+          <Property Name="prev_avc" Type="Int32" />
+          <Property Name="avc_count" Type="Int32" />
+          <Property Name="vgs_count" Type="Int32" />
+          <Property Name="ft_id" Type="Int32" />
+          <Property Name="pg_group" Type="Int32" />
+          <Property Name="loc_value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="cash_value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sun_value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="stats_msg" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="stats_count" Type="Int32" />
+          <Property Name="ops_dt" Type="DateTime" Precision="0" />
+          <Property Name="ops_sh" Type="Int32" />
+          <Property Name="vs_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="rep_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="rd_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="maint_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="req_indic" Type="Int32" />
+        </EntityType>
+        <EntityType Name="StagingTransaction">
+          <Key>
+            <PropertyRef Name="ln_id" />
+            <PropertyRef Name="tx_seq_nr" />
+          </Key>
+          <Property Name="pl_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ln_id" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="dt_concluded" Type="DateTime" Precision="3" />
+          <Property Name="tx_seq_nr" Type="Int32" Nullable="false" />
+          <Property Name="ts_seq_nr" Type="Int32" />
+          <Property Name="us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ent_plz_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="ent_lane_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="dt_started" Type="DateTime" Precision="3" />
+          <Property Name="next_inc" Type="Int32" />
+          <Property Name="prev_inc" Type="Int32" />
+          <Property Name="ft_id" Type="Int32" />
+          <Property Name="pg_group" Type="Int32" />
+          <Property Name="cg_group" Type="Int32" />
+          <Property Name="vg_group" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="mvc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="avc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="svc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="loc_curr" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="loc_value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ten_curr" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ten_value" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="loc_change" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="variance" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="er_id" Type="Int32" />
+          <Property Name="pm_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="card_nr" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="mask_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="bin_nr" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="serv_code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ca_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ct_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="it_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="sec_card_nr" Type="String" MaxLength="76" FixedLength="false" Unicode="false" />
+          <Property Name="lm_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="as_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="reg_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="vouch_nr" Type="Int32" />
+          <Property Name="ac_nr" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="rec_nr" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="tick_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="bp_id" Type="Int32" />
+          <Property Name="fg_id" Type="Int32" />
+          <Property Name="dg_id" Type="Int32" />
+          <Property Name="rd_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="rep_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="maint_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="req_indic" Type="Int32" />
+          <Property Name="iv_prt_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ts_dt_started" Type="DateTime" Precision="3" />
+          <Property Name="iv_nr" Type="Int32" />
+          <Property Name="td_id" Type="Int32" />
+          <Property Name="avc_seq_nr" Type="Int32" />
+          <Property Name="update_us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="card_bank" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="card_ac_nr" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="tg_mfg_id" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
+          <Property Name="tg_post_bal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tg_reader" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="tg_us_cat" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="tg_card_type" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="tg_serv_prov_id" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="tg_issuer" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="tg_tx_seq_nr" Type="Int32" />
+          <Property Name="etc_context_mrk" Type="String" MaxLength="13" FixedLength="false" Unicode="false" />
+          <Property Name="etc_manufac_id" Type="Int32" />
+          <Property Name="etc_beacon_id" Type="Int32" />
+          <Property Name="etc_contract_pv" Type="String" MaxLength="7" FixedLength="false" Unicode="false" />
+          <Property Name="avc_dt_concluded" Type="DateTime" Precision="3" />
+          <Property Name="avc_status" Type="String" MaxLength="51" FixedLength="false" Unicode="false" />
+          <Property Name="anpr_vln" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="anpr_conf" Type="Int32" />
+          <Property Name="lvc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
+          <Property Name="inc_ind" Type="Int32" />
+          <Property Name="id_vl" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="vl_vln" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="anpr_seq_nr" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -340,6 +540,195 @@ warning 6013: The table/view 'TollDataImport.dbo.StagingTransactions' does not h
                 <ScalarProperty Name="avc_in_seq_nr" ColumnName="avc_in_seq_nr" />
                 <ScalarProperty Name="avc_in_type_id" ColumnName="avc_in_type_id" />
                 <ScalarProperty Name="avc_dt_generated" ColumnName="avc_dt_generated" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingETCTransactions">
+            <EntityTypeMapping TypeName="DatabaseSyncModel.StagingETCTransaction">
+              <MappingFragment StoreEntitySet="StagingETCTransactions">
+                <ScalarProperty Name="act_disc" ColumnName="act_disc" />
+                <ScalarProperty Name="loc_tax" ColumnName="loc_tax" />
+                <ScalarProperty Name="id_vl" ColumnName="id_vl" />
+                <ScalarProperty Name="inc_ind" ColumnName="inc_ind" />
+                <ScalarProperty Name="card_nr" ColumnName="card_nr" />
+                <ScalarProperty Name="ac_nr" ColumnName="ac_nr" />
+                <ScalarProperty Name="td_id" ColumnName="td_id" />
+                <ScalarProperty Name="ct_id" ColumnName="ct_id" />
+                <ScalarProperty Name="ca_id" ColumnName="ca_id" />
+                <ScalarProperty Name="avc_dt_concluded" ColumnName="avc_dt_concluded" />
+                <ScalarProperty Name="etc_beacon_id" ColumnName="etc_beacon_id" />
+                <ScalarProperty Name="etc_contract_pv" ColumnName="etc_contract_pv" />
+                <ScalarProperty Name="etc_manufac_id" ColumnName="etc_manufac_id" />
+                <ScalarProperty Name="etc_contect_mrk" ColumnName="etc_contect_mrk" />
+                <ScalarProperty Name="update_us_id" ColumnName="update_us_id" />
+                <ScalarProperty Name="nom_value" ColumnName="nom_value" />
+                <ScalarProperty Name="iv_nr" ColumnName="iv_nr" />
+                <ScalarProperty Name="iv_prt_indic" ColumnName="iv_prt_indic" />
+                <ScalarProperty Name="count_for_disc" ColumnName="count_for_disc" />
+                <ScalarProperty Name="us_id" ColumnName="us_id" />
+                <ScalarProperty Name="ts_dt_started" ColumnName="ts_dt_started" />
+                <ScalarProperty Name="pg_group" ColumnName="pg_group" />
+                <ScalarProperty Name="ft_id" ColumnName="ft_id" />
+                <ScalarProperty Name="disc_value" ColumnName="disc_value" />
+                <ScalarProperty Name="dg_id" ColumnName="dg_id" />
+                <ScalarProperty Name="bp_id" ColumnName="bp_id" />
+                <ScalarProperty Name="fg_id" ColumnName="fg_id" />
+                <ScalarProperty Name="tick_nr" ColumnName="tick_nr" />
+                <ScalarProperty Name="rec_nr" ColumnName="rec_nr" />
+                <ScalarProperty Name="vouch_nr" ColumnName="vouch_nr" />
+                <ScalarProperty Name="vl_vln" ColumnName="vl_vln" />
+                <ScalarProperty Name="reg_nr" ColumnName="reg_nr" />
+                <ScalarProperty Name="sec_card_nr" ColumnName="sec_card_nr" />
+                <ScalarProperty Name="it_id" ColumnName="it_id" />
+                <ScalarProperty Name="er_id" ColumnName="er_id" />
+                <ScalarProperty Name="variance" ColumnName="variance" />
+                <ScalarProperty Name="loc_value" ColumnName="loc_value" />
+                <ScalarProperty Name="loc_curr" ColumnName="loc_curr" />
+                <ScalarProperty Name="svc" ColumnName="svc" />
+                <ScalarProperty Name="lvc" ColumnName="lvc" />
+                <ScalarProperty Name="avc" ColumnName="avc" />
+                <ScalarProperty Name="mvc" ColumnName="mvc" />
+                <ScalarProperty Name="vg_group" ColumnName="vg_group" />
+                <ScalarProperty Name="cg_group" ColumnName="cg_group" />
+                <ScalarProperty Name="dt_started" ColumnName="dt_started" />
+                <ScalarProperty Name="ent_lane_id" ColumnName="ent_lane_id" />
+                <ScalarProperty Name="ent_plz_id" ColumnName="ent_plz_id" />
+                <ScalarProperty Name="ts_seq_nr" ColumnName="ts_seq_nr" />
+                <ScalarProperty Name="ops_sh" ColumnName="ops_sh" />
+                <ScalarProperty Name="ops_dt" ColumnName="ops_dt" />
+                <ScalarProperty Name="tx_seq_nr" ColumnName="tx_seq_nr" />
+                <ScalarProperty Name="dt_concluded" ColumnName="dt_concluded" />
+                <ScalarProperty Name="ln_id" ColumnName="ln_id" />
+                <ScalarProperty Name="pl_id" ColumnName="pl_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingTimeSlices">
+            <EntityTypeMapping TypeName="DatabaseSyncModel.StagingTimeSlice">
+              <MappingFragment StoreEntitySet="StagingTimeSlices">
+                <ScalarProperty Name="req_indic" ColumnName="req_indic" />
+                <ScalarProperty Name="maint_indic" ColumnName="maint_indic" />
+                <ScalarProperty Name="rd_id" ColumnName="rd_id" />
+                <ScalarProperty Name="rep_indic" ColumnName="rep_indic" />
+                <ScalarProperty Name="vs_id" ColumnName="vs_id" />
+                <ScalarProperty Name="ops_sh" ColumnName="ops_sh" />
+                <ScalarProperty Name="ops_dt" ColumnName="ops_dt" />
+                <ScalarProperty Name="stats_count" ColumnName="stats_count" />
+                <ScalarProperty Name="stats_msg" ColumnName="stats_msg" />
+                <ScalarProperty Name="sun_value" ColumnName="sun_value" />
+                <ScalarProperty Name="cash_value" ColumnName="cash_value" />
+                <ScalarProperty Name="loc_value" ColumnName="loc_value" />
+                <ScalarProperty Name="pg_group" ColumnName="pg_group" />
+                <ScalarProperty Name="ft_id" ColumnName="ft_id" />
+                <ScalarProperty Name="vgs_count" ColumnName="vgs_count" />
+                <ScalarProperty Name="avc_count" ColumnName="avc_count" />
+                <ScalarProperty Name="prev_avc" ColumnName="prev_avc" />
+                <ScalarProperty Name="next_avc" ColumnName="next_avc" />
+                <ScalarProperty Name="vat_count" ColumnName="vat_count" />
+                <ScalarProperty Name="prev_vat" ColumnName="prev_vat" />
+                <ScalarProperty Name="next_vat" ColumnName="next_vat" />
+                <ScalarProperty Name="sp_count" ColumnName="sp_count" />
+                <ScalarProperty Name="prev_sp" ColumnName="prev_sp" />
+                <ScalarProperty Name="next_sp" ColumnName="next_sp" />
+                <ScalarProperty Name="bo_count" ColumnName="bo_count" />
+                <ScalarProperty Name="prev_bo" ColumnName="prev_bo" />
+                <ScalarProperty Name="next_bo" ColumnName="next_bo" />
+                <ScalarProperty Name="inc_count" ColumnName="inc_count" />
+                <ScalarProperty Name="prev_inc" ColumnName="prev_inc" />
+                <ScalarProperty Name="next_inc" ColumnName="next_inc" />
+                <ScalarProperty Name="tx_count" ColumnName="tx_count" />
+                <ScalarProperty Name="prev_tx" ColumnName="prev_tx" />
+                <ScalarProperty Name="next_tx" ColumnName="next_tx" />
+                <ScalarProperty Name="lm_id" ColumnName="lm_id" />
+                <ScalarProperty Name="us_id" ColumnName="us_id" />
+                <ScalarProperty Name="dt_ended" ColumnName="dt_ended" />
+                <ScalarProperty Name="dt_started" ColumnName="dt_started" />
+                <ScalarProperty Name="ts_seq_nr" ColumnName="ts_seq_nr" />
+                <ScalarProperty Name="ln_id" ColumnName="ln_id" />
+                <ScalarProperty Name="pl_id" ColumnName="pl_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingTransactions">
+            <EntityTypeMapping TypeName="DatabaseSyncModel.StagingTransaction">
+              <MappingFragment StoreEntitySet="StagingTransactions">
+                <ScalarProperty Name="anpr_seq_nr" ColumnName="anpr_seq_nr" />
+                <ScalarProperty Name="vl_vln" ColumnName="vl_vln" />
+                <ScalarProperty Name="id_vl" ColumnName="id_vl" />
+                <ScalarProperty Name="inc_ind" ColumnName="inc_ind" />
+                <ScalarProperty Name="lvc" ColumnName="lvc" />
+                <ScalarProperty Name="anpr_conf" ColumnName="anpr_conf" />
+                <ScalarProperty Name="anpr_vln" ColumnName="anpr_vln" />
+                <ScalarProperty Name="avc_status" ColumnName="avc_status" />
+                <ScalarProperty Name="avc_dt_concluded" ColumnName="avc_dt_concluded" />
+                <ScalarProperty Name="etc_contract_pv" ColumnName="etc_contract_pv" />
+                <ScalarProperty Name="etc_beacon_id" ColumnName="etc_beacon_id" />
+                <ScalarProperty Name="etc_manufac_id" ColumnName="etc_manufac_id" />
+                <ScalarProperty Name="etc_context_mrk" ColumnName="etc_context_mrk" />
+                <ScalarProperty Name="tg_tx_seq_nr" ColumnName="tg_tx_seq_nr" />
+                <ScalarProperty Name="tg_issuer" ColumnName="tg_issuer" />
+                <ScalarProperty Name="tg_serv_prov_id" ColumnName="tg_serv_prov_id" />
+                <ScalarProperty Name="tg_card_type" ColumnName="tg_card_type" />
+                <ScalarProperty Name="tg_us_cat" ColumnName="tg_us_cat" />
+                <ScalarProperty Name="tg_reader" ColumnName="tg_reader" />
+                <ScalarProperty Name="tg_post_bal" ColumnName="tg_post_bal" />
+                <ScalarProperty Name="tg_mfg_id" ColumnName="tg_mfg_id" />
+                <ScalarProperty Name="card_ac_nr" ColumnName="card_ac_nr" />
+                <ScalarProperty Name="card_bank" ColumnName="card_bank" />
+                <ScalarProperty Name="update_us_id" ColumnName="update_us_id" />
+                <ScalarProperty Name="avc_seq_nr" ColumnName="avc_seq_nr" />
+                <ScalarProperty Name="td_id" ColumnName="td_id" />
+                <ScalarProperty Name="iv_nr" ColumnName="iv_nr" />
+                <ScalarProperty Name="ts_dt_started" ColumnName="ts_dt_started" />
+                <ScalarProperty Name="iv_prt_indic" ColumnName="iv_prt_indic" />
+                <ScalarProperty Name="req_indic" ColumnName="req_indic" />
+                <ScalarProperty Name="maint_indic" ColumnName="maint_indic" />
+                <ScalarProperty Name="rep_indic" ColumnName="rep_indic" />
+                <ScalarProperty Name="rd_id" ColumnName="rd_id" />
+                <ScalarProperty Name="dg_id" ColumnName="dg_id" />
+                <ScalarProperty Name="fg_id" ColumnName="fg_id" />
+                <ScalarProperty Name="bp_id" ColumnName="bp_id" />
+                <ScalarProperty Name="tick_nr" ColumnName="tick_nr" />
+                <ScalarProperty Name="rec_nr" ColumnName="rec_nr" />
+                <ScalarProperty Name="ac_nr" ColumnName="ac_nr" />
+                <ScalarProperty Name="vouch_nr" ColumnName="vouch_nr" />
+                <ScalarProperty Name="reg_nr" ColumnName="reg_nr" />
+                <ScalarProperty Name="as_id" ColumnName="as_id" />
+                <ScalarProperty Name="lm_id" ColumnName="lm_id" />
+                <ScalarProperty Name="sec_card_nr" ColumnName="sec_card_nr" />
+                <ScalarProperty Name="it_id" ColumnName="it_id" />
+                <ScalarProperty Name="ct_id" ColumnName="ct_id" />
+                <ScalarProperty Name="ca_id" ColumnName="ca_id" />
+                <ScalarProperty Name="serv_code" ColumnName="serv_code" />
+                <ScalarProperty Name="bin_nr" ColumnName="bin_nr" />
+                <ScalarProperty Name="mask_nr" ColumnName="mask_nr" />
+                <ScalarProperty Name="card_nr" ColumnName="card_nr" />
+                <ScalarProperty Name="pm_id" ColumnName="pm_id" />
+                <ScalarProperty Name="er_id" ColumnName="er_id" />
+                <ScalarProperty Name="variance" ColumnName="variance" />
+                <ScalarProperty Name="loc_change" ColumnName="loc_change" />
+                <ScalarProperty Name="ten_value" ColumnName="ten_value" />
+                <ScalarProperty Name="ten_curr" ColumnName="ten_curr" />
+                <ScalarProperty Name="loc_value" ColumnName="loc_value" />
+                <ScalarProperty Name="loc_curr" ColumnName="loc_curr" />
+                <ScalarProperty Name="svc" ColumnName="svc" />
+                <ScalarProperty Name="avc" ColumnName="avc" />
+                <ScalarProperty Name="mvc" ColumnName="mvc" />
+                <ScalarProperty Name="vg_group" ColumnName="vg_group" />
+                <ScalarProperty Name="cg_group" ColumnName="cg_group" />
+                <ScalarProperty Name="pg_group" ColumnName="pg_group" />
+                <ScalarProperty Name="ft_id" ColumnName="ft_id" />
+                <ScalarProperty Name="prev_inc" ColumnName="prev_inc" />
+                <ScalarProperty Name="next_inc" ColumnName="next_inc" />
+                <ScalarProperty Name="dt_started" ColumnName="dt_started" />
+                <ScalarProperty Name="ent_lane_id" ColumnName="ent_lane_id" />
+                <ScalarProperty Name="ent_plz_id" ColumnName="ent_plz_id" />
+                <ScalarProperty Name="us_id" ColumnName="us_id" />
+                <ScalarProperty Name="ts_seq_nr" ColumnName="ts_seq_nr" />
+                <ScalarProperty Name="tx_seq_nr" ColumnName="tx_seq_nr" />
+                <ScalarProperty Name="dt_concluded" ColumnName="dt_concluded" />
+                <ScalarProperty Name="ln_id" ColumnName="ln_id" />
+                <ScalarProperty Name="pl_id" ColumnName="pl_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

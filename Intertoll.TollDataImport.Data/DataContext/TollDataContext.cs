@@ -53,12 +53,6 @@ namespace Intertoll.DataImport.Data.DataContext
             get { return sessions ?? (sessions = new GenericRepository<Session>(context)); }
         }
 
-        private IGenericRepository<StagingIncident> stagingIncidents;
-        public IGenericRepository<StagingIncident> StagingIncidents
-        {
-            get { return stagingIncidents ?? (stagingIncidents = new GenericRepository<StagingIncident>(context)); }
-        }
-
         #endregion
 
         #region ITollDataProvider

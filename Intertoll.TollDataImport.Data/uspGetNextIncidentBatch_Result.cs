@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Intertoll.DataImport.Data._40
+namespace Intertoll.DataImport.Data
 {
     using System;
     

@@ -1,8 +1,4 @@
 ﻿using Intertoll.EFDbContext.GenericWrapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Intertoll.DataImport.Database.Sync.Data.DataContext
 {
@@ -18,8 +14,26 @@ namespace Intertoll.DataImport.Database.Sync.Data.DataContext
         public IGenericRepository<StagingIncident> ImportedIncidents
         {
             get { return importedIncidents ?? (importedIncidents = new GenericRepository<StagingIncident>(context)); }
-        }       
+        }
 
-        #endregion        
+        private IGenericRepository<StagingTransaction> importedTransactions;
+        public IGenericRepository<StagingTransaction> ImportedTransactions
+        {
+            get { return importedTransactions ?? (importedTransactions = new GenericRepository<StagingTransaction>(context)); }
+        }
+
+        private IGenericRepository<StagingETCTransaction> importedETCTransactions;
+        public IGenericRepository<StagingETCTransaction> ImportedETCTransactions
+        {
+            get { return importedETCTransactions ?? (importedETCTransactions = new GenericRepository<StagingETCTransaction>(context)); }
+        }
+
+        private IGenericRepository<StagingTimeSlice> importedTimeslices;
+        public IGenericRepository<StagingTimeSlice> ImportedTimeslices
+        {
+            get { return importedTimeslices ?? (importedTimeslices = new GenericRepository<StagingTimeSlice>(context)); }
+        }
+
+        #endregion
     }
 }

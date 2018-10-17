@@ -87,52 +87,6 @@
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="IsSent" Type="bit" Nullable="false" />
         </EntityType>
-        <EntityType Name="StagingIncidents">
-          <Key>
-            <PropertyRef Name="ln_id" />
-            <PropertyRef Name="in_seq_nr" />
-          </Key>
-          <Property Name="pl_id" Type="varchar" MaxLength="9" />
-          <Property Name="ln_id" Type="varchar" MaxLength="9" Nullable="false" />
-          <Property Name="dt_generated" Type="datetime" />
-          <Property Name="in_seq_nr" Type="int" Nullable="false" />
-          <Property Name="ir_type" Type="varchar" MaxLength="3" />
-          <Property Name="ir_subtype" Type="varchar" MaxLength="3" />
-          <Property Name="tx_seq_nr" Type="int" />
-          <Property Name="ts_seq_nr" Type="int" />
-          <Property Name="us_id" Type="varchar" MaxLength="31" />
-          <Property Name="ft_id" Type="int" />
-          <Property Name="pg_group" Type="int" />
-          <Property Name="cg_group" Type="int" />
-          <Property Name="vg_group" Type="varchar" MaxLength="9" />
-          <Property Name="mvc" Type="varchar" MaxLength="9" />
-          <Property Name="avc" Type="varchar" MaxLength="9" />
-          <Property Name="svc" Type="varchar" MaxLength="9" />
-          <Property Name="er_id" Type="int" />
-          <Property Name="pm_id" Type="varchar" MaxLength="2" />
-          <Property Name="card_nr" Type="varchar" MaxLength="176" />
-          <Property Name="mask_nr" Type="varchar" MaxLength="21" />
-          <Property Name="ca_id" Type="varchar" MaxLength="2" />
-          <Property Name="ct_id" Type="varchar" MaxLength="2" />
-          <Property Name="tx_indic" Type="varchar" MaxLength="2" />
-          <Property Name="lm_id" Type="varchar" MaxLength="2" />
-          <Property Name="as_id" Type="varchar" MaxLength="2" />
-          <Property Name="rep_indic" Type="varchar" MaxLength="2" />
-          <Property Name="rd_id" Type="varchar" MaxLength="2" />
-          <Property Name="maint_indic" Type="varchar" MaxLength="2" />
-          <Property Name="req_indic" Type="int" />
-          <Property Name="ts_dt_started" Type="datetime" />
-          <Property Name="in_amt" Type="varchar" MaxLength="50" />
-          <Property Name="in_data" Type="varchar" MaxLength="256" />
-          <Property Name="tg_bl_id" Type="varchar" MaxLength="3" />
-          <Property Name="tg_mfg_id" Type="varchar" MaxLength="11" />
-          <Property Name="tg_card_type" Type="varchar" MaxLength="2" />
-          <Property Name="tg_reader" Type="varchar" MaxLength="9" />
-          <Property Name="tg_tx_seq_nr" Type="int" />
-          <Property Name="avc_in_seq_nr" Type="int" />
-          <Property Name="avc_in_type_id" Type="int" />
-          <Property Name="avc_dt_generated" Type="datetime" />
-        </EntityType>
         <EntityType Name="Transactions">
           <Key>
             <PropertyRef Name="TransactionID" />
@@ -224,7 +178,6 @@
           <EntitySet Name="Incidents" EntityType="Self.Incidents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StaffLogins" EntityType="Self.StaffLogins" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="StagingIncidents" EntityType="Self.StagingIncidents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Sessions_StaffLogins" Association="Self.FK_Sessions_StaffLogins">
             <End Role="StaffLogins" EntitySet="StaffLogins" />
@@ -277,7 +230,6 @@
           </FunctionImport>
           <FunctionImport Name="uspGetNextTransactionBatch" ReturnType="Collection(DataImportModel.uspGetNextTransactionBatch_Result)" />
           <EntitySet Name="Transactions" EntityType="DataImportModel.Transaction" />
-          <EntitySet Name="StagingIncidents" EntityType="DataImportModel.StagingIncident" />
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -635,52 +587,6 @@
           <Property Name="VehichleState" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsSent" Type="Boolean" Nullable="false" />
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
-        <EntityType Name="StagingIncident">
-          <Key>
-            <PropertyRef Name="ln_id" />
-            <PropertyRef Name="in_seq_nr" />
-          </Key>
-          <Property Name="pl_id" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="ln_id" Type="String" Nullable="false" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="dt_generated" Type="DateTime" Precision="3" />
-          <Property Name="in_seq_nr" Type="Int32" Nullable="false" />
-          <Property Name="ir_type" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="ir_subtype" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="tx_seq_nr" Type="Int32" />
-          <Property Name="ts_seq_nr" Type="Int32" />
-          <Property Name="us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
-          <Property Name="ft_id" Type="Int32" />
-          <Property Name="pg_group" Type="Int32" />
-          <Property Name="cg_group" Type="Int32" />
-          <Property Name="vg_group" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="mvc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="avc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="svc" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="er_id" Type="Int32" />
-          <Property Name="pm_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="card_nr" Type="String" MaxLength="176" FixedLength="false" Unicode="false" />
-          <Property Name="mask_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
-          <Property Name="ca_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="ct_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="tx_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="lm_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="as_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="rep_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="rd_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="maint_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="req_indic" Type="Int32" />
-          <Property Name="ts_dt_started" Type="DateTime" Precision="3" />
-          <Property Name="in_amt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="in_data" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-          <Property Name="tg_bl_id" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
-          <Property Name="tg_mfg_id" Type="String" MaxLength="11" FixedLength="false" Unicode="false" />
-          <Property Name="tg_card_type" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
-          <Property Name="tg_reader" Type="String" MaxLength="9" FixedLength="false" Unicode="false" />
-          <Property Name="tg_tx_seq_nr" Type="Int32" />
-          <Property Name="avc_in_seq_nr" Type="Int32" />
-          <Property Name="avc_in_type_id" Type="Int32" />
-          <Property Name="avc_dt_generated" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1048,52 +954,6 @@
                 <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
                 <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
                 <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StagingIncidents">
-            <EntityTypeMapping TypeName="DataImportModel.StagingIncident">
-              <MappingFragment StoreEntitySet="StagingIncidents">
-                <ScalarProperty Name="avc_dt_generated" ColumnName="avc_dt_generated" />
-                <ScalarProperty Name="avc_in_type_id" ColumnName="avc_in_type_id" />
-                <ScalarProperty Name="avc_in_seq_nr" ColumnName="avc_in_seq_nr" />
-                <ScalarProperty Name="tg_tx_seq_nr" ColumnName="tg_tx_seq_nr" />
-                <ScalarProperty Name="tg_reader" ColumnName="tg_reader" />
-                <ScalarProperty Name="tg_card_type" ColumnName="tg_card_type" />
-                <ScalarProperty Name="tg_mfg_id" ColumnName="tg_mfg_id" />
-                <ScalarProperty Name="tg_bl_id" ColumnName="tg_bl_id" />
-                <ScalarProperty Name="in_data" ColumnName="in_data" />
-                <ScalarProperty Name="in_amt" ColumnName="in_amt" />
-                <ScalarProperty Name="ts_dt_started" ColumnName="ts_dt_started" />
-                <ScalarProperty Name="req_indic" ColumnName="req_indic" />
-                <ScalarProperty Name="maint_indic" ColumnName="maint_indic" />
-                <ScalarProperty Name="rd_id" ColumnName="rd_id" />
-                <ScalarProperty Name="rep_indic" ColumnName="rep_indic" />
-                <ScalarProperty Name="as_id" ColumnName="as_id" />
-                <ScalarProperty Name="lm_id" ColumnName="lm_id" />
-                <ScalarProperty Name="tx_indic" ColumnName="tx_indic" />
-                <ScalarProperty Name="ct_id" ColumnName="ct_id" />
-                <ScalarProperty Name="ca_id" ColumnName="ca_id" />
-                <ScalarProperty Name="mask_nr" ColumnName="mask_nr" />
-                <ScalarProperty Name="card_nr" ColumnName="card_nr" />
-                <ScalarProperty Name="pm_id" ColumnName="pm_id" />
-                <ScalarProperty Name="er_id" ColumnName="er_id" />
-                <ScalarProperty Name="svc" ColumnName="svc" />
-                <ScalarProperty Name="avc" ColumnName="avc" />
-                <ScalarProperty Name="mvc" ColumnName="mvc" />
-                <ScalarProperty Name="vg_group" ColumnName="vg_group" />
-                <ScalarProperty Name="cg_group" ColumnName="cg_group" />
-                <ScalarProperty Name="pg_group" ColumnName="pg_group" />
-                <ScalarProperty Name="ft_id" ColumnName="ft_id" />
-                <ScalarProperty Name="us_id" ColumnName="us_id" />
-                <ScalarProperty Name="ts_seq_nr" ColumnName="ts_seq_nr" />
-                <ScalarProperty Name="tx_seq_nr" ColumnName="tx_seq_nr" />
-                <ScalarProperty Name="ir_subtype" ColumnName="ir_subtype" />
-                <ScalarProperty Name="ir_type" ColumnName="ir_type" />
-                <ScalarProperty Name="in_seq_nr" ColumnName="in_seq_nr" />
-                <ScalarProperty Name="dt_generated" ColumnName="dt_generated" />
-                <ScalarProperty Name="ln_id" ColumnName="ln_id" />
-                <ScalarProperty Name="pl_id" ColumnName="pl_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

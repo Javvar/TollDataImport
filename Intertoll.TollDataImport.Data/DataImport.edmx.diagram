@@ -11,7 +11,6 @@
         <AssociationConnector Association="DataImportModel.FK_Sessions_StaffLogins" />
         <EntityTypeShape EntityType="DataImportModel.Audit" Width="1.5" PointX="7.375" PointY="6.75" />
         <EntityTypeShape EntityType="DataImportModel.Transaction" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="DataImportModel.StagingIncident" Width="1.5" PointX="11.875" PointY="1" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
