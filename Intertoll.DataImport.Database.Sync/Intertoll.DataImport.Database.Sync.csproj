@@ -47,6 +47,15 @@
     <Reference Include="Intertoll.EFDbContext.GenericWrapper">
       <HintPath>..\..\Shared Libraries\Generic DBContext\Intertoll.EFDbContext.GenericWrapper.netfx4\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
     </Reference>
+    <Reference Include="Intertoll.NLogger">
+      <HintPath>..\..\Shared Libraries\Logging\build\bin\Release\net40\Intertoll.NLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\Shared Libraries\Logging\build\bin\Release\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended">
+      <HintPath>..\..\Shared Libraries\Logging\build\bin\Release\net40\NLog.Extended.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration.Install" />

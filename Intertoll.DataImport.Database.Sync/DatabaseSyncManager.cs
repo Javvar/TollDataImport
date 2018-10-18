@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using Intertoll.NLogger;
 
 namespace Intertoll.DataImport.Database.Sync
 {
@@ -17,8 +18,9 @@ namespace Intertoll.DataImport.Database.Sync
         public static void StartSynchingProcess()
         {
             run = true;
+
             StartTransactionSyncProcess();
-            StartIncidentSyncProcess();            
+            StartIncidentSyncProcess();
             StartETCTransactionSyncProcess();
             StartTimesliceSyncProcess();
         }
@@ -31,149 +33,163 @@ namespace Intertoll.DataImport.Database.Sync
         #region Sync
 
         private static void StartTransactionSyncProcess()
-        {
+        {          
             Task.Factory.StartNew(() =>
             {
                 while (run)
                 {
-                    try
+                    TransactionSyncProcess();
+                    Thread.Sleep(1000 * AppSettings.TransactionsIntervalInSeconds);
+                }
+            });            
+        }
+
+        private static void TransactionSyncProcess()
+        {
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
+            {
+                using (IfxConnection connection = EstablishConnection())
+                {
                     {
-                        using (IfxConnection connection = EstablishConnection())
+                        using (var dataContext = new DatabaseSyncDataContext())
                         {
-                            using (var dataContext = new DatabaseSyncDataContext())
+                            IfxCommand command = connection.CreateCommand();
+                            command.CommandText = $"SELECT FIRST {AppSettings.TransactionSelectBatchSize} * FROM p_trans ";
+
+                            var lastTransaction = dataContext.ImportedTransactions.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_concluded));
+
+                            if (lastTransaction != null)
                             {
-                                IfxCommand command = connection.CreateCommand();
-                                command.CommandText = "SELECT FIRST 100 * FROM p_trans ";
-
-                                var lastTransaction = dataContext.ImportedTransactions.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_concluded));
-
-                                if (lastTransaction != null)
-                                {
-                                    command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
-                                                                           lastTransaction.dt_concluded?.ToString("yyyy-MM-dd HH:mm:ss"));
-                                }
-
-                                command.CommandText = command.CommandText + " ORDER BY dt_concluded";
-
-                                IfxDataReader dataReader = command.ExecuteReader();
-
-                                var processedTrans = new List<string>();
-
-                                while (dataReader.Read())
-                                {
-                                    var trans = new StagingTransaction();
-
-                                    try
-                                    {
-                                        int i = 0;
-
-                                        trans.pl_id = dataReader[i].ToString().Trim();
-                                        trans.ln_id = dataReader[++i].ToString().Trim();
-                                        trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.tx_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt) ? outInt :
-                                                                        throw new InvalidDataException("Invalid transaction sequence number.");
-
-                                        trans.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.us_id = dataReader[++i].ToString().Trim();
-                                        trans.ent_plz_id = dataReader[++i].ToString().Trim();
-                                        trans.ent_lane_id = dataReader[++i].ToString().Trim();
-                                        trans.dt_started = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.next_inc = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.prev_inc = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.vg_group = dataReader[++i].ToString().Trim();
-                                        trans.mvc = dataReader[++i].ToString().Trim();
-                                        trans.avc = dataReader[++i].ToString().Trim();
-                                        trans.svc = dataReader[++i].ToString().Trim();
-                                        trans.loc_curr = dataReader[++i].ToString().Trim();
-                                        trans.loc_value = ExtractBCDValue(dataReader, ++i);
-                                        trans.ten_curr = dataReader[++i].ToString().Trim();
-                                        trans.ten_value = ExtractBCDValue(dataReader, ++i);
-                                        trans.loc_change = ExtractBCDValue(dataReader, ++i);
-                                        trans.variance = ExtractBCDValue(dataReader, ++i);
-                                        trans.er_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.pm_id = dataReader[++i].ToString().Trim();
-                                        trans.card_nr = dataReader[++i].ToString().Trim();
-                                        trans.mask_nr = dataReader[++i].ToString().Trim();
-                                        trans.bin_nr = dataReader[++i].ToString().Trim();
-                                        trans.serv_code = dataReader[++i].ToString().Trim();
-                                        trans.ca_id = dataReader[++i].ToString().Trim();
-                                        trans.ct_id = dataReader[++i].ToString().Trim();
-                                        trans.it_id = dataReader[++i].ToString().Trim();
-                                        trans.sec_card_nr = dataReader[++i].ToString().Trim();
-                                        trans.lm_id = dataReader[++i].ToString().Trim();
-                                        trans.as_id = dataReader[++i].ToString().Trim();
-                                        trans.reg_nr = dataReader[++i].ToString().Trim();
-                                        trans.vouch_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.ac_nr = dataReader[++i].ToString().Trim();
-                                        trans.rec_nr = dataReader[++i].ToString().Trim();
-                                        trans.tick_nr = dataReader[++i].ToString().Trim();
-                                        trans.bp_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.fg_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.dg_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.rd_id = dataReader[++i].ToString().Trim();
-                                        trans.rep_indic = dataReader[++i].ToString().Trim();
-                                        trans.maint_indic = dataReader[++i].ToString().Trim();
-                                        trans.req_indic = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.iv_prt_indic = dataReader[++i].ToString().Trim();
-                                        trans.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.iv_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.td_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.avc_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.update_us_id = dataReader[++i].ToString().Trim();
-                                        trans.card_bank = dataReader[++i].ToString().Trim();
-                                        trans.card_ac_nr = dataReader[++i].ToString().Trim();
-                                        trans.tg_mfg_id = dataReader[++i].ToString().Trim();
-                                        trans.tg_post_bal = ExtractBCDValue(dataReader, ++i);
-                                        trans.tg_reader = dataReader[++i].ToString().Trim();
-                                        trans.tg_us_cat = dataReader[++i].ToString().Trim();
-                                        trans.tg_card_type = dataReader[++i].ToString().Trim();
-                                        trans.tg_serv_prov_id = dataReader[++i].ToString().Trim();
-                                        trans.tg_issuer = dataReader[++i].ToString().Trim();
-                                        trans.tg_tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.etc_context_mrk = dataReader[++i].ToString().Trim();
-                                        trans.etc_manufac_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.etc_beacon_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.etc_contract_pv = dataReader[++i].ToString().Trim();
-                                        trans.avc_dt_concluded = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.avc_status = dataReader[++i].ToString().Trim();
-                                        trans.anpr_vln = dataReader[++i].ToString().Trim();
-                                        trans.anpr_conf = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.lvc = dataReader[++i].ToString().Trim();
-                                        trans.inc_ind = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.id_vl = dataReader[++i].ToString().Trim();
-                                        trans.vl_vln = dataReader[++i].ToString().Trim();
-                                        trans.anpr_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-
-                                        if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr))
-                                        {
-                                            if (/*todo: setting to toggle*/ !dataContext.ImportedTransactions.Any(x => x.ln_id == trans.ln_id && x.tx_seq_nr == trans.tx_seq_nr))
-                                                dataContext.ImportedTransactions.Insert(trans);
-                                        }
-
-                                        processedTrans.Add(trans.ln_id + trans.tx_seq_nr);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        //todo: log
-                                    }
-                                }
-
-                                dataContext.Save();
-                                dataReader.Close();
+                                command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                       lastTransaction.dt_concluded?.ToString("yyyy-MM-dd HH:mm:ss"));
                             }
+
+                            command.CommandText = command.CommandText + " ORDER BY dt_concluded";
+
+                            IfxDataReader dataReader = command.ExecuteReader();
+
+                            var processedTrans = new List<string>();
+
+                            while (dataReader.Read())
+                            {
+                                var trans = new StagingTransaction();
+
+                                try
+                                {
+                                    int i = 0;
+
+                                    trans.pl_id = dataReader[i].ToString().Trim();
+                                    trans.ln_id = dataReader[++i].ToString().Trim();
+                                    trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]);
+                                    trans.tx_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt) ? outInt :
+                                                                    throw new InvalidDataException("Invalid transaction sequence number.");
+
+                                    trans.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.us_id = dataReader[++i].ToString().Trim();
+                                    trans.ent_plz_id = dataReader[++i].ToString().Trim();
+                                    trans.ent_lane_id = dataReader[++i].ToString().Trim();
+                                    trans.dt_started = ExtractDatetimeValue(dataReader[++i]);
+                                    trans.next_inc = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.prev_inc = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.vg_group = dataReader[++i].ToString().Trim();
+                                    trans.mvc = dataReader[++i].ToString().Trim();
+                                    trans.avc = dataReader[++i].ToString().Trim();
+                                    trans.svc = dataReader[++i].ToString().Trim();
+                                    trans.loc_curr = dataReader[++i].ToString().Trim();
+                                    trans.loc_value = ExtractBCDValue(dataReader, ++i);
+                                    trans.ten_curr = dataReader[++i].ToString().Trim();
+                                    trans.ten_value = ExtractBCDValue(dataReader, ++i);
+                                    trans.loc_change = ExtractBCDValue(dataReader, ++i);
+                                    trans.variance = ExtractBCDValue(dataReader, ++i);
+                                    trans.er_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.pm_id = dataReader[++i].ToString().Trim();
+                                    trans.card_nr = dataReader[++i].ToString().Trim();
+                                    trans.mask_nr = dataReader[++i].ToString().Trim();
+                                    trans.bin_nr = dataReader[++i].ToString().Trim();
+                                    trans.serv_code = dataReader[++i].ToString().Trim();
+                                    trans.ca_id = dataReader[++i].ToString().Trim();
+                                    trans.ct_id = dataReader[++i].ToString().Trim();
+                                    trans.it_id = dataReader[++i].ToString().Trim();
+                                    trans.sec_card_nr = dataReader[++i].ToString().Trim();
+                                    trans.lm_id = dataReader[++i].ToString().Trim();
+                                    trans.as_id = dataReader[++i].ToString().Trim();
+                                    trans.reg_nr = dataReader[++i].ToString().Trim();
+                                    trans.vouch_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.ac_nr = dataReader[++i].ToString().Trim();
+                                    trans.rec_nr = dataReader[++i].ToString().Trim();
+                                    trans.tick_nr = dataReader[++i].ToString().Trim();
+                                    trans.bp_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.fg_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.dg_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.rd_id = dataReader[++i].ToString().Trim();
+                                    trans.rep_indic = dataReader[++i].ToString().Trim();
+                                    trans.maint_indic = dataReader[++i].ToString().Trim();
+                                    trans.req_indic = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.iv_prt_indic = dataReader[++i].ToString().Trim();
+                                    trans.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
+                                    trans.iv_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.td_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.avc_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.update_us_id = dataReader[++i].ToString().Trim();
+                                    trans.card_bank = dataReader[++i].ToString().Trim();
+                                    trans.card_ac_nr = dataReader[++i].ToString().Trim();
+                                    trans.tg_mfg_id = dataReader[++i].ToString().Trim();
+                                    trans.tg_post_bal = ExtractBCDValue(dataReader, ++i);
+                                    trans.tg_reader = dataReader[++i].ToString().Trim();
+                                    trans.tg_us_cat = dataReader[++i].ToString().Trim();
+                                    trans.tg_card_type = dataReader[++i].ToString().Trim();
+                                    trans.tg_serv_prov_id = dataReader[++i].ToString().Trim();
+                                    trans.tg_issuer = dataReader[++i].ToString().Trim();
+                                    trans.tg_tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.etc_context_mrk = dataReader[++i].ToString().Trim();
+                                    trans.etc_manufac_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.etc_beacon_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.etc_contract_pv = dataReader[++i].ToString().Trim();
+                                    trans.avc_dt_concluded = ExtractDatetimeValue(dataReader[++i]);
+                                    trans.avc_status = dataReader[++i].ToString().Trim();
+                                    trans.anpr_vln = dataReader[++i].ToString().Trim();
+                                    trans.anpr_conf = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.lvc = dataReader[++i].ToString().Trim();
+                                    trans.inc_ind = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.id_vl = dataReader[++i].ToString().Trim();
+                                    trans.vl_vln = dataReader[++i].ToString().Trim();
+                                    trans.anpr_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+
+                                    if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr))
+                                    {
+                                        if ((AppSettings.CheckDuplicatesOnExistingData &&
+                                             !dataContext.ImportedTransactions.Any(x => x.ln_id == trans.ln_id && x.tx_seq_nr == trans.tx_seq_nr)) ||
+                                             !AppSettings.CheckDuplicatesOnExistingData)
+                                        {
+                                            dataContext.ImportedTransactions.Insert(trans);
+                                        }
+                                    }
+
+                                    processedTrans.Add(trans.ln_id + trans.tx_seq_nr);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Log.LogException(ex);
+                                }
+                            }
+
+                            dataContext.Save();
+                            dataReader.Close();
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        //todo: log
-                    }
-
-                    Thread.Sleep(3000);
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
         private static void StartIncidentSyncProcess()
@@ -182,109 +198,121 @@ namespace Intertoll.DataImport.Database.Sync
             {
                 while (run)
                 {
-                    try
+                    IncidentSyncProcess();
+                    Thread.Sleep(1000 * AppSettings.IncidentsIntervalInSeconds);
+                }
+            });            
+        }
+
+        private static void IncidentSyncProcess()
+        {
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
+            {
+                using (IfxConnection connection = EstablishConnection())
+                {
+                    using (var dataContext = new DatabaseSyncDataContext())
                     {
-                        using (IfxConnection connection = EstablishConnection())
+                        IfxCommand command = connection.CreateCommand();
+                        command.CommandText = $"SELECT FIRST {AppSettings.IncidentSelectBatchSize} * FROM p_inc ";
+
+                        var lastIncident = dataContext.ImportedIncidents.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_generated));
+
+                        if (lastIncident != null)
                         {
-                            using (var dataContext = new DatabaseSyncDataContext())
+                            command.CommandText += string.Format("WHERE dt_generated > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   lastIncident.dt_generated?.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+
+                        command.CommandText = command.CommandText + "ORDER BY dt_generated";
+
+                        IfxDataReader dataReader = command.ExecuteReader();
+
+                        var processedIncs = new List<string>();
+
+                        while (dataReader.Read())
+                        {
+                            var inc = new StagingIncident();
+
+                            try
                             {
-                                IfxCommand command = connection.CreateCommand();
-                                command.CommandText = "SELECT FIRST 100 * FROM p_inc ";
+                                int i = 0;
+                                inc.pl_id = dataReader[i].ToString().Trim();
+                                inc.ln_id = dataReader[++i].ToString().Trim();
+                                inc.dt_generated = ExtractDatetimeValue(dataReader[++i]);
 
-                                var lastIncident = dataContext.ImportedIncidents.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_generated));
+                                inc.in_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt) ? outInt :
+                                                                throw new InvalidDataException("Invalid incident sequence number.");
 
-                                if (lastIncident != null)
+                                inc.ir_type = dataReader[++i].ToString().Trim();
+                                inc.ir_subtype = dataReader[++i].ToString().Trim();
+                                inc.tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.us_id = dataReader[++i].ToString().Trim();
+                                inc.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.vg_group = dataReader[++i].ToString().Trim();
+                                inc.mvc = dataReader[++i].ToString().Trim();
+                                inc.avc = dataReader[++i].ToString().Trim();
+                                inc.svc = dataReader[++i].ToString().Trim();
+                                inc.er_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.pm_id = dataReader[++i].ToString().Trim();
+                                inc.card_nr = dataReader[++i].ToString().Trim();
+                                inc.mask_nr = dataReader[++i].ToString().Trim();
+                                inc.ca_id = dataReader[++i].ToString().Trim();
+                                inc.ct_id = dataReader[++i].ToString().Trim();
+                                inc.tx_indic = dataReader[++i].ToString().Trim();
+                                inc.lm_id = dataReader[++i].ToString().Trim();
+                                inc.as_id = dataReader[++i].ToString().Trim();
+                                inc.rep_indic = dataReader[++i].ToString().Trim();
+                                inc.rd_id = dataReader[++i].ToString().Trim();
+                                inc.maint_indic = dataReader[++i].ToString().Trim();
+                                inc.req_indic = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
+                                inc.in_amt = ExtractBCDValue(dataReader, ++i);
+                                inc.in_data = dataReader[++i].ToString().Trim();
+                                inc.tg_bl_id = dataReader[++i].ToString().Trim();
+                                inc.tg_mfg_id = dataReader[++i].ToString().Trim();
+                                inc.tg_card_type = dataReader[++i].ToString().Trim();
+                                inc.tg_reader = dataReader[++i].ToString().Trim();
+                                inc.tg_tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.avc_in_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.avc_in_type_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.avc_dt_generated = ExtractDatetimeValue(dataReader[++i]);
+
+                                if (!processedIncs.Any(x => x == inc.ln_id + inc.in_seq_nr))
                                 {
-                                    command.CommandText += string.Format("WHERE dt_generated > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
-                                                                           lastIncident.dt_generated?.ToString("yyyy-MM-dd HH:mm:ss"));
-                                }
 
-                                command.CommandText = command.CommandText + "ORDER BY dt_generated";
-
-                                IfxDataReader dataReader = command.ExecuteReader();
-
-                                var processedIncs = new List<string>();
-
-                                while (dataReader.Read())
-                                {
-                                    var inc = new StagingIncident();
-
-                                    try
+                                    if ((AppSettings.CheckDuplicatesOnExistingData &&
+                                         !dataContext.ImportedIncidents.Any(x => x.ln_id == inc.ln_id && x.tx_seq_nr == inc.in_seq_nr)) ||
+                                         !AppSettings.CheckDuplicatesOnExistingData)
                                     {
-                                        int i = 0;
-                                        inc.pl_id = dataReader[i].ToString().Trim();
-                                        inc.ln_id = dataReader[++i].ToString().Trim();
-                                        inc.dt_generated = ExtractDatetimeValue(dataReader[++i]);
-
-                                        inc.in_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt) ? outInt :
-                                                                        throw new InvalidDataException("Invalid incident sequence number.");
-
-                                        inc.ir_type = dataReader[++i].ToString().Trim();
-                                        inc.ir_subtype = dataReader[++i].ToString().Trim();
-                                        inc.tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.us_id = dataReader[++i].ToString().Trim();
-                                        inc.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.vg_group = dataReader[++i].ToString().Trim();
-                                        inc.mvc = dataReader[++i].ToString().Trim();
-                                        inc.avc = dataReader[++i].ToString().Trim();
-                                        inc.svc = dataReader[++i].ToString().Trim();
-                                        inc.er_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.pm_id = dataReader[++i].ToString().Trim();
-                                        inc.card_nr = dataReader[++i].ToString().Trim();
-                                        inc.mask_nr = dataReader[++i].ToString().Trim();
-                                        inc.ca_id = dataReader[++i].ToString().Trim();
-                                        inc.ct_id = dataReader[++i].ToString().Trim();
-                                        inc.tx_indic = dataReader[++i].ToString().Trim();
-                                        inc.lm_id = dataReader[++i].ToString().Trim();
-                                        inc.as_id = dataReader[++i].ToString().Trim();
-                                        inc.rep_indic = dataReader[++i].ToString().Trim();
-                                        inc.rd_id = dataReader[++i].ToString().Trim();
-                                        inc.maint_indic = dataReader[++i].ToString().Trim();
-                                        inc.req_indic = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
-                                        inc.in_amt = ExtractBCDValue(dataReader, ++i);
-                                        inc.in_data = dataReader[++i].ToString().Trim();
-                                        inc.tg_bl_id = dataReader[++i].ToString().Trim();
-                                        inc.tg_mfg_id = dataReader[++i].ToString().Trim();
-                                        inc.tg_card_type = dataReader[++i].ToString().Trim();
-                                        inc.tg_reader = dataReader[++i].ToString().Trim();
-                                        inc.tg_tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.avc_in_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.avc_in_type_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        inc.avc_dt_generated = ExtractDatetimeValue(dataReader[++i]);
-
-                                        
-                                        if (!processedIncs.Any(x => x == inc.ln_id + inc.in_seq_nr))
-                                        {
-                                            if (/*todo: setting to toggle*/ !dataContext.ImportedIncidents.Any(x => x.ln_id == inc.ln_id && x.tx_seq_nr == inc.in_seq_nr))
-                                                dataContext.ImportedIncidents.Insert(inc);
-                                        }
-
-                                        processedIncs.Add(inc.ln_id + inc.in_seq_nr);
-
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        //todo: log
+                                        dataContext.ImportedIncidents.Insert(inc);
                                     }
                                 }
 
-                                dataContext.Save();
-                                dataReader.Close();
+                                processedIncs.Add(inc.ln_id + inc.in_seq_nr);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogException(ex);
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        //todo: log
-                    }
 
-                    Thread.Sleep(3000);
+                        dataContext.Save();
+                        dataReader.Close();
+                    }
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
         private static void StartETCTransactionSyncProcess()
@@ -293,125 +321,253 @@ namespace Intertoll.DataImport.Database.Sync
             {
                 while (run)
                 {
+                    ETCTransactionSyncProcess();
+                    Thread.Sleep(1000 * AppSettings.ETCTransactionsIntervalInSeconds);
+                }
+            });           
+        }
 
-                    try
+        private static void ETCTransactionSyncProcess()
+        {
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
+            {
+                using (IfxConnection connection = EstablishConnection())
+                {
+                    using (var dataContext = new DatabaseSyncDataContext())
                     {
-                        using (IfxConnection connection = EstablishConnection())
+                        IfxCommand command = connection.CreateCommand();
+                        command.CommandText = $"SELECT FIRST {AppSettings.ETCTransactionSelectBatchSize} * FROM c_tch ";
+
+                        var lastTransaction = dataContext.ImportedETCTransactions.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_concluded));
+
+                        if (lastTransaction != null)
                         {
-                            using (var dataContext = new DatabaseSyncDataContext())
+                            command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   lastTransaction.dt_concluded?.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+
+                        command.CommandText = command.CommandText + " ORDER BY dt_concluded";
+
+                        IfxDataReader dataReader = command.ExecuteReader();
+
+                        var processedTrans = new List<string>();
+
+                        while (dataReader.Read())
+                        {
+                            var trans = new StagingETCTransaction();
+
+                            try
                             {
-                                IfxCommand command = connection.CreateCommand();
-                                command.CommandText = "SELECT FIRST 100 * FROM c_tch ";
+                                int i = 0;
+                                trans.pl_id = dataReader[i].ToString().Trim();
+                                trans.ln_id = dataReader[++i].ToString().Trim();
+                                trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]);
+                                trans.tx_seq_nr = int.TryParse(dataReader[++i].ToString().Trim(), out var outInt) ? outInt :
+                                                                throw new InvalidDataException("Invalid transaction sequence number.");
+                                trans.ops_dt = ExtractDatetimeValue(dataReader[++i]);
+                                trans.ops_sh = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.ent_plz_id = dataReader[++i].ToString().Trim();
+                                trans.ent_lane_id = dataReader[++i].ToString().Trim();
+                                trans.dt_started = ExtractDatetimeValue(dataReader[++i]);
+                                trans.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.vg_group = dataReader[++i].ToString().Trim();
+                                trans.mvc = dataReader[++i].ToString().Trim();
+                                trans.avc = dataReader[++i].ToString().Trim();
+                                trans.lvc = dataReader[++i].ToString().Trim();
+                                trans.svc = dataReader[++i].ToString().Trim();
+                                trans.loc_curr = dataReader[++i].ToString().Trim();
+                                trans.loc_value = ExtractBCDValue(dataReader, ++i);
+                                trans.variance = ExtractBCDValue(dataReader, ++i);
+                                trans.er_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.it_id = dataReader[++i].ToString().Trim();
+                                trans.sec_card_nr = dataReader[++i].ToString().Trim();
+                                trans.reg_nr = dataReader[++i].ToString().Trim();
+                                trans.vl_vln = dataReader[++i].ToString().Trim();
+                                trans.vouch_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.rec_nr = dataReader[++i].ToString().Trim();
+                                trans.tick_nr = dataReader[++i].ToString().Trim();
+                                trans.fg_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.bp_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.dg_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.disc_value = ExtractBCDValue(dataReader, ++i);
+                                trans.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
+                                trans.us_id = dataReader[++i].ToString().Trim();
+                                trans.count_for_disc = dataReader[++i].ToString().Trim();
+                                trans.iv_prt_indic = dataReader[++i].ToString().Trim();
+                                trans.iv_nr = ExtractIntegerValue(dataReader[++i].ToString()); ;
+                                trans.nom_value = ExtractBCDValue(dataReader, ++i);
+                                trans.update_us_id = dataReader[++i].ToString().Trim();
+                                trans.etc_contect_mrk = dataReader[++i].ToString().Trim();
+                                trans.etc_manufac_id = ExtractIntegerValue(dataReader[++i].ToString()); ;
+                                trans.etc_contract_pv = dataReader[++i].ToString().Trim();
+                                trans.etc_beacon_id = ExtractIntegerValue(dataReader[++i].ToString()); ;
+                                trans.avc_dt_concluded = ExtractDatetimeValue(dataReader[++i]); ;
+                                trans.ca_id = dataReader[++i].ToString().Trim();
+                                trans.ct_id = dataReader[++i].ToString().Trim();
+                                trans.td_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.ac_nr = dataReader[++i].ToString().Trim();
+                                trans.card_nr = dataReader[++i].ToString().Trim();
+                                trans.inc_ind = ExtractIntegerValue(dataReader[++i].ToString());
+                                trans.id_vl = dataReader[++i].ToString().Trim();
+                                trans.loc_tax = ExtractBCDValue(dataReader, ++i);
+                                trans.act_disc = dataReader[++i].ToString().Trim();
 
-                                var lastTransaction = dataContext.ImportedETCTransactions.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_concluded));
-
-                                if (lastTransaction != null)
+                                if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr))
                                 {
-                                    command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
-                                                                           lastTransaction.dt_concluded?.ToString("yyyy-MM-dd HH:mm:ss"));
-                                }
-
-                                command.CommandText = command.CommandText + " ORDER BY dt_concluded";
-
-                                IfxDataReader dataReader = command.ExecuteReader();
-
-                                var processedTrans = new List<string>();
-
-                                while (dataReader.Read())
-                                {
-                                    var trans = new StagingETCTransaction();
-
-                                    try
+                                    if ((AppSettings.CheckDuplicatesOnExistingData &&
+                                         !dataContext.ImportedETCTransactions.Any(x => x.ln_id == trans.ln_id && x.tx_seq_nr == trans.tx_seq_nr)) ||
+                                         !AppSettings.CheckDuplicatesOnExistingData)
                                     {
-                                        int i = 0;
-                                        trans.pl_id = dataReader[i].ToString().Trim();
-                                        trans.ln_id = dataReader[++i].ToString().Trim();
-                                        trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.tx_seq_nr = int.TryParse(dataReader[++i].ToString().Trim(), out var outInt) ? outInt :
-                                                                        throw new InvalidDataException("Invalid transaction sequence number.");
-                                        trans.ops_dt = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.ops_sh = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.ent_plz_id = dataReader[++i].ToString().Trim();
-                                        trans.ent_lane_id = dataReader[++i].ToString().Trim();
-                                        trans.dt_started = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.vg_group = dataReader[++i].ToString().Trim();
-                                        trans.mvc = dataReader[++i].ToString().Trim();
-                                        trans.avc = dataReader[++i].ToString().Trim();
-                                        trans.lvc = dataReader[++i].ToString().Trim();
-                                        trans.svc = dataReader[++i].ToString().Trim();
-                                        trans.loc_curr = dataReader[++i].ToString().Trim();
-                                        trans.loc_value = ExtractBCDValue(dataReader, ++i);
-                                        trans.variance = ExtractBCDValue(dataReader, ++i);
-                                        trans.er_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.it_id = dataReader[++i].ToString().Trim();
-                                        trans.sec_card_nr = dataReader[++i].ToString().Trim();
-                                        trans.reg_nr = dataReader[++i].ToString().Trim();
-                                        trans.vl_vln = dataReader[++i].ToString().Trim();
-                                        trans.vouch_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.rec_nr = dataReader[++i].ToString().Trim();
-                                        trans.tick_nr = dataReader[++i].ToString().Trim();
-                                        trans.fg_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.bp_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.dg_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.disc_value = ExtractBCDValue(dataReader, ++i);
-                                        trans.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
-                                        trans.us_id = dataReader[++i].ToString().Trim();
-                                        trans.count_for_disc = dataReader[++i].ToString().Trim();
-                                        trans.iv_prt_indic = dataReader[++i].ToString().Trim();
-                                        trans.iv_nr = ExtractIntegerValue(dataReader[++i].ToString()); ;
-                                        trans.nom_value = ExtractBCDValue(dataReader, ++i);
-                                        trans.update_us_id = dataReader[++i].ToString().Trim();
-                                        trans.etc_contect_mrk = dataReader[++i].ToString().Trim();
-                                        trans.etc_manufac_id = ExtractIntegerValue(dataReader[++i].ToString()); ;
-                                        trans.etc_contract_pv = dataReader[++i].ToString().Trim();
-                                        trans.etc_beacon_id = ExtractIntegerValue(dataReader[++i].ToString()); ;
-                                        trans.avc_dt_concluded = ExtractDatetimeValue(dataReader[++i]); ;
-                                        trans.ca_id = dataReader[++i].ToString().Trim();
-                                        trans.ct_id = dataReader[++i].ToString().Trim();
-                                        trans.td_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.ac_nr = dataReader[++i].ToString().Trim();
-                                        trans.card_nr = dataReader[++i].ToString().Trim();
-                                        trans.inc_ind = ExtractIntegerValue(dataReader[++i].ToString());
-                                        trans.id_vl = dataReader[++i].ToString().Trim();
-                                        trans.loc_tax = ExtractBCDValue(dataReader, ++i);
-                                        trans.act_disc = dataReader[++i].ToString().Trim();
-
-                                        if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr))
-                                        {
-                                            if (!dataContext.ImportedETCTransactions.Any(x => x.ln_id == trans.ln_id && x.tx_seq_nr == trans.tx_seq_nr))
-                                                dataContext.ImportedETCTransactions.Insert(trans);
-                                        }
-
-                                        processedTrans.Add(trans.ln_id + trans.tx_seq_nr); 
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        //todo: log
+                                        dataContext.ImportedETCTransactions.Insert(trans);
                                     }
                                 }
 
-                                dataContext.Save();
-                                dataReader.Close();
+                                processedTrans.Add(trans.ln_id + trans.tx_seq_nr);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogException(ex);
                             }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                        //todo: log
-                    }
 
-                    Thread.Sleep(3000);
+                        dataContext.Save();
+                        dataReader.Close();
+                    }
                 }
-            });
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
         private static void StartTimesliceSyncProcess()
         {
+            Task.Factory.StartNew(() =>
+            {
+                while (run)
+                {
+                    TimesliceSyncProcess();
+                    Thread.Sleep(1000 * AppSettings.TimeslicesIntervalInSeconds);
+                }
+            });            
+        }
 
+        private static void TimesliceSyncProcess()
+        {
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
+            {
+                using (IfxConnection connection = EstablishConnection())
+                {
+                    using (var dataContext = new DatabaseSyncDataContext())
+                    {
+                        IfxCommand command = connection.CreateCommand();
+                        command.CommandText = $"SELECT FIRST {AppSettings.TimesliceSelectBatchSize} * FROM p_ts ";
+
+                        var lastTS = dataContext.ImportedTimeslices.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_started));
+
+                        if (lastTS != null)
+                        {
+                            command.CommandText += string.Format("WHERE dt_started > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   lastTS.dt_started?.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+
+                        command.CommandText = command.CommandText + " ORDER BY dt_started";
+
+                        IfxDataReader dataReader = command.ExecuteReader();
+
+                        var processedTimeslices = new List<string>();
+
+                        while (dataReader.Read())
+                        {
+                            var ts = new StagingTimeSlice();
+
+                            try
+                            {
+                                int i = 0;
+
+                                ts.pl_id = dataReader[i].ToString().Trim();
+                                ts.ln_id = dataReader[++i].ToString().Trim();
+
+                                ts.ts_seq_nr = int.TryParse(dataReader[++i].ToString().Trim(), out var outInt) ? outInt :
+                                                                throw new InvalidDataException("Invalid timeslice sequence number.");
+
+                                ts.dt_started = ExtractDatetimeValue(dataReader[++i]);
+                                ts.dt_ended = ExtractDatetimeValue(dataReader[++i]);
+                                ts.us_id = dataReader[++i].ToString().Trim();
+                                ts.lm_id = dataReader[++i].ToString().Trim();
+                                ts.next_tx = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.prev_tx = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.tx_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.next_inc = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.prev_inc = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.inc_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.next_bo = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.prev_bo = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.bo_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.next_sp = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.prev_sp = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.sp_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.next_vat = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.prev_vat = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.vat_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.next_avc = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.prev_avc = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.avc_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.vgs_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.loc_value = ExtractBCDValue(dataReader, ++i);
+                                ts.cash_value = ExtractBCDValue(dataReader, ++i);
+                                ts.sun_value = ExtractBCDValue(dataReader, ++i);
+                                ts.stats_msg = ExtractBCDValue(dataReader, ++i);
+                                ts.stats_count = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.ops_dt = ExtractDatetimeValue(dataReader[++i]);
+                                ts.ops_sh = ExtractIntegerValue(dataReader[++i].ToString());
+                                ts.vs_id = dataReader[++i].ToString().Trim();
+                                ts.rep_indic = dataReader[++i].ToString().Trim();
+                                ts.rd_id = dataReader[++i].ToString().Trim();
+                                ts.maint_indic = dataReader[++i].ToString().Trim();
+                                ts.req_indic = ExtractIntegerValue(dataReader[++i].ToString());
+
+                                if (!processedTimeslices.Any(x => x == ts.ln_id + ts.ts_seq_nr))
+                                {
+                                    if ((AppSettings.CheckDuplicatesOnExistingData &&
+                                         !dataContext.ImportedTimeslices.Any(x => x.ln_id == ts.ln_id && x.ts_seq_nr == ts.ts_seq_nr)) ||
+                                         !AppSettings.CheckDuplicatesOnExistingData)
+                                    {
+                                        dataContext.ImportedTimeslices.Insert(ts);
+                                    }
+                                }
+
+                                processedTimeslices.Add(ts.ln_id + ts.ts_seq_nr);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogException(ex);
+                            }
+                        }
+
+                        dataContext.Save();
+                        dataReader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
         #endregion

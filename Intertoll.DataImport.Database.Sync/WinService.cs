@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
+﻿using Intertoll.NLogger;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Intertoll.DataImport.Database.Sync
 {
@@ -19,19 +12,19 @@ namespace Intertoll.DataImport.Database.Sync
 
         protected override void OnStart(string[] args)
         {
-            //Log.LogInfoMessage("[Enter] Starting Service");
+            Log.LogInfoMessage("[Enter] Starting Service");
 
             DatabaseSyncManager.StartSynchingProcess();
 
-            //Log.LogInfoMessage("[Exit] Starting Service");
+            Log.LogInfoMessage("[Exit] Starting Service");
         }
 
         protected override void OnStop()
         {
-            //Log.LogInfoMessage("[Enter] Stopping Service");
+            Log.LogInfoMessage("[Enter] Stopping Service");
 
 
-            //Log.LogInfoMessage("[Exit] Stopping Service");
+            Log.LogInfoMessage("[Exit] Stopping Service");
         }
 
         #region Debug
