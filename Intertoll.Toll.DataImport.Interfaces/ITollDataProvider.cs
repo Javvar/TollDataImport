@@ -7,6 +7,7 @@ namespace Intertoll.Toll.DataImport.Interfaces
     public interface ITollDataProvider
     {
         IList<string> ImportNewStaff();
+        IList<string> ImportNewRegisteredUsers();
         IList<ITollTransaction> GetNextTransactionBatch();
         IList<ITollTransaction> GetTransactionBatchGreaterThanTime(DateTime dateFrom);
         void SaveTransactions(IList<ITollTransaction> sentTransactions);

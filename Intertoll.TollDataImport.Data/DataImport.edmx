@@ -172,6 +172,7 @@
           <Parameter Name="LaneCode" Type="varchar" Mode="In" />
           <Parameter Name="SequenceNumber" Type="int" Mode="In" />
         </Function>
+        <Function Name="uspImportNewRegisteredUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="uspImportNewStaff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DataImportModelStoreContainer">
           <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
@@ -230,6 +231,7 @@
           </FunctionImport>
           <FunctionImport Name="uspGetNextTransactionBatch" ReturnType="Collection(DataImportModel.uspGetNextTransactionBatch_Result)" />
           <EntitySet Name="Transactions" EntityType="DataImportModel.Transaction" />
+          <FunctionImport Name="uspImportNewRegisteredUsers" ReturnType="Collection(String)" />
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -957,6 +959,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspImportNewRegisteredUsers" FunctionName="DataImportModel.Store.uspImportNewRegisteredUsers" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

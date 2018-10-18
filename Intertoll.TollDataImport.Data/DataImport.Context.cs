@@ -141,5 +141,10 @@ namespace Intertoll.DataImport.Data
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<uspGetNextTransactionBatch_Result>("uspGetNextTransactionBatch");
         }
+    
+        public virtual ObjectResult<string> uspImportNewRegisteredUsers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("uspImportNewRegisteredUsers");
+        }
     }
 }

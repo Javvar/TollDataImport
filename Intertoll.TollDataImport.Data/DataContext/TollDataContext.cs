@@ -62,6 +62,11 @@ namespace Intertoll.DataImport.Data.DataContext
             return context.uspImportNewStaff().ToList();
         }
 
+        public IList<string> ImportNewRegisteredUsers()
+        {
+            return context.uspImportNewRegisteredUsers().ToList();
+        }
+
         public IList<ITollTransaction> GetNextTransactionBatch()
         {
             var returnList = new List<ITollTransaction>();
@@ -243,7 +248,7 @@ namespace Intertoll.DataImport.Data.DataContext
         public void InsertAudit(ITollHourlyAudit newAudit)
         {
             context.Audits.Add(Mapper.Map<ITollHourlyAudit, Audit>(newAudit));
-        }
+        }        
 
         #endregion
     }
