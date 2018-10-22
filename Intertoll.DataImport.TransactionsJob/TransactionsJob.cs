@@ -101,23 +101,23 @@ namespace Intertoll.DataImport.TransactionsJob
 
             try
             {
-                var p = new Process();
+                var process = new Process();
                 string fileName = Path.Combine(Settings.CardDecryptionUtilityLocation, "DecryptUtil.exe");
                 string param = "/C" + "\"" + fileName + " " + CardsFileName + "\"";
 
-                var process = new ProcessStartInfo("cmd.exe", param);
-                process.UseShellExecute = false;
-                process.WorkingDirectory = Settings.CardDecryptionUtilityLocation;
-                process.RedirectStandardOutput = true;
-                process.RedirectStandardError = true;
-                process.CreateNoWindow = true;
+                var processStartInfo = new ProcessStartInfo("cmd.exe", param);
+                processStartInfo.UseShellExecute = false;
+                processStartInfo.WorkingDirectory = Settings.CardDecryptionUtilityLocation;
+                processStartInfo.RedirectStandardOutput = true;
+                processStartInfo.RedirectStandardError = true;
+                processStartInfo.CreateNoWindow = true;
 
-                p.StartInfo = process;
-                p.Start();
+                process.StartInfo = processStartInfo;
+                process.Start();
 
                 int RetryCount = 120;
 
-                while (!p.HasExited && RetryCount > 0)
+                while (!process.HasExited && RetryCount > 0)
                 {
                     RetryCount--;
                     Thread.Sleep(1000);
@@ -127,10 +127,12 @@ namespace Intertoll.DataImport.TransactionsJob
                 {
                     foreach (var cardNumber in cardNumbers)
                     {
-                        var DecryptedPAN = File.ReadAllText(Path.Combine(Settings.CardDecryptionUtilityLocation, "PAN_" + cardNumber + ".txt"));
+                        //var DecryptedPAN = File.ReadAllText(Path.Combine(Settings.CardDecryptionUtilityLocation, "PAN_" + cardNumber + ".txt"));
+                        var DecryptedPAN = "7079242001094280115";
 
                         foreach (var tranx in TransactionBatch.Where(x => x.PaymentDetail == cardNumber))
                         {
+                            tranx.FullCardNumber = DecryptedPAN;
                             tranx.PaymentDetail  = Regex.Replace(DecryptedPAN, @"\t|\n|\r", "");
                         }
                     }

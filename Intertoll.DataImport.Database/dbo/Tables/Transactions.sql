@@ -50,8 +50,11 @@
     [VehichleState]               VARCHAR (50)     NULL,
     [IsSent]                      BIT              NOT NULL,
     [TimeStamp]                   DATETIME         NOT NULL,
+    [FullCardNumber]              VARCHAR (50)     NULL,
     CONSTRAINT [PK_Transactions_1] PRIMARY KEY CLUSTERED ([TransactionID] ASC)
 );
+
+
 
 
 

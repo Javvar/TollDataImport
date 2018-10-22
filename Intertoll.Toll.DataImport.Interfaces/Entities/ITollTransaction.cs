@@ -47,5 +47,6 @@ namespace Intertoll.Toll.DataImport.Interfaces.Entities
         Guid? ETCTransactionGuid { get; set; }
         string CardNumber { get; set; }
         int? BCCTransferStatus { get; set; }
+        string FullCardNumber { get; set; }
     }
 }

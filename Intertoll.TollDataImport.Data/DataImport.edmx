@@ -142,6 +142,7 @@
           <Property Name="VehichleState" Type="varchar" MaxLength="50" />
           <Property Name="IsSent" Type="bit" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+          <Property Name="FullCardNumber" Type="varchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Sessions_StaffLogins">
           <End Role="StaffLogins" Type="Self.StaffLogins" Multiplicity="1" />
@@ -229,9 +230,9 @@
             <Parameter Name="LaneCode" Mode="In" Type="String" />
             <Parameter Name="SequenceNumber" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="uspGetNextTransactionBatch" ReturnType="Collection(DataImportModel.uspGetNextTransactionBatch_Result)" />
           <EntitySet Name="Transactions" EntityType="DataImportModel.Transaction" />
           <FunctionImport Name="uspImportNewRegisteredUsers" ReturnType="Collection(String)" />
+          <FunctionImport Name="uspGetNextTransactionBatch" ReturnType="Collection(DataImportModel.uspGetNextTransactionBatch_Result)" />
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -479,61 +480,6 @@
           <Property Type="Guid" Name="LaneGuid" Nullable="false" />
           <Property Type="Int32" Name="CNT" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="uspGetNextTransactionBatch_Result">
-          <Property Type="String" Name="TransactionID" Nullable="false" MaxLength="50" />
-          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
-          <Property Type="Guid" Name="TransGUID" Nullable="false" />
-          <Property Type="DateTime" Name="TransStartDate" Nullable="false" Precision="23" />
-          <Property Type="DateTime" Name="TransDate" Nullable="false" Precision="23" />
-          <Property Type="Guid" Name="ColClassGUID" Nullable="true" />
-          <Property Type="Guid" Name="AVCClassGUID" Nullable="true" />
-          <Property Type="Guid" Name="RealClassGUID" Nullable="true" />
-          <Property Type="Guid" Name="AppliedClassGUID" Nullable="true" />
-          <Property Type="Guid" Name="TariffGUID" Nullable="true" />
-          <Property Type="Decimal" Name="TariffAmount" Nullable="false" Precision="19" />
-          <Property Type="Decimal" Name="TariffVat" Nullable="false" Precision="19" />
-          <Property Type="Decimal" Name="ChangeAmount" Nullable="true" Precision="19" />
-          <Property Type="Decimal" Name="TenderedAmount" Nullable="true" Precision="19" />
-          <Property Type="Guid" Name="CurrencyGUID" Nullable="true" />
-          <Property Type="Guid" Name="LaneStatusGUID" Nullable="true" />
-          <Property Type="Guid" Name="SessionGUID" Nullable="false" />
-          <Property Type="Int32" Name="LaneTransSeqNr" Nullable="false" />
-          <Property Type="Int32" Name="AVCSeqNr" Nullable="false" />
-          <Property Type="Guid" Name="AvcStatusGUID" Nullable="true" />
-          <Property Type="Guid" Name="PaymentMethodGUID" Nullable="false" />
-          <Property Type="Guid" Name="PaymentGroupGUID" Nullable="false" />
-          <Property Type="Guid" Name="PaymentMechGUID" Nullable="false" />
-          <Property Type="Guid" Name="PaymentTypeGUID" Nullable="false" />
-          <Property Type="String" Name="PaymentDetail" Nullable="true" MaxLength="1000" />
-          <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="1000" />
-          <Property Type="String" Name="TaxInvNr" Nullable="true" MaxLength="50" />
-          <Property Type="Int32" Name="ReceiptCount" Nullable="true" />
-          <Property Type="String" Name="AdditionalTransactionDetail" Nullable="true" MaxLength="1000" />
-          <Property Type="Guid" Name="AccountUserGUID" Nullable="true" />
-          <Property Type="Guid" Name="SupervisorLoginGUID" Nullable="true" />
-          <Property Type="Boolean" Name="IsKeyed" Nullable="false" />
-          <Property Type="Int32" Name="ImageID" Nullable="true" />
-          <Property Type="String" Name="AVCDetail" Nullable="true" MaxLength="1000" />
-          <Property Type="Guid" Name="AccountGUID" Nullable="true" />
-          <Property Type="Guid" Name="ExchangeRate" Nullable="true" />
-          <Property Type="Decimal" Name="TotalInLocalCurrency" Nullable="false" Precision="19" />
-          <Property Type="String" Name="PreviousLicensePlate" Nullable="true" MaxLength="64" />
-          <Property Type="Guid" Name="PreviousPaymentMethodGUID" Nullable="true" />
-          <Property Type="DateTime" Name="ReceiptTaxInvoiceDate" Nullable="true" Precision="23" />
-          <Property Type="String" Name="ANPRLicensePlate" Nullable="true" MaxLength="50" />
-          <Property Type="Guid" Name="ETCTransactionGuid" Nullable="true" />
-          <Property Type="String" Name="CardNumber" Nullable="true" MaxLength="25" />
-          <Property Type="Int32" Name="BCCTransferStatus" Nullable="true" />
-          <Property Type="Int16" Name="ContextMarkId" Nullable="true" />
-          <Property Type="Int64" Name="PAN" Nullable="true" />
-          <Property Type="Int64" Name="CONV" Nullable="true" />
-          <Property Type="Int64" Name="IDVL" Nullable="true" />
-          <Property Type="String" Name="VehichleState" Nullable="true" MaxLength="50" />
-          <Property Type="Boolean" Name="IsSent" Nullable="false" />
-          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
-          <Property Type="String" Name="StaffID" Nullable="false" MaxLength="1" />
-          <Property Type="String" Name="AccountIdentifier" Nullable="false" MaxLength="1" />
-        </ComplexType>
         <EntityType Name="Transaction">
           <Key>
             <PropertyRef Name="TransactionID" />
@@ -589,7 +535,64 @@
           <Property Name="VehichleState" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="IsSent" Type="Boolean" Nullable="false" />
           <Property Name="TimeStamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FullCardNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <ComplexType Name="uspGetNextTransactionBatch_Result">
+          <Property Type="String" Name="TransactionID" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="LaneCode" Nullable="false" MaxLength="10" />
+          <Property Type="Guid" Name="TransGUID" Nullable="false" />
+          <Property Type="DateTime" Name="TransStartDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="TransDate" Nullable="false" Precision="23" />
+          <Property Type="Guid" Name="ColClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="AVCClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="RealClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="AppliedClassGUID" Nullable="true" />
+          <Property Type="Guid" Name="TariffGUID" Nullable="true" />
+          <Property Type="Decimal" Name="TariffAmount" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="TariffVat" Nullable="false" Precision="19" />
+          <Property Type="Decimal" Name="ChangeAmount" Nullable="true" Precision="19" />
+          <Property Type="Decimal" Name="TenderedAmount" Nullable="true" Precision="19" />
+          <Property Type="Guid" Name="CurrencyGUID" Nullable="true" />
+          <Property Type="Guid" Name="LaneStatusGUID" Nullable="true" />
+          <Property Type="Guid" Name="SessionGUID" Nullable="false" />
+          <Property Type="Int32" Name="LaneTransSeqNr" Nullable="false" />
+          <Property Type="Int32" Name="AVCSeqNr" Nullable="false" />
+          <Property Type="Guid" Name="AvcStatusGUID" Nullable="true" />
+          <Property Type="Guid" Name="PaymentMethodGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentGroupGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentMechGUID" Nullable="false" />
+          <Property Type="Guid" Name="PaymentTypeGUID" Nullable="false" />
+          <Property Type="String" Name="PaymentDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="1000" />
+          <Property Type="String" Name="TaxInvNr" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ReceiptCount" Nullable="true" />
+          <Property Type="String" Name="AdditionalTransactionDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="Guid" Name="AccountUserGUID" Nullable="true" />
+          <Property Type="Guid" Name="SupervisorLoginGUID" Nullable="true" />
+          <Property Type="Boolean" Name="IsKeyed" Nullable="false" />
+          <Property Type="Int32" Name="ImageID" Nullable="true" />
+          <Property Type="String" Name="AVCDetail" Nullable="true" MaxLength="1000" />
+          <Property Type="Guid" Name="AccountGUID" Nullable="true" />
+          <Property Type="Guid" Name="ExchangeRate" Nullable="true" />
+          <Property Type="Decimal" Name="TotalInLocalCurrency" Nullable="false" Precision="19" />
+          <Property Type="String" Name="PreviousLicensePlate" Nullable="true" MaxLength="64" />
+          <Property Type="Guid" Name="PreviousPaymentMethodGUID" Nullable="true" />
+          <Property Type="DateTime" Name="ReceiptTaxInvoiceDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ANPRLicensePlate" Nullable="true" MaxLength="50" />
+          <Property Type="Guid" Name="ETCTransactionGuid" Nullable="true" />
+          <Property Type="String" Name="CardNumber" Nullable="true" MaxLength="25" />
+          <Property Type="Int32" Name="BCCTransferStatus" Nullable="true" />
+          <Property Type="Int16" Name="ContextMarkId" Nullable="true" />
+          <Property Type="Int64" Name="PAN" Nullable="true" />
+          <Property Type="Int64" Name="CONV" Nullable="true" />
+          <Property Type="Int64" Name="IDVL" Nullable="true" />
+          <Property Type="String" Name="VehichleState" Nullable="true" MaxLength="50" />
+          <Property Type="Boolean" Name="IsSent" Nullable="false" />
+          <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="23" />
+          <Property Type="String" Name="FullCardNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="StaffID" Nullable="false" MaxLength="1" />
+          <Property Type="String" Name="AccountIdentifier" Nullable="false" MaxLength="1" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -838,65 +841,7 @@
                 <ScalarProperty Name="VehichleState" ColumnName="VehichleState" />
                 <ScalarProperty Name="IsSent" ColumnName="IsSent" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
-                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
-                <ScalarProperty Name="AccountIdentifier" ColumnName="AccountIdentifier" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="uspGetNextTransactionBatch" FunctionName="DataImportModel.Store.uspGetNextTransactionBatch">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="DataImportModel.uspGetNextTransactionBatch_Result">
-                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
-                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
-                <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
-                <ScalarProperty Name="TransStartDate" ColumnName="TransStartDate" />
-                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
-                <ScalarProperty Name="ColClassGUID" ColumnName="ColClassGUID" />
-                <ScalarProperty Name="AVCClassGUID" ColumnName="AVCClassGUID" />
-                <ScalarProperty Name="RealClassGUID" ColumnName="RealClassGUID" />
-                <ScalarProperty Name="AppliedClassGUID" ColumnName="AppliedClassGUID" />
-                <ScalarProperty Name="TariffGUID" ColumnName="TariffGUID" />
-                <ScalarProperty Name="TariffAmount" ColumnName="TariffAmount" />
-                <ScalarProperty Name="TariffVat" ColumnName="TariffVat" />
-                <ScalarProperty Name="ChangeAmount" ColumnName="ChangeAmount" />
-                <ScalarProperty Name="TenderedAmount" ColumnName="TenderedAmount" />
-                <ScalarProperty Name="CurrencyGUID" ColumnName="CurrencyGUID" />
-                <ScalarProperty Name="LaneStatusGUID" ColumnName="LaneStatusGUID" />
-                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
-                <ScalarProperty Name="LaneTransSeqNr" ColumnName="LaneTransSeqNr" />
-                <ScalarProperty Name="AVCSeqNr" ColumnName="AVCSeqNr" />
-                <ScalarProperty Name="AvcStatusGUID" ColumnName="AvcStatusGUID" />
-                <ScalarProperty Name="PaymentMethodGUID" ColumnName="PaymentMethodGUID" />
-                <ScalarProperty Name="PaymentGroupGUID" ColumnName="PaymentGroupGUID" />
-                <ScalarProperty Name="PaymentMechGUID" ColumnName="PaymentMechGUID" />
-                <ScalarProperty Name="PaymentTypeGUID" ColumnName="PaymentTypeGUID" />
-                <ScalarProperty Name="PaymentDetail" ColumnName="PaymentDetail" />
-                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
-                <ScalarProperty Name="TaxInvNr" ColumnName="TaxInvNr" />
-                <ScalarProperty Name="ReceiptCount" ColumnName="ReceiptCount" />
-                <ScalarProperty Name="AdditionalTransactionDetail" ColumnName="AdditionalTransactionDetail" />
-                <ScalarProperty Name="AccountUserGUID" ColumnName="AccountUserGUID" />
-                <ScalarProperty Name="SupervisorLoginGUID" ColumnName="SupervisorLoginGUID" />
-                <ScalarProperty Name="IsKeyed" ColumnName="IsKeyed" />
-                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
-                <ScalarProperty Name="AVCDetail" ColumnName="AVCDetail" />
-                <ScalarProperty Name="AccountGUID" ColumnName="AccountGUID" />
-                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
-                <ScalarProperty Name="TotalInLocalCurrency" ColumnName="TotalInLocalCurrency" />
-                <ScalarProperty Name="PreviousLicensePlate" ColumnName="PreviousLicensePlate" />
-                <ScalarProperty Name="PreviousPaymentMethodGUID" ColumnName="PreviousPaymentMethodGUID" />
-                <ScalarProperty Name="ReceiptTaxInvoiceDate" ColumnName="ReceiptTaxInvoiceDate" />
-                <ScalarProperty Name="ANPRLicensePlate" ColumnName="ANPRLicensePlate" />
-                <ScalarProperty Name="ETCTransactionGuid" ColumnName="ETCTransactionGuid" />
-                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
-                <ScalarProperty Name="BCCTransferStatus" ColumnName="BCCTransferStatus" />
-                <ScalarProperty Name="ContextMarkId" ColumnName="ContextMarkId" />
-                <ScalarProperty Name="PAN" ColumnName="PAN" />
-                <ScalarProperty Name="CONV" ColumnName="CONV" />
-                <ScalarProperty Name="IDVL" ColumnName="IDVL" />
-                <ScalarProperty Name="VehichleState" ColumnName="VehichleState" />
-                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
-                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="FullCardNumber" ColumnName="FullCardNumber" />
                 <ScalarProperty Name="StaffID" ColumnName="StaffID" />
                 <ScalarProperty Name="AccountIdentifier" ColumnName="AccountIdentifier" />
               </ComplexTypeMapping>
@@ -905,6 +850,7 @@
           <EntitySetMapping Name="Transactions">
             <EntityTypeMapping TypeName="DataImportModel.Transaction">
               <MappingFragment StoreEntitySet="Transactions">
+                <ScalarProperty Name="FullCardNumber" ColumnName="FullCardNumber" />
                 <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
                 <ScalarProperty Name="IsSent" ColumnName="IsSent" />
                 <ScalarProperty Name="VehichleState" ColumnName="VehichleState" />
@@ -960,6 +906,66 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="uspImportNewRegisteredUsers" FunctionName="DataImportModel.Store.uspImportNewRegisteredUsers" />
+          <FunctionImportMapping FunctionImportName="uspGetNextTransactionBatch" FunctionName="DataImportModel.Store.uspGetNextTransactionBatch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DataImportModel.uspGetNextTransactionBatch_Result">
+                <ScalarProperty Name="TransactionID" ColumnName="TransactionID" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+                <ScalarProperty Name="TransGUID" ColumnName="TransGUID" />
+                <ScalarProperty Name="TransStartDate" ColumnName="TransStartDate" />
+                <ScalarProperty Name="TransDate" ColumnName="TransDate" />
+                <ScalarProperty Name="ColClassGUID" ColumnName="ColClassGUID" />
+                <ScalarProperty Name="AVCClassGUID" ColumnName="AVCClassGUID" />
+                <ScalarProperty Name="RealClassGUID" ColumnName="RealClassGUID" />
+                <ScalarProperty Name="AppliedClassGUID" ColumnName="AppliedClassGUID" />
+                <ScalarProperty Name="TariffGUID" ColumnName="TariffGUID" />
+                <ScalarProperty Name="TariffAmount" ColumnName="TariffAmount" />
+                <ScalarProperty Name="TariffVat" ColumnName="TariffVat" />
+                <ScalarProperty Name="ChangeAmount" ColumnName="ChangeAmount" />
+                <ScalarProperty Name="TenderedAmount" ColumnName="TenderedAmount" />
+                <ScalarProperty Name="CurrencyGUID" ColumnName="CurrencyGUID" />
+                <ScalarProperty Name="LaneStatusGUID" ColumnName="LaneStatusGUID" />
+                <ScalarProperty Name="SessionGUID" ColumnName="SessionGUID" />
+                <ScalarProperty Name="LaneTransSeqNr" ColumnName="LaneTransSeqNr" />
+                <ScalarProperty Name="AVCSeqNr" ColumnName="AVCSeqNr" />
+                <ScalarProperty Name="AvcStatusGUID" ColumnName="AvcStatusGUID" />
+                <ScalarProperty Name="PaymentMethodGUID" ColumnName="PaymentMethodGUID" />
+                <ScalarProperty Name="PaymentGroupGUID" ColumnName="PaymentGroupGUID" />
+                <ScalarProperty Name="PaymentMechGUID" ColumnName="PaymentMechGUID" />
+                <ScalarProperty Name="PaymentTypeGUID" ColumnName="PaymentTypeGUID" />
+                <ScalarProperty Name="PaymentDetail" ColumnName="PaymentDetail" />
+                <ScalarProperty Name="LicensePlate" ColumnName="LicensePlate" />
+                <ScalarProperty Name="TaxInvNr" ColumnName="TaxInvNr" />
+                <ScalarProperty Name="ReceiptCount" ColumnName="ReceiptCount" />
+                <ScalarProperty Name="AdditionalTransactionDetail" ColumnName="AdditionalTransactionDetail" />
+                <ScalarProperty Name="AccountUserGUID" ColumnName="AccountUserGUID" />
+                <ScalarProperty Name="SupervisorLoginGUID" ColumnName="SupervisorLoginGUID" />
+                <ScalarProperty Name="IsKeyed" ColumnName="IsKeyed" />
+                <ScalarProperty Name="ImageID" ColumnName="ImageID" />
+                <ScalarProperty Name="AVCDetail" ColumnName="AVCDetail" />
+                <ScalarProperty Name="AccountGUID" ColumnName="AccountGUID" />
+                <ScalarProperty Name="ExchangeRate" ColumnName="ExchangeRate" />
+                <ScalarProperty Name="TotalInLocalCurrency" ColumnName="TotalInLocalCurrency" />
+                <ScalarProperty Name="PreviousLicensePlate" ColumnName="PreviousLicensePlate" />
+                <ScalarProperty Name="PreviousPaymentMethodGUID" ColumnName="PreviousPaymentMethodGUID" />
+                <ScalarProperty Name="ReceiptTaxInvoiceDate" ColumnName="ReceiptTaxInvoiceDate" />
+                <ScalarProperty Name="ANPRLicensePlate" ColumnName="ANPRLicensePlate" />
+                <ScalarProperty Name="ETCTransactionGuid" ColumnName="ETCTransactionGuid" />
+                <ScalarProperty Name="CardNumber" ColumnName="CardNumber" />
+                <ScalarProperty Name="BCCTransferStatus" ColumnName="BCCTransferStatus" />
+                <ScalarProperty Name="ContextMarkId" ColumnName="ContextMarkId" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="CONV" ColumnName="CONV" />
+                <ScalarProperty Name="IDVL" ColumnName="IDVL" />
+                <ScalarProperty Name="VehichleState" ColumnName="VehichleState" />
+                <ScalarProperty Name="IsSent" ColumnName="IsSent" />
+                <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+                <ScalarProperty Name="FullCardNumber" ColumnName="FullCardNumber" />
+                <ScalarProperty Name="StaffID" ColumnName="StaffID" />
+                <ScalarProperty Name="AccountIdentifier" ColumnName="AccountIdentifier" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

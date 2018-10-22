@@ -64,6 +64,7 @@ namespace Intertoll.DataImport.Data
         public string VehichleState { get; set; }
         public bool IsSent { get; set; }
         public System.DateTime TimeStamp { get; set; }
+        public string FullCardNumber { get; set; }
         public string StaffID { get; set; }
         public string AccountIdentifier { get; set; }
     }

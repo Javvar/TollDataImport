@@ -203,7 +203,7 @@ BEGIN
 				  ,[ImageID],[AVCDetail],[AccountGUID],[ExchangeRate],[TotalInLocalCurrency]
 				  ,[PreviousLicensePlate],[PreviousPaymentMethodGUID] ,[ReceiptTaxInvoiceDate]
 				  ,[ANPRLicensePlate] ,[ETCTransactionGuid],[CardNumber],[BCCTransferStatus]
-				  ,ContextMarkId,PAN,CONV,IDVL,VehichleState,[IsSent],[TimeStamp]
+				  ,ContextMarkId,PAN,CONV,IDVL,VehichleState,[IsSent],[TimeStamp],''
 			FROM @TransBatch
 			ORDER BY TransactionID			
 		END	

@@ -8,8 +8,11 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
+	EXEC uspCheckMappingsExistence
+
     IF(NOT EXISTS(SELECT * FROM Transactions WHERE LaneCode = @LaneCode AND LaneTransSeqNr = @SequenceNumber))
-    BEGIN
+    BEGIN	
+
 		DECLARE @TransBatch udtTransactions
 		
 		IF(NOT EXISTS(SELECT * FROM StagingTransactions WHERE ln_id = @LaneCode AND tx_seq_nr = @SequenceNumber))

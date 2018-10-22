@@ -27,7 +27,7 @@ BEGIN
 			INSERT INTO MappingStaff
 			SELECT TOP 1 'NULL',StaffGUID
 			FROM [PCS].[dbo].Staff
-			WHERE LastName = 'Automated'
+			WHERE LastName = 'Automated' COLLATE DATABASE_DEFAULT
 		END
 		
 		IF(@Date IS NULL)
@@ -43,7 +43,7 @@ BEGIN
 		SELECT us_id
 		FROM StagingIncidents 
 		LEFT JOIN MappingStaff  ON StaffID = us_id
-		WHERE StaffGuid is null AND CAST(dt_generated AS DATE) = @Date
+		WHERE StaffGuid is null AND CAST(dt_generated AS DATE) = @Date 
 		GROUP BY us_id
 		
 		INSERT INTO @StaffIDs
@@ -67,20 +67,20 @@ BEGIN
 		INSERT INTO [PCS].[dbo].StaffRoles
 		SELECT NEWID(),Staff.StaffGUID,'882ABFF5-1FF9-46DC-B130-44EFF2A2337F',0
 		FROM [PCS].[dbo].Staff
-		LEFT JOIN MappingStaff  ON StaffID = LaneUserID
-		WHERE MappingStaff.StaffGuid IS NULL AND Staff.FirstName = 'Coll1'
+		LEFT JOIN MappingStaff  ON StaffID = LaneUserID COLLATE DATABASE_DEFAULT
+		WHERE MappingStaff.StaffGuid IS NULL AND Staff.FirstName = 'Coll1' COLLATE DATABASE_DEFAULT
 
 		INSERT INTO [PCS].[dbo].StaffPreviousPasswords
 		SELECT NEWID(),Staff.StaffGUID,GETDATE(),'67B07B168E30A1D8BB7644BE8B53011D47A04BE0','8CEB92C4-5628-47D2-B641-2668FEADA13A',DATEADD(MONTH,1,GETDATE())
 		FROM [PCS].[dbo].Staff
 		LEFT JOIN [PCS].[dbo].StaffPreviousPasswords  ON StaffPreviousPasswords.StaffGUID = Staff.StaffGUID 
-		WHERE StaffPreviousPasswords.StaffGuid IS NULL AND Staff.FirstName = 'Coll1'
+		WHERE StaffPreviousPasswords.StaffGuid IS NULL AND Staff.FirstName = 'Coll1' COLLATE DATABASE_DEFAULT
 
 		INSERT INTO MappingStaff
 		SELECT LaneUserID,Staff.StaffGUID
 		FROM [PCS].[dbo].Staff
-		LEFT JOIN MappingStaff ON MappingStaff.StaffID = Staff.LaneUserID
-		WHERE MappingStaff.StaffGuid IS NULL AND Staff.FirstName = 'Coll1'	
+		LEFT JOIN MappingStaff ON MappingStaff.StaffID = Staff.LaneUserID COLLATE DATABASE_DEFAULT
+		WHERE MappingStaff.StaffGuid IS NULL AND Staff.FirstName = 'Coll1' COLLATE DATABASE_DEFAULT
 		
 		SELECT  StaffID
 		FROM @DistinctStaffIDs

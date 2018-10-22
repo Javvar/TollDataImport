@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <SchemaComparison>
   <Version>10</Version>
+  <SourceModelProvider>
+    <ConnectionBasedModelProvider>
+      <ConnectionString>Data Source=localhost;Initial Catalog=TollDataImport;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=True</ConnectionString>
+    </ConnectionBasedModelProvider>
+  </SourceModelProvider>
+  <TargetModelProvider>
+    <ProjectBasedModelProvider>
+      <ProjectGuid>{619fdf8c-05b6-405b-afcf-6e41bbf4bbd2}</ProjectGuid>
+      <Name>Intertoll.DataImport.Database</Name>
+    </ProjectBasedModelProvider>
+  </TargetModelProvider>
   <SchemaCompareSettingsService>
     <SchemaCompareSettingsService>
       <PropertyElementName>
@@ -897,5 +908,48 @@
       <Name>dbo</Name>
       <Name>p_inc2</Name>
     </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingETCTransactions</Name>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingIncidents</Name>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingTimeSlices</Name>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingTransactions</Name>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlRoleMembership, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name></Name>
+      <ParentItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlRole, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+        <Name>db_owner</Name>
+      </ParentItem>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlUser, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>pcsuser</Name>
+    </SelectedItem>
   </ExcludedSourceElements>
+  <ExcludedTargetElements>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingETCTransactions</Name>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingIncidents</Name>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingTimeSlices</Name>
+    </SelectedItem>
+    <SelectedItem Type="Microsoft.Data.Tools.Schema.Sql.SchemaModel.SqlTable, Microsoft.Data.Tools.Schema.Sql, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Name>dbo</Name>
+      <Name>StagingTransactions</Name>
+    </SelectedItem>
+  </ExcludedTargetElements>
 </SchemaComparison>

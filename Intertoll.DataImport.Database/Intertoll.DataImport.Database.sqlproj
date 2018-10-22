@@ -124,6 +124,7 @@
     <Build Include="dbo\Functions\ufGetETCTransactionGuid.sql" />
     <Build Include="dbo\Tables\MappingRegisteredUsers.sql" />
     <Build Include="dbo\Stored Procedures\uspImportNewRegisteredUsers.sql" />
+    <Build Include="dbo\Stored Procedures\uspCheckMappingsExistence.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />
