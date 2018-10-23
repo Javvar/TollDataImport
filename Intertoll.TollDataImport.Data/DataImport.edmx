@@ -59,6 +59,15 @@
           <Property Name="IsSent" Type="bit" Nullable="false" />
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="MappingRegisteredUsers">
+          <Key>
+            <PropertyRef Name="Identifier" />
+          </Key>
+          <Property Name="Identifier" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AccountGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AccountUserGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Reported" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="Sessions">
           <Key>
             <PropertyRef Name="SessionGUID" />
@@ -175,9 +184,13 @@
         </Function>
         <Function Name="uspImportNewRegisteredUsers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="uspImportNewStaff" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uspSetRegisteredMappingReported" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Identifier" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="DataImportModelStoreContainer">
           <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Incidents" EntityType="Self.Incidents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MappingRegisteredUsers" EntityType="Self.MappingRegisteredUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StaffLogins" EntityType="Self.StaffLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
@@ -231,8 +244,12 @@
             <Parameter Name="SequenceNumber" Mode="In" Type="Int32" />
           </FunctionImport>
           <EntitySet Name="Transactions" EntityType="DataImportModel.Transaction" />
-          <FunctionImport Name="uspImportNewRegisteredUsers" ReturnType="Collection(String)" />
           <FunctionImport Name="uspGetNextTransactionBatch" ReturnType="Collection(DataImportModel.uspGetNextTransactionBatch_Result)" />
+          <FunctionImport Name="uspImportNewRegisteredUsers" />
+          <EntitySet Name="MappingRegisteredUsers" EntityType="DataImportModel.MappingRegisteredUser" />
+          <FunctionImport Name="uspSetRegisteredMappingReported">
+            <Parameter Name="Identifier" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -593,6 +610,15 @@
           <Property Type="String" Name="StaffID" Nullable="false" MaxLength="1" />
           <Property Type="String" Name="AccountIdentifier" Nullable="false" MaxLength="1" />
         </ComplexType>
+        <EntityType Name="MappingRegisteredUser">
+          <Key>
+            <PropertyRef Name="Identifier" />
+          </Key>
+          <Property Name="Identifier" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AccountGuid" Type="Guid" Nullable="false" />
+          <Property Name="AccountUserGuid" Type="Guid" Nullable="false" />
+          <Property Name="Reported" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -905,7 +931,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="uspImportNewRegisteredUsers" FunctionName="DataImportModel.Store.uspImportNewRegisteredUsers" />
           <FunctionImportMapping FunctionImportName="uspGetNextTransactionBatch" FunctionName="DataImportModel.Store.uspGetNextTransactionBatch">
             <ResultMapping>
               <ComplexTypeMapping TypeName="DataImportModel.uspGetNextTransactionBatch_Result">
@@ -966,6 +991,18 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="uspImportNewRegisteredUsers" FunctionName="DataImportModel.Store.uspImportNewRegisteredUsers" />
+          <EntitySetMapping Name="MappingRegisteredUsers">
+            <EntityTypeMapping TypeName="DataImportModel.MappingRegisteredUser">
+              <MappingFragment StoreEntitySet="MappingRegisteredUsers">
+                <ScalarProperty Name="Reported" ColumnName="Reported" />
+                <ScalarProperty Name="AccountUserGuid" ColumnName="AccountUserGuid" />
+                <ScalarProperty Name="AccountGuid" ColumnName="AccountGuid" />
+                <ScalarProperty Name="Identifier" ColumnName="Identifier" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspSetRegisteredMappingReported" FunctionName="DataImportModel.Store.uspSetRegisteredMappingReported" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

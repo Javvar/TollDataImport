@@ -33,6 +33,7 @@ namespace Intertoll.DataImport.Data
         public virtual DbSet<Incident> Incidents { get; set; }
         public virtual DbSet<Audit> Audits { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
+        public virtual DbSet<MappingRegisteredUser> MappingRegisteredUsers { get; set; }
     
         public virtual ObjectResult<uspGetLaneSession_Result> uspGetLaneSession(string laneCode)
         {
@@ -137,14 +138,23 @@ namespace Intertoll.DataImport.Data
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<uspGetNextTransactionBatch_Result>("uspGetTransaction", laneCodeParameter, sequenceNumberParameter);
         }
     
-        public virtual ObjectResult<string> uspImportNewRegisteredUsers()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("uspImportNewRegisteredUsers");
-        }
-    
         public virtual ObjectResult<uspGetNextTransactionBatch_Result> uspGetNextTransactionBatch()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<uspGetNextTransactionBatch_Result>("uspGetNextTransactionBatch");
+        }
+    
+        public virtual int uspImportNewRegisteredUsers()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspImportNewRegisteredUsers");
+        }
+    
+        public virtual int uspSetRegisteredMappingReported(string identifier)
+        {
+            var identifierParameter = identifier != null ?
+                new ObjectParameter("Identifier", identifier) :
+                new ObjectParameter("Identifier", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspSetRegisteredMappingReported", identifierParameter);
         }
     }
 }

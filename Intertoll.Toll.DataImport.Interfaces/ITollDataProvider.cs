@@ -6,8 +6,6 @@ namespace Intertoll.Toll.DataImport.Interfaces
 {
     public interface ITollDataProvider
     {
-        IList<string> ImportNewStaff();
-        IList<string> ImportNewRegisteredUsers();
         IList<ITollTransaction> GetNextTransactionBatch();
         IList<ITollTransaction> GetTransactionBatchGreaterThanTime(DateTime dateFrom);
         void SaveTransactions(IList<ITollTransaction> sentTransactions);
@@ -17,7 +15,6 @@ namespace Intertoll.Toll.DataImport.Interfaces
         IList<ITollIncident> GetIncidentBatchGreaterThanTime(DateTime dateFrom);
         void SaveIncidents(IList<ITollIncident> sentIncidents);
         ITollIncident GetIncident(string laneCode, int sequenceNumber);
-
 
         IList<ITollHourlyAudit> GetNextHourlyAuditBatch(DateTime? date);
 
@@ -33,6 +30,11 @@ namespace Intertoll.Toll.DataImport.Interfaces
         void InsertTransaction(ITollTransaction newTransaction);
         void InsertIncident(ITollIncident newIncident);
         void InsertAudit(ITollHourlyAudit newAudit);
+
+        IList<string> ImportNewStaff();
+        void ImportNewRegisteredUsers();
+        IList<string> GetNewFrequentUsersCreated();
+        void SetFrequentUserMappingAsReported(IList<string> freqUserMapping);
 
         void Save();
     }

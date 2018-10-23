@@ -44,6 +44,18 @@ namespace Intertoll.DataImport.Database.Sync
             });            
         }
 
+        private static void StartETCTransactionSyncProcess()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                while (run)
+                {
+                    ETCTransactionSyncProcess();
+                    Thread.Sleep(1000 * AppSettings.ETCTransactionsIntervalInSeconds);
+                }
+            });
+        }
+
         private static void TransactionSyncProcess()
         {
             Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
@@ -313,18 +325,6 @@ namespace Intertoll.DataImport.Database.Sync
             }
 
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
-        }
-
-        private static void StartETCTransactionSyncProcess()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                while (run)
-                {
-                    ETCTransactionSyncProcess();
-                    Thread.Sleep(1000 * AppSettings.ETCTransactionsIntervalInSeconds);
-                }
-            });           
         }
 
         private static void ETCTransactionSyncProcess()

@@ -57,16 +57,6 @@ namespace Intertoll.DataImport.Data.DataContext
 
         #region ITollDataProvider
 
-        public IList<string> ImportNewStaff()
-        {
-            return context.uspImportNewStaff().ToList();
-        }
-
-        public IList<string> ImportNewRegisteredUsers()
-        {
-            return context.uspImportNewRegisteredUsers().ToList();
-        }
-
         public IList<ITollTransaction> GetNextTransactionBatch()
         {
             var returnList = new List<ITollTransaction>();
@@ -248,7 +238,30 @@ namespace Intertoll.DataImport.Data.DataContext
         public void InsertAudit(ITollHourlyAudit newAudit)
         {
             context.Audits.Add(Mapper.Map<ITollHourlyAudit, Audit>(newAudit));
-        }        
+        }
+
+        public IList<string> ImportNewStaff()
+        {
+            return context.uspImportNewStaff().ToList();
+        }
+
+        public void ImportNewRegisteredUsers()
+        {
+            context.uspImportNewRegisteredUsers();
+        }
+
+        public IList<string> GetNewFrequentUsersCreated()
+        {
+            return context.MappingRegisteredUsers.Where(x => !x.Reported).Select(x => x.Identifier).ToList();
+        }
+
+        public void SetFrequentUserMappingAsReported(IList<string> freqUserMapping)
+        {
+            foreach (var identifier in freqUserMapping)
+            {
+                context.uspSetRegisteredMappingReported(identifier);
+            }
+        }
 
         #endregion
     }

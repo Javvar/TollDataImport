@@ -107,6 +107,9 @@
     <Compile Include="Incident.cs">
       <DependentUpon>DataImport.tt</DependentUpon>
     </Compile>
+    <Compile Include="MappingRegisteredUser.cs">
+      <DependentUpon>DataImport.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataContext\TollDataContext.cs" />
     <Compile Include="Session.cs">

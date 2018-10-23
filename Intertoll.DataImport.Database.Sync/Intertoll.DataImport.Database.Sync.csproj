@@ -44,8 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dll\IBM.Data.Informix.dll</HintPath>
     </Reference>
-    <Reference Include="Intertoll.EFDbContext.GenericWrapper">
-      <HintPath>..\..\Shared Libraries\Generic DBContext\Intertoll.EFDbContext.GenericWrapper.netfx4\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
+    <Reference Include="Intertoll.EFDbContext.GenericWrapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\TPS\Shared Libraries\Generic DBContext\Intertoll.EFDbContext.GenericWrapper.netfx4\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
     </Reference>
     <Reference Include="Intertoll.NLogger">
       <HintPath>..\..\Shared Libraries\Logging\build\bin\Release\net40\Intertoll.NLogger.dll</HintPath>
@@ -58,6 +59,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -76,6 +78,7 @@
     <Compile Include="ProjectInstaller.Designer.cs">
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="WinService.cs">
       <SubType>Component</SubType>
     </Compile>

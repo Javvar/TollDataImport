@@ -103,7 +103,7 @@ namespace Intertoll.DataImport.TransactionsJob
             {
                 var process = new Process();
                 string fileName = Path.Combine(Settings.CardDecryptionUtilityLocation, "DecryptUtil.exe");
-                string param = "/C" + "\"" + fileName + " " + CardsFileName + "\"";
+                string param = "/C" + "\" " + fileName + " " + CardsFileName + "\"";
 
                 var processStartInfo = new ProcessStartInfo("cmd.exe", param);
                 processStartInfo.UseShellExecute = false;
@@ -127,8 +127,7 @@ namespace Intertoll.DataImport.TransactionsJob
                 {
                     foreach (var cardNumber in cardNumbers)
                     {
-                        //var DecryptedPAN = File.ReadAllText(Path.Combine(Settings.CardDecryptionUtilityLocation, "PAN_" + cardNumber + ".txt"));
-                        var DecryptedPAN = "7079242001094280115";
+                        var DecryptedPAN = File.ReadAllText(Path.Combine(Settings.CardDecryptionUtilityLocation, "PAN_" + cardNumber + ".txt"));
 
                         foreach (var tranx in TransactionBatch.Where(x => x.PaymentDetail == cardNumber))
                         {
@@ -164,10 +163,14 @@ namespace Intertoll.DataImport.TransactionsJob
 
         public void CheckForUnImportedRegisteredUsers()
         {
-            var newUsers = DataProvider.ImportNewRegisteredUsers();
+            DataProvider.ImportNewRegisteredUsers();
 
-            if (newUsers.Any())
-                MailClient.SendMessage<NewStaffMailFormatter>("New registered users imported from old system", newUsers.Aggregate((x, y) => x + "|" + y));
+            var newIdentifierMappings = DataProvider.GetNewFrequentUsersCreated();
+
+            if (newIdentifierMappings.Any())
+                MailClient.SendMessage<NewStaffMailFormatter>("New registered users imported from old system", newIdentifierMappings.Aggregate((x, y) => x + "|" + y));
+
+            DataProvider.SetFrequentUserMappingAsReported(newIdentifierMappings);
         }
     }
 }

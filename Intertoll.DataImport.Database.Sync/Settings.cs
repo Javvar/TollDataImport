@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Intertoll.DataImport.Database.Sync.Data
+namespace Intertoll.DataImport.Database.Sync
 {
     public class AppSettings 
     {
@@ -11,22 +11,22 @@ namespace Intertoll.DataImport.Database.Sync.Data
 
         public static int TransactionSelectBatchSize
         {
-            get { return int.TryParse(ConfigurationManager.AppSettings["TransactionSelectBatchSize"], out var outVar) ? outVar : 100; }
+            get { return int.TryParse(ConfigurationManager.AppSettings["TransactionSelectBatchSize"], out var outVar) ? outVar : 500; }
         }
 
         public static int ETCTransactionSelectBatchSize
         {
-            get { return int.TryParse(ConfigurationManager.AppSettings["ETCTransactionSelectBatchSize"], out var outVar) ? outVar : 100; }
+            get { return int.TryParse(ConfigurationManager.AppSettings["ETCTransactionSelectBatchSize"], out var outVar) ? outVar : 500; }
         }
 
         public static int IncidentSelectBatchSize
         {
-            get { return int.TryParse(ConfigurationManager.AppSettings["IncidentSelectBatchSize"], out var outVar) ? outVar : 100; }
+            get { return int.TryParse(ConfigurationManager.AppSettings["IncidentSelectBatchSize"], out var outVar) ? outVar : 500; }
         }
 
         public static int TimesliceSelectBatchSize
         {
-            get { return int.TryParse(ConfigurationManager.AppSettings["TimesliceSelectBatchSize"], out var outVar) ? outVar : 100; }
+            get { return int.TryParse(ConfigurationManager.AppSettings["TimesliceSelectBatchSize"], out var outVar) ? outVar : 500; }
         }
 
         public static int TransactionsIntervalInSeconds

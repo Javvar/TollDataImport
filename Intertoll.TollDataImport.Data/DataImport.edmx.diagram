@@ -4,13 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2cf0456624c241a481d27e202c579fa3" Name="Diagram1" ZoomLevel="46">
+      <Diagram DiagramId="2cf0456624c241a481d27e202c579fa3" Name="Diagram1" ZoomLevel="58">
         <EntityTypeShape EntityType="DataImportModel.Session" Width="1.5" PointX="4.75" PointY="0.75" />
         <EntityTypeShape EntityType="DataImportModel.StaffLogin" Width="1.5" PointX="4.75" PointY="4.75" />
         <EntityTypeShape EntityType="DataImportModel.Incident" Width="1.5" PointX="7.375" PointY="0.75" />
         <AssociationConnector Association="DataImportModel.FK_Sessions_StaffLogins" />
         <EntityTypeShape EntityType="DataImportModel.Audit" Width="1.5" PointX="7.375" PointY="6.75" />
         <EntityTypeShape EntityType="DataImportModel.Transaction" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="DataImportModel.MappingRegisteredUser" Width="1.5" PointX="3.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
