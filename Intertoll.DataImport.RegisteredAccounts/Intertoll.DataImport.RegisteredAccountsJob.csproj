@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{86B5A024-A567-4647-A1EE-E6D6FECD67FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Intertoll.DataImport.RegisteredAccountsJob</RootNamespace>
+    <AssemblyName>Intertoll.DataImport.RegisteredAccountsJob</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator, Version=2.0.3.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.EFDbContext.GenericWrapper">
+      <HintPath>..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.NLogger">
+      <HintPath>..\Intertoll.DataImport.TransactionsJob\bin\Debug\Intertoll.NLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\Intertoll.DataImport.TransactionsJob\bin\Debug\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended">
+      <HintPath>..\Intertoll.DataImport.TransactionsJob\bin\Debug\NLog.Extended.dll</HintPath>
+    </Reference>
+    <Reference Include="Quartz">
+      <HintPath>..\Intertoll.DataImport.TransactionsJob\bin\Debug\Quartz.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Configuration, Version=5.2.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.8.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception, Version=5.5.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Interception.Configuration, Version=5.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.ServiceLocation, Version=2.1.2.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.8.5\lib\net45\Unity.ServiceLocation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RegisteredUsersJob.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Intertoll.DataImport.ISchedulable\Intertoll.DataImport.ISchedulable.csproj">
+      <Project>{94F645C7-B9F6-42D1-AABB-C9B471B43B5E}</Project>
+      <Name>Intertoll.DataImport.ISchedulable</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Intertoll.DataImport.Mail\Intertoll.DataImport.Mail.csproj">
+      <Project>{5D227737-76B8-46E4-92CE-C368397C36A7}</Project>
+      <Name>Intertoll.DataImport.Mail</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Intertoll.Toll.DataImport.Interfaces\Intertoll.Toll.DataImport.Interfaces.csproj">
+      <Project>{D80E6648-82CE-44D6-9EC1-B0D4E63F8B74}</Project>
+      <Name>Intertoll.Toll.DataImport.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -41,7 +41,6 @@ namespace Intertoll.DataImport.TransactionsJob
             try
             {
                 CheckForUnImportedStaff();
-                CheckForUnImportedRegisteredUsers();
 
                 var transactionBatch = DataProvider.GetNextTransactionBatch();
                 CardsFileName = Path.Combine(Settings.CardDecryptionUtilityLocation, "cards_" + transactionBatch.GetHashCode() + ".txt");
@@ -159,19 +158,7 @@ namespace Intertoll.DataImport.TransactionsJob
 
             if (newstaff.Any())
                 MailClient.SendMessage<NewStaffMailFormatter>("New staff imported from old system", newstaff.Aggregate((x, y) => x + "|" + y));
-        }
-
-        public void CheckForUnImportedRegisteredUsers()
-        {
-            DataProvider.ImportNewRegisteredUsers();
-
-            var newIdentifierMappings = DataProvider.GetNewFrequentUsersCreated();
-
-            if (newIdentifierMappings.Any())
-                MailClient.SendMessage<NewStaffMailFormatter>("New registered users imported from old system", newIdentifierMappings.Aggregate((x, y) => x + "|" + y));
-
-            DataProvider.SetFrequentUserMappingAsReported(newIdentifierMappings);
-        }
+        }        
     }
 }
 

@@ -25,6 +25,9 @@ namespace Intertoll.DataImport.WinService.Scheduler
             var hourlyJob = new HourlyJob.HourlyJob(null, null);
             hourlyJob.Schedule(Scheduler);
 
+            var registeredAccJob = new RegisteredAccountsJob.RegisteredUsersJob(null, null, null);
+            registeredAccJob.Schedule(Scheduler);
+
             //var wdJob = new WatchdogJob.WatchdogJob(null, null);
             //wdJob.Schedule(Scheduler);
         }

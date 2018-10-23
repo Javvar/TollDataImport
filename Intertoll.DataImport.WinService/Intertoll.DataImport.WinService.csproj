@@ -172,6 +172,10 @@
       <Project>{5D227737-76B8-46E4-92CE-C368397C36A7}</Project>
       <Name>Intertoll.DataImport.Mail</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Intertoll.DataImport.RegisteredAccounts\Intertoll.DataImport.RegisteredAccountsJob.csproj">
+      <Project>{86b5a024-a567-4647-a1ee-e6d6fecd67fd}</Project>
+      <Name>Intertoll.DataImport.RegisteredAccountsJob</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Intertoll.DataImport.SessionsJob\Intertoll.DataImport.SessionsJob.csproj">
       <Project>{E504DF43-9578-4DD1-84D5-83A95323DEF3}</Project>
       <Name>Intertoll.DataImport.SessionsJob</Name>
