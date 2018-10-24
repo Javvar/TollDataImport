@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
 using Intertoll.NLogger;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace Intertoll.DataImport.Database.Sync
 {
@@ -89,11 +91,12 @@ namespace Intertoll.DataImport.Database.Sync
                 {
                     //RegisteredAccountsProcess();
                     //RegisteredAccountDetailsProcess();
-                    RegisteredAccountsUsers();
+                    //RegisteredAccountUsers();
+                    DecryptIdentifiers();
                     Thread.Sleep(1000 * AppSettings.RegisteredAccountsIntervalInSeconds);
                 }
             });
-        }
+        }        
 
         private static void TransactionSyncProcess()
         {
@@ -596,7 +599,7 @@ namespace Intertoll.DataImport.Database.Sync
                     using (var dataContext = new DatabaseSyncDataContext())
                     {
                         IfxCommand command = connection.CreateCommand();
-                        command.CommandText = $"SELECT FIRST 1000 * FROM c_account ";
+                        command.CommandText = $"SELECT FIRST {AppSettings.RegisteredAccountBatchSize} * FROM c_account ";
 
                         var lastAcc = dataContext.ImportedAccounts.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.ac_reg_dt)
                                                                                                  .ThenByDescending(y => y.ac_nr));
@@ -667,7 +670,7 @@ namespace Intertoll.DataImport.Database.Sync
                     using (var dataContext = new DatabaseSyncDataContext())
                     {
                         IfxCommand command = connection.CreateCommand();
-                        command.CommandText = $"SELECT FIRST 1000 * FROM c_acc_det ";
+                        command.CommandText = $"SELECT FIRST {AppSettings.RegisteredAccountDetailsBatchSize} * FROM c_acc_det ";
 
                         var lastAcc = dataContext.ImportedAccountDetails.FirstOrDefault(orderBy: x => x.OrderByDescending((y => y.ac_nr)));
 
@@ -727,7 +730,7 @@ namespace Intertoll.DataImport.Database.Sync
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
-        private static void RegisteredAccountsUsers()
+        private static void RegisteredAccountUsers()
         {
             Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
 
@@ -738,7 +741,7 @@ namespace Intertoll.DataImport.Database.Sync
                     using (var dataContext = new DatabaseSyncDataContext())
                     {
                         IfxCommand command = connection.CreateCommand();
-                        command.CommandText = $"SELECT FIRST 1000 * FROM h_reg_id ";
+                        command.CommandText = $"SELECT FIRST {AppSettings.RegisteredAccountUsersBatchSize} * FROM h_reg_id ";
 
                         var lastAccId = dataContext.ImportedAccountIdentifiers.FirstOrDefault(orderBy: x => x.OrderByDescending((y => y.his_dt)));
 
@@ -796,6 +799,21 @@ namespace Intertoll.DataImport.Database.Sync
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
+        private static void DecryptIdentifiers()
+        {
+            using (var dataContext = new DatabaseSyncDataContext())
+            {
+                var newlyImportedIdentifiers = dataContext.ImportedAccountIdentifiers.Where(x => x.FullIdentifier == null);
+
+                var decryptedBatch = DecryptIdentifiers(newlyImportedIdentifiers.Select(x => x.ri_id).ToList());
+
+                foreach (var identifier in newlyImportedIdentifiers)
+                    identifier.FullIdentifier = decryptedBatch[identifier.ri_id];
+
+                dataContext.Save();
+            }                
+        }
+
         #endregion
 
         private static DateTime? ExtractDatetimeValue(object value)
@@ -842,6 +860,73 @@ namespace Intertoll.DataImport.Database.Sync
                 //todo:log
                 return null;
             }
+        }
+
+        private static Dictionary<string,string> DecryptIdentifiers(IList<string> batch)
+        {
+            Dictionary<string, string> retDic = new Dictionary<string, string>();
+
+            var identifiersFileName = Path.Combine(AppSettings.IdentifiersDecryptionUtilityLocation, "cards_" + batch.GetHashCode() + ".txt");
+
+            if (!batch.Any())
+                return retDic;
+
+            File.WriteAllLines(identifiersFileName, batch);
+
+            try
+            {
+                var process = new Process();
+                string fileName = Path.Combine(AppSettings.IdentifiersDecryptionUtilityLocation, "DecryptUtil.exe");
+                string param = "/C" + "\" " + fileName + " " + identifiersFileName + "\"";
+
+                var processStartInfo = new ProcessStartInfo("cmd.exe", param);
+                processStartInfo.UseShellExecute = false;
+                processStartInfo.WorkingDirectory = AppSettings.IdentifiersDecryptionUtilityLocation;
+                processStartInfo.RedirectStandardOutput = true;
+                processStartInfo.RedirectStandardError = true;
+                processStartInfo.CreateNoWindow = true;
+
+                process.StartInfo = processStartInfo;
+                process.Start();
+
+                int RetryCount = 120;
+
+                while (!process.HasExited && RetryCount > 0)
+                {
+                    RetryCount--;
+                    Thread.Sleep(1000);
+                }
+
+                if (RetryCount > 0)
+                {
+                    foreach (var encryptedPan in batch)
+                    {
+                        var decryptedPAN = File.ReadAllText(Path.Combine(AppSettings.IdentifiersDecryptionUtilityLocation, "PAN_" + encryptedPan + ".txt"));
+                        retDic[encryptedPan] = Regex.Replace(decryptedPAN, @"\t|\n|\r", "");
+                    }
+                }
+
+                string filesToDelete = @"PAN_*";
+                string[] fileList = Directory.GetFiles(AppSettings.IdentifiersDecryptionUtilityLocation, filesToDelete);
+
+                foreach (string file in fileList)
+                {
+                    if (File.Exists(file))
+                        File.Delete(file);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+                Log.LogTrace(ex.Message + ". Check error log for more details.");
+            }
+            finally
+            {
+                if (!string.IsNullOrEmpty(identifiersFileName) && File.Exists(identifiersFileName))
+                    File.Delete(identifiersFileName);
+            }
+
+            return retDic;
         }
     }
 }

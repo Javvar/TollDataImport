@@ -22,5 +22,6 @@ namespace Intertoll.DataImport.Database.Sync.Data
         public Nullable<System.DateTime> his_dt { get; set; }
         public string his_us_id { get; set; }
         public string his_change1 { get; set; }
+        public string FullIdentifier { get; set; }
     }
 }

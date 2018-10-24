@@ -1,9 +1,16 @@
 ﻿using System.Configuration;
+using System.IO;
+using System.Reflection;
 
 namespace Intertoll.DataImport.Database.Sync
 {
     public class AppSettings 
     {
+        public static string IdentifiersDecryptionUtilityLocation
+        {
+            get { return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "AccountIdentifiers"); }
+        }
+
         public static bool CheckDuplicatesOnExistingData
         {
             get { return bool.TryParse(ConfigurationManager.AppSettings["CheckDuplicatesOnExistingData"],out var outVar) ? outVar : false; }
@@ -52,6 +59,21 @@ namespace Intertoll.DataImport.Database.Sync
         public static int RegisteredAccountsIntervalInSeconds
         {
             get { return int.TryParse(ConfigurationManager.AppSettings["RegisteredAccountsIntervalInSeconds"], out var outVar) ? outVar : 10; }
+        }
+
+        public static int RegisteredAccountBatchSize
+        {
+            get { return int.TryParse(ConfigurationManager.AppSettings["RegisteredAccountBatchSize"], out var outVar) ? outVar : 500; }
+        }
+
+        public static int RegisteredAccountDetailsBatchSize
+        {
+            get { return int.TryParse(ConfigurationManager.AppSettings["RegisteredAccountDetailsBatchSize"], out var outVar) ? outVar : 500; }
+        }
+
+        public static int RegisteredAccountUsersBatchSize
+        {
+            get { return int.TryParse(ConfigurationManager.AppSettings["RegisteredAccountUsersBatchSize"], out var outVar) ? outVar : 500; }
         }
     }
 }

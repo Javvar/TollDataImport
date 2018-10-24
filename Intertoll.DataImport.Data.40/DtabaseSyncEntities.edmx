@@ -33,6 +33,7 @@
           <Property Name="his_dt" Type="datetime" />
           <Property Name="his_us_id" Type="varchar" MaxLength="31" />
           <Property Name="his_change1" Type="varchar" MaxLength="256" />
+          <Property Name="FullIdentifier" Type="varchar" MaxLength="76" />
         </EntityType>
         <EntityType Name="StagingAccounts">
           <Key>
@@ -569,6 +570,7 @@
           <Property Name="his_dt" Type="DateTime" Precision="3" />
           <Property Name="his_us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
           <Property Name="his_change1" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="FullIdentifier" Type="String" MaxLength="76" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="StagingAccount">
           <Key>
@@ -846,6 +848,7 @@
           <EntitySetMapping Name="StagingAccountIdentifiers">
             <EntityTypeMapping TypeName="DatabaseSyncModel.StagingAccountIdentifier">
               <MappingFragment StoreEntitySet="StagingAccountIdentifiers">
+                <ScalarProperty Name="FullIdentifier" ColumnName="FullIdentifier" />
                 <ScalarProperty Name="his_change1" ColumnName="his_change1" />
                 <ScalarProperty Name="his_us_id" ColumnName="his_us_id" />
                 <ScalarProperty Name="his_dt" ColumnName="his_dt" />

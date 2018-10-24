@@ -125,6 +125,10 @@
     <Build Include="dbo\Tables\MappingRegisteredUsers.sql" />
     <Build Include="dbo\Stored Procedures\uspImportNewRegisteredUsers.sql" />
     <Build Include="dbo\Stored Procedures\uspCheckMappingsExistence.sql" />
+    <Build Include="dbo\Tables\StagingAccounts.sql" />
+    <Build Include="dbo\Tables\StagingAccountIdentifiers.sql" />
+    <Build Include="dbo\Tables\StagingAccountDetails.sql" />
+    <Build Include="dbo\Stored Procedures\uspSetRegisteredMappingReported.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />
