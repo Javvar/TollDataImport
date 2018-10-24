@@ -89,10 +89,11 @@ namespace Intertoll.DataImport.Database.Sync
             {
                 while (run)
                 {
-                    //RegisteredAccountsProcess();
-                    //RegisteredAccountDetailsProcess();
-                    //RegisteredAccountUsers();
+                    RegisteredAccountsProcess();
+                    RegisteredAccountDetailsProcess();
+                    RegisteredAccountUsers();
                     DecryptIdentifiers();
+
                     Thread.Sleep(1000 * AppSettings.RegisteredAccountsIntervalInSeconds);
                 }
             });

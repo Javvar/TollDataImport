@@ -19,15 +19,15 @@ namespace Intertoll.DataImport.Mail
 
         public void SendMessage<T>(string subject, string message) where T : IMailFormatter
         {
-            Log.LogInfoMessage(message);
+            //Log.LogInfoMessage(message);
 
-            var Formatter = Container.Resolve<T>();
-            var FormattedMessage = Formatter.Format(message, '|');
+            //var Formatter = Container.Resolve<T>();
+            //var FormattedMessage = Formatter.Format(message, '|');
 
-            using (var client = new SMTPMailClient(Settings.ServiceNotificationsMailServer, 25, SecureSocketOptions.None))
-            {
-                client.SendHtmlMessage(Settings.ServiceServiceSender, Settings.ServiceNotificationList,subject, FormattedMessage);
-            }
+            //using (var client = new SMTPMailClient(Settings.ServiceNotificationsMailServer, 25, SecureSocketOptions.None))
+            //{
+            //    client.SendHtmlMessage(Settings.ServiceServiceSender, Settings.ServiceNotificationList,subject, FormattedMessage);
+            //}
         }
     }
 }
