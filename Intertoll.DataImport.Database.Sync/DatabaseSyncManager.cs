@@ -23,7 +23,8 @@ namespace Intertoll.DataImport.Database.Sync
             StartIncidentSyncProcess();
             StartETCTransactionSyncProcess();
             StartTimesliceSyncProcess();
-        }
+            StartRegisteredAccountsProcess();
+        }        
 
         public static void EndSynchingProcess()
         {
@@ -52,6 +53,44 @@ namespace Intertoll.DataImport.Database.Sync
                 {
                     ETCTransactionSyncProcess();
                     Thread.Sleep(1000 * AppSettings.ETCTransactionsIntervalInSeconds);
+                }
+            });
+        }
+
+        private static void StartIncidentSyncProcess()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                while (run)
+                {
+                    IncidentSyncProcess();
+                    Thread.Sleep(1000 * AppSettings.IncidentsIntervalInSeconds);
+                }
+            });
+        }
+
+        private static void StartTimesliceSyncProcess()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                while (run)
+                {
+                    TimesliceSyncProcess();
+                    Thread.Sleep(1000 * AppSettings.TimeslicesIntervalInSeconds);
+                }
+            });
+        }
+
+        private static void StartRegisteredAccountsProcess()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                while (run)
+                {
+                    //RegisteredAccountsProcess();
+                    //RegisteredAccountDetailsProcess();
+                    RegisteredAccountsUsers();
+                    Thread.Sleep(1000 * AppSettings.RegisteredAccountsIntervalInSeconds);
                 }
             });
         }
@@ -204,129 +243,6 @@ namespace Intertoll.DataImport.Database.Sync
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
-        private static void StartIncidentSyncProcess()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                while (run)
-                {
-                    IncidentSyncProcess();
-                    Thread.Sleep(1000 * AppSettings.IncidentsIntervalInSeconds);
-                }
-            });            
-        }
-
-        private static void IncidentSyncProcess()
-        {
-            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
-
-            try
-            {
-                using (IfxConnection connection = EstablishConnection())
-                {
-                    using (var dataContext = new DatabaseSyncDataContext())
-                    {
-                        IfxCommand command = connection.CreateCommand();
-                        command.CommandText = $"SELECT FIRST {AppSettings.IncidentSelectBatchSize} * FROM p_inc ";
-
-                        var lastIncident = dataContext.ImportedIncidents.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_generated));
-
-                        if (lastIncident != null)
-                        {
-                            command.CommandText += string.Format("WHERE dt_generated > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
-                                                                   lastIncident.dt_generated?.ToString("yyyy-MM-dd HH:mm:ss"));
-                        }
-
-                        command.CommandText = command.CommandText + "ORDER BY dt_generated";
-
-                        IfxDataReader dataReader = command.ExecuteReader();
-
-                        var processedIncs = new List<string>();
-
-                        while (dataReader.Read())
-                        {
-                            var inc = new StagingIncident();
-
-                            try
-                            {
-                                int i = 0;
-                                inc.pl_id = dataReader[i].ToString().Trim();
-                                inc.ln_id = dataReader[++i].ToString().Trim();
-                                inc.dt_generated = ExtractDatetimeValue(dataReader[++i]);
-
-                                inc.in_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt) ? outInt :
-                                                                throw new InvalidDataException("Invalid incident sequence number.");
-
-                                inc.ir_type = dataReader[++i].ToString().Trim();
-                                inc.ir_subtype = dataReader[++i].ToString().Trim();
-                                inc.tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.us_id = dataReader[++i].ToString().Trim();
-                                inc.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.vg_group = dataReader[++i].ToString().Trim();
-                                inc.mvc = dataReader[++i].ToString().Trim();
-                                inc.avc = dataReader[++i].ToString().Trim();
-                                inc.svc = dataReader[++i].ToString().Trim();
-                                inc.er_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.pm_id = dataReader[++i].ToString().Trim();
-                                inc.card_nr = dataReader[++i].ToString().Trim();
-                                inc.mask_nr = dataReader[++i].ToString().Trim();
-                                inc.ca_id = dataReader[++i].ToString().Trim();
-                                inc.ct_id = dataReader[++i].ToString().Trim();
-                                inc.tx_indic = dataReader[++i].ToString().Trim();
-                                inc.lm_id = dataReader[++i].ToString().Trim();
-                                inc.as_id = dataReader[++i].ToString().Trim();
-                                inc.rep_indic = dataReader[++i].ToString().Trim();
-                                inc.rd_id = dataReader[++i].ToString().Trim();
-                                inc.maint_indic = dataReader[++i].ToString().Trim();
-                                inc.req_indic = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
-                                inc.in_amt = ExtractBCDValue(dataReader, ++i);
-                                inc.in_data = dataReader[++i].ToString().Trim();
-                                inc.tg_bl_id = dataReader[++i].ToString().Trim();
-                                inc.tg_mfg_id = dataReader[++i].ToString().Trim();
-                                inc.tg_card_type = dataReader[++i].ToString().Trim();
-                                inc.tg_reader = dataReader[++i].ToString().Trim();
-                                inc.tg_tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.avc_in_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.avc_in_type_id = ExtractIntegerValue(dataReader[++i].ToString());
-                                inc.avc_dt_generated = ExtractDatetimeValue(dataReader[++i]);
-
-                                if (!processedIncs.Any(x => x == inc.ln_id + inc.in_seq_nr))
-                                {
-
-                                    if ((AppSettings.CheckDuplicatesOnExistingData &&
-                                         !dataContext.ImportedIncidents.Any(x => x.ln_id == inc.ln_id && x.tx_seq_nr == inc.in_seq_nr)) ||
-                                         !AppSettings.CheckDuplicatesOnExistingData)
-                                    {
-                                        dataContext.ImportedIncidents.Insert(inc);
-                                    }
-                                }
-
-                                processedIncs.Add(inc.ln_id + inc.in_seq_nr);
-
-                            }
-                            catch (Exception ex)
-                            {
-                                Log.LogException(ex);
-                            }
-                        }
-
-                        dataContext.Save();
-                        dataReader.Close();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.LogException(ex);
-            }
-
-            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
-        }
-
         private static void ETCTransactionSyncProcess()
         {
             Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
@@ -448,16 +364,115 @@ namespace Intertoll.DataImport.Database.Sync
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
-        private static void StartTimesliceSyncProcess()
+        private static void IncidentSyncProcess()
         {
-            Task.Factory.StartNew(() =>
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
             {
-                while (run)
+                using (IfxConnection connection = EstablishConnection())
                 {
-                    TimesliceSyncProcess();
-                    Thread.Sleep(1000 * AppSettings.TimeslicesIntervalInSeconds);
+                    using (var dataContext = new DatabaseSyncDataContext())
+                    {
+                        IfxCommand command = connection.CreateCommand();
+                        command.CommandText = $"SELECT FIRST {AppSettings.IncidentSelectBatchSize} * FROM p_inc ";
+
+                        var lastIncident = dataContext.ImportedIncidents.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.dt_generated));
+
+                        if (lastIncident != null)
+                        {
+                            command.CommandText += string.Format("WHERE dt_generated > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   lastIncident.dt_generated?.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+
+                        command.CommandText = command.CommandText + "ORDER BY dt_generated";
+
+                        IfxDataReader dataReader = command.ExecuteReader();
+
+                        var processedIncs = new List<string>();
+
+                        while (dataReader.Read())
+                        {
+                            var inc = new StagingIncident();
+
+                            try
+                            {
+                                int i = 0;
+                                inc.pl_id = dataReader[i].ToString().Trim();
+                                inc.ln_id = dataReader[++i].ToString().Trim();
+                                inc.dt_generated = ExtractDatetimeValue(dataReader[++i]);
+
+                                inc.in_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt) ? outInt :
+                                                                throw new InvalidDataException("Invalid incident sequence number.");
+
+                                inc.ir_type = dataReader[++i].ToString().Trim();
+                                inc.ir_subtype = dataReader[++i].ToString().Trim();
+                                inc.tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.ts_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.us_id = dataReader[++i].ToString().Trim();
+                                inc.ft_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.pg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.cg_group = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.vg_group = dataReader[++i].ToString().Trim();
+                                inc.mvc = dataReader[++i].ToString().Trim();
+                                inc.avc = dataReader[++i].ToString().Trim();
+                                inc.svc = dataReader[++i].ToString().Trim();
+                                inc.er_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.pm_id = dataReader[++i].ToString().Trim();
+                                inc.card_nr = dataReader[++i].ToString().Trim();
+                                inc.mask_nr = dataReader[++i].ToString().Trim();
+                                inc.ca_id = dataReader[++i].ToString().Trim();
+                                inc.ct_id = dataReader[++i].ToString().Trim();
+                                inc.tx_indic = dataReader[++i].ToString().Trim();
+                                inc.lm_id = dataReader[++i].ToString().Trim();
+                                inc.as_id = dataReader[++i].ToString().Trim();
+                                inc.rep_indic = dataReader[++i].ToString().Trim();
+                                inc.rd_id = dataReader[++i].ToString().Trim();
+                                inc.maint_indic = dataReader[++i].ToString().Trim();
+                                inc.req_indic = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.ts_dt_started = ExtractDatetimeValue(dataReader[++i]);
+                                inc.in_amt = ExtractBCDValue(dataReader, ++i);
+                                inc.in_data = dataReader[++i].ToString().Trim();
+                                inc.tg_bl_id = dataReader[++i].ToString().Trim();
+                                inc.tg_mfg_id = dataReader[++i].ToString().Trim();
+                                inc.tg_card_type = dataReader[++i].ToString().Trim();
+                                inc.tg_reader = dataReader[++i].ToString().Trim();
+                                inc.tg_tx_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.avc_in_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.avc_in_type_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                inc.avc_dt_generated = ExtractDatetimeValue(dataReader[++i]);
+
+                                if (!processedIncs.Any(x => x == inc.ln_id + inc.in_seq_nr))
+                                {
+
+                                    if ((AppSettings.CheckDuplicatesOnExistingData &&
+                                         !dataContext.ImportedIncidents.Any(x => x.ln_id == inc.ln_id && x.tx_seq_nr == inc.in_seq_nr)) ||
+                                         !AppSettings.CheckDuplicatesOnExistingData)
+                                    {
+                                        dataContext.ImportedIncidents.Insert(inc);
+                                    }
+                                }
+
+                                processedIncs.Add(inc.ln_id + inc.in_seq_nr);
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogException(ex);
+                            }
+                        }
+
+                        dataContext.Save();
+                        dataReader.Close();
+                    }
                 }
-            });            
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
         private static void TimesliceSyncProcess()
@@ -570,12 +585,226 @@ namespace Intertoll.DataImport.Database.Sync
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }
 
+        private static void RegisteredAccountsProcess()
+        {
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
+            {
+                using (IfxConnection connection = EstablishConnection())
+                {
+                    using (var dataContext = new DatabaseSyncDataContext())
+                    {
+                        IfxCommand command = connection.CreateCommand();
+                        command.CommandText = $"SELECT FIRST 1000 * FROM c_account ";
+
+                        var lastAcc = dataContext.ImportedAccounts.FirstOrDefault(orderBy: x => x.OrderByDescending(y => y.ac_reg_dt)
+                                                                                                 .ThenByDescending(y => y.ac_nr));
+
+                        if (lastAcc != null)
+                        {
+                            command.CommandText += string.Format("WHERE ac_nr > '{0}'", lastAcc.ac_nr);
+                        }
+
+                        command.CommandText = command.CommandText + " ORDER BY ac_nr";
+
+                        IfxDataReader dataReader = command.ExecuteReader();
+
+                        var processedAccounts = new List<string>();
+
+                        while (dataReader.Read())
+                        {
+                            var acc = new StagingAccount();
+
+                            try
+                            {
+                                int i = 0;
+
+                                acc.ac_nr = dataReader[i].ToString().Trim();
+                                acc.ag_id = ExtractIntegerValue(dataReader[++i].ToString().Trim());
+                                acc.rs_id = dataReader[++i].ToString().Trim();
+                                acc.ac_holder = dataReader[++i].ToString().Trim();
+                                acc.ac_reg_dt = ExtractDatetimeValue(dataReader[++i].ToString().Trim());
+                                acc.ac_min_bal = ExtractBCDValue(dataReader, ++i);
+                                acc.ac_term_dt = ExtractDatetimeValue(dataReader[++i].ToString().Trim());
+                                acc.ac_term_rule = dataReader[++i].ToString().Trim();
+                                acc.ac_link_rule = dataReader[++i].ToString().Trim();
+                                acc.la_id = dataReader[++i].ToString().Trim();
+
+                                if (!processedAccounts.Any(x => x == acc.ac_nr))
+                                    if (!dataContext.ImportedAccounts.Any(x => x.ac_nr == acc.ac_nr))
+                                        dataContext.ImportedAccounts.Insert(acc);
+
+                                processedAccounts.Add(acc.ac_nr);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogException(ex);
+                            }
+                        }
+
+                        dataContext.Save();
+                        dataReader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+        }
+
+        private static void RegisteredAccountDetailsProcess()
+        {
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
+            {
+                using (IfxConnection connection = EstablishConnection())
+                {
+                    using (var dataContext = new DatabaseSyncDataContext())
+                    {
+                        IfxCommand command = connection.CreateCommand();
+                        command.CommandText = $"SELECT FIRST 1000 * FROM c_acc_det ";
+
+                        var lastAcc = dataContext.ImportedAccountDetails.FirstOrDefault(orderBy: x => x.OrderByDescending((y => y.ac_nr)));
+
+                        if (lastAcc != null)
+                        {
+                            command.CommandText += string.Format("WHERE ac_nr > '{0}'", lastAcc.ac_nr);
+                        }
+
+                        command.CommandText = command.CommandText + " ORDER BY ac_nr";
+
+                        IfxDataReader dataReader = command.ExecuteReader();
+
+                        var processedAccountDetailss = new List<string>();
+
+                        while (dataReader.Read())
+                        {
+                            var acc = new StagingAccountDetail();
+
+                            try
+                            {
+                                int i = 0;
+
+                                acc.ac_nr = dataReader[i].ToString().Trim();
+                                acc.ac_title = dataReader[++i].ToString().Trim();
+                                acc.ac_initial = dataReader[++i].ToString().Trim();
+                                acc.ac_surname = dataReader[++i].ToString().Trim();
+                                acc.ac_home_ph = dataReader[++i].ToString().Trim();
+                                acc.ac_work_ph = dataReader[++i].ToString().Trim();
+                                acc.ac_cell_ph = dataReader[++i].ToString().Trim();
+                                acc.ac_fax_ph = dataReader[++i].ToString().Trim();
+                                acc.ac_email = dataReader[++i].ToString().Trim();
+                                acc.at_id = dataReader[++i].ToString().Trim();
+                                acc.ac_password = dataReader[++i].ToString().Trim();
+
+                                if (!processedAccountDetailss.Any(x => x == acc.ac_nr))
+                                    if (!dataContext.ImportedAccountDetails.Any(x => x.ac_nr == acc.ac_nr))
+                                        dataContext.ImportedAccountDetails.Insert(acc);
+
+                                processedAccountDetailss.Add(acc.ac_nr);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogException(ex);
+                            }
+                        }
+
+                        dataContext.Save();
+                        dataReader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+        }
+
+        private static void RegisteredAccountsUsers()
+        {
+            Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            try
+            {
+                using (IfxConnection connection = EstablishConnection())
+                {
+                    using (var dataContext = new DatabaseSyncDataContext())
+                    {
+                        IfxCommand command = connection.CreateCommand();
+                        command.CommandText = $"SELECT FIRST 1000 * FROM h_reg_id ";
+
+                        var lastAccId = dataContext.ImportedAccountIdentifiers.FirstOrDefault(orderBy: x => x.OrderByDescending((y => y.his_dt)));
+
+                        if (lastAccId != null)
+                        {
+                            command.CommandText += string.Format("WHERE his_dt >= TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   lastAccId.his_dt?.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+
+                        command.CommandText = command.CommandText + " ORDER BY his_dt";
+
+                        IfxDataReader dataReader = command.ExecuteReader();
+
+                        var processedAccountDetailss = new List<string>();
+
+                        while (dataReader.Read())
+                        {
+                            var acc = new StagingAccountIdentifier(); 
+
+                            try
+                            {
+                                int i = 0;
+
+                                acc.ac_nr = dataReader[i].ToString().Trim();
+                                acc.ri_id = dataReader[++i].ToString().Trim();
+                                acc.mask_nr = dataReader[++i].ToString().Trim();
+                                acc.it_id = dataReader[++i].ToString().Trim();
+                                acc.his_action = dataReader[++i].ToString().Trim();
+                                acc.his_dt = ExtractDatetimeValue(dataReader[++i].ToString().Trim());
+                                acc.his_us_id = dataReader[++i].ToString().Trim();
+                                acc.his_change1 = dataReader[++i].ToString().Trim();
+
+                                if (!processedAccountDetailss.Any(x => x == acc.ri_id))
+                                    if (!dataContext.ImportedAccountIdentifiers.Any(x => x.ri_id == acc.ri_id))
+                                        dataContext.ImportedAccountIdentifiers.Insert(acc);
+
+                                processedAccountDetailss.Add(acc.ri_id);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.LogException(ex);
+                            }
+                        }
+
+                        dataContext.Save();
+                        dataReader.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+            }
+
+            Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+        }
+
         #endregion
 
         private static DateTime? ExtractDatetimeValue(object value)
         {
             if (value is DateTime)
                 return (DateTime?)value;
+
+            if (value is string && DateTime.TryParse(value.ToString(),out var outdt))
+                return outdt;
 
             return null;
         }

@@ -70,6 +70,15 @@
       <DependentUpon>DtabaseSyncEntities.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StagingAccount.cs">
+      <DependentUpon>DtabaseSyncEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingAccountDetail.cs">
+      <DependentUpon>DtabaseSyncEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingAccountIdentifier.cs">
+      <DependentUpon>DtabaseSyncEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="StagingETCTransaction.cs">
       <DependentUpon>DtabaseSyncEntities.tt</DependentUpon>
     </Compile>

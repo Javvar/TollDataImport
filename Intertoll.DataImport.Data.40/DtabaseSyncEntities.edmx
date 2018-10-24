@@ -5,6 +5,50 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DatabaseSyncModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="StagingAccountDetails">
+          <Key>
+            <PropertyRef Name="ac_nr" />
+          </Key>
+          <Property Name="ac_nr" Type="varchar" MaxLength="31" Nullable="false" />
+          <Property Name="ac_title" Type="varchar" MaxLength="20" />
+          <Property Name="ac_initial" Type="varchar" MaxLength="20" />
+          <Property Name="ac_surname" Type="varchar" MaxLength="31" />
+          <Property Name="ac_home_ph" Type="varchar" MaxLength="31" />
+          <Property Name="ac_work_ph" Type="varchar" MaxLength="31" />
+          <Property Name="ac_cell_ph" Type="varchar" MaxLength="31" />
+          <Property Name="ac_fax_ph" Type="varchar" MaxLength="31" />
+          <Property Name="ac_email" Type="varchar" MaxLength="51" />
+          <Property Name="at_id" Type="varchar" MaxLength="20" />
+          <Property Name="ac_password" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="StagingAccountIdentifiers">
+          <Key>
+            <PropertyRef Name="ri_id" />
+          </Key>
+          <Property Name="ac_nr" Type="varchar" MaxLength="31" />
+          <Property Name="ri_id" Type="varchar" MaxLength="76" Nullable="false" />
+          <Property Name="mask_nr" Type="varchar" MaxLength="21" />
+          <Property Name="it_id" Type="varchar" MaxLength="2" />
+          <Property Name="his_action" Type="varchar" MaxLength="2" />
+          <Property Name="his_dt" Type="datetime" />
+          <Property Name="his_us_id" Type="varchar" MaxLength="31" />
+          <Property Name="his_change1" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="StagingAccounts">
+          <Key>
+            <PropertyRef Name="ac_nr" />
+          </Key>
+          <Property Name="ac_nr" Type="varchar" MaxLength="31" Nullable="false" />
+          <Property Name="ag_id" Type="int" />
+          <Property Name="rs_id" Type="varchar" MaxLength="2" />
+          <Property Name="ac_holder" Type="varchar" MaxLength="51" />
+          <Property Name="ac_reg_dt" Type="datetime" />
+          <Property Name="ac_min_bal" Type="varchar" MaxLength="20" />
+          <Property Name="ac_term_dt" Type="datetime" />
+          <Property Name="ac_term_rule" Type="varchar" MaxLength="2" />
+          <Property Name="ac_link_rule" Type="varchar" MaxLength="2" />
+          <Property Name="la_id" Type="varchar" MaxLength="5" />
+        </EntityType>
         <EntityType Name="StagingETCTransactions">
           <Key>
             <PropertyRef Name="ln_id" />
@@ -241,6 +285,9 @@
           <Property Name="anpr_seq_nr" Type="int" />
         </EntityType>
         <EntityContainer Name="DatabaseSyncModelStoreContainer">
+          <EntitySet Name="StagingAccountDetails" EntityType="Self.StagingAccountDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingAccountIdentifiers" EntityType="Self.StagingAccountIdentifiers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingAccounts" EntityType="Self.StagingAccounts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingETCTransactions" EntityType="Self.StagingETCTransactions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingIncidents" EntityType="Self.StagingIncidents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingTimeSlices" EntityType="Self.StagingTimeSlices" Schema="dbo" store:Type="Tables" />
@@ -301,6 +348,9 @@
           <EntitySet Name="StagingETCTransactions" EntityType="DatabaseSyncModel.StagingETCTransaction" />
           <EntitySet Name="StagingTimeSlices" EntityType="DatabaseSyncModel.StagingTimeSlice" />
           <EntitySet Name="StagingTransactions" EntityType="DatabaseSyncModel.StagingTransaction" />
+          <EntitySet Name="StagingAccountDetails" EntityType="DatabaseSyncModel.StagingAccountDetail" />
+          <EntitySet Name="StagingAccountIdentifiers" EntityType="DatabaseSyncModel.StagingAccountIdentifier" />
+          <EntitySet Name="StagingAccounts" EntityType="DatabaseSyncModel.StagingAccount" />
         </EntityContainer>
         <EntityType Name="StagingETCTransaction">
           <Key>
@@ -490,6 +540,50 @@
           <Property Name="id_vl" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
           <Property Name="vl_vln" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
           <Property Name="anpr_seq_nr" Type="Int32" />
+        </EntityType>
+        <EntityType Name="StagingAccountDetail">
+          <Key>
+            <PropertyRef Name="ac_nr" />
+          </Key>
+          <Property Name="ac_nr" Type="String" Nullable="false" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ac_title" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ac_initial" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ac_surname" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ac_home_ph" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ac_work_ph" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ac_cell_ph" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ac_fax_ph" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ac_email" Type="String" MaxLength="51" FixedLength="false" Unicode="false" />
+          <Property Name="at_id" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ac_password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StagingAccountIdentifier">
+          <Key>
+            <PropertyRef Name="ri_id" />
+          </Key>
+          <Property Name="ac_nr" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ri_id" Type="String" Nullable="false" MaxLength="76" FixedLength="false" Unicode="false" />
+          <Property Name="mask_nr" Type="String" MaxLength="21" FixedLength="false" Unicode="false" />
+          <Property Name="it_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="his_action" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="his_dt" Type="DateTime" Precision="3" />
+          <Property Name="his_us_id" Type="String" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="his_change1" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StagingAccount">
+          <Key>
+            <PropertyRef Name="ac_nr" />
+          </Key>
+          <Property Name="ac_nr" Type="String" Nullable="false" MaxLength="31" FixedLength="false" Unicode="false" />
+          <Property Name="ag_id" Type="Int32" />
+          <Property Name="rs_id" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ac_holder" Type="String" MaxLength="51" FixedLength="false" Unicode="false" />
+          <Property Name="ac_reg_dt" Type="DateTime" Precision="3" />
+          <Property Name="ac_min_bal" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ac_term_dt" Type="DateTime" Precision="3" />
+          <Property Name="ac_term_rule" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ac_link_rule" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="la_id" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -729,6 +823,53 @@
                 <ScalarProperty Name="dt_concluded" ColumnName="dt_concluded" />
                 <ScalarProperty Name="ln_id" ColumnName="ln_id" />
                 <ScalarProperty Name="pl_id" ColumnName="pl_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingAccountDetails">
+            <EntityTypeMapping TypeName="DatabaseSyncModel.StagingAccountDetail">
+              <MappingFragment StoreEntitySet="StagingAccountDetails">
+                <ScalarProperty Name="ac_password" ColumnName="ac_password" />
+                <ScalarProperty Name="at_id" ColumnName="at_id" />
+                <ScalarProperty Name="ac_email" ColumnName="ac_email" />
+                <ScalarProperty Name="ac_fax_ph" ColumnName="ac_fax_ph" />
+                <ScalarProperty Name="ac_cell_ph" ColumnName="ac_cell_ph" />
+                <ScalarProperty Name="ac_work_ph" ColumnName="ac_work_ph" />
+                <ScalarProperty Name="ac_home_ph" ColumnName="ac_home_ph" />
+                <ScalarProperty Name="ac_surname" ColumnName="ac_surname" />
+                <ScalarProperty Name="ac_initial" ColumnName="ac_initial" />
+                <ScalarProperty Name="ac_title" ColumnName="ac_title" />
+                <ScalarProperty Name="ac_nr" ColumnName="ac_nr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingAccountIdentifiers">
+            <EntityTypeMapping TypeName="DatabaseSyncModel.StagingAccountIdentifier">
+              <MappingFragment StoreEntitySet="StagingAccountIdentifiers">
+                <ScalarProperty Name="his_change1" ColumnName="his_change1" />
+                <ScalarProperty Name="his_us_id" ColumnName="his_us_id" />
+                <ScalarProperty Name="his_dt" ColumnName="his_dt" />
+                <ScalarProperty Name="his_action" ColumnName="his_action" />
+                <ScalarProperty Name="it_id" ColumnName="it_id" />
+                <ScalarProperty Name="mask_nr" ColumnName="mask_nr" />
+                <ScalarProperty Name="ri_id" ColumnName="ri_id" />
+                <ScalarProperty Name="ac_nr" ColumnName="ac_nr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingAccounts">
+            <EntityTypeMapping TypeName="DatabaseSyncModel.StagingAccount">
+              <MappingFragment StoreEntitySet="StagingAccounts">
+                <ScalarProperty Name="la_id" ColumnName="la_id" />
+                <ScalarProperty Name="ac_link_rule" ColumnName="ac_link_rule" />
+                <ScalarProperty Name="ac_term_rule" ColumnName="ac_term_rule" />
+                <ScalarProperty Name="ac_term_dt" ColumnName="ac_term_dt" />
+                <ScalarProperty Name="ac_min_bal" ColumnName="ac_min_bal" />
+                <ScalarProperty Name="ac_reg_dt" ColumnName="ac_reg_dt" />
+                <ScalarProperty Name="ac_holder" ColumnName="ac_holder" />
+                <ScalarProperty Name="rs_id" ColumnName="rs_id" />
+                <ScalarProperty Name="ag_id" ColumnName="ag_id" />
+                <ScalarProperty Name="ac_nr" ColumnName="ac_nr" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -34,6 +34,24 @@ namespace Intertoll.DataImport.Database.Sync.Data.DataContext
             get { return importedTimeslices ?? (importedTimeslices = new GenericRepository<StagingTimeSlice>(context)); }
         }
 
+        private IGenericRepository<StagingAccount> importedAccounts;
+        public IGenericRepository<StagingAccount> ImportedAccounts
+        {
+            get { return importedAccounts ?? (importedAccounts = new GenericRepository<StagingAccount>(context)); }
+        }
+
+        private IGenericRepository<StagingAccountDetail> importedAccountDetails;
+        public IGenericRepository<StagingAccountDetail> ImportedAccountDetails
+        {
+            get { return importedAccountDetails ?? (importedAccountDetails = new GenericRepository<StagingAccountDetail>(context)); }
+        }
+
+        private IGenericRepository<StagingAccountIdentifier> importedAccountIdentifiers;
+        public IGenericRepository<StagingAccountIdentifier> ImportedAccountIdentifiers
+        {
+            get { return importedAccountIdentifiers ?? (importedAccountIdentifiers = new GenericRepository<StagingAccountIdentifier>(context)); }
+        }
+
         #endregion
     }
 }

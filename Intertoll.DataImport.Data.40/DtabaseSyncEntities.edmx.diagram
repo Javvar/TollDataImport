@@ -9,6 +9,9 @@
         <EntityTypeShape EntityType="DatabaseSyncModel.StagingETCTransaction" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="DatabaseSyncModel.StagingTimeSlice" Width="1.5" PointX="5.375" PointY="0.75" />
         <EntityTypeShape EntityType="DatabaseSyncModel.StagingTransaction" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DatabaseSyncModel.StagingAccountDetail" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DatabaseSyncModel.StagingAccountIdentifier" Width="1.5" PointX="9.375" PointY="4.75" />
+        <EntityTypeShape EntityType="DatabaseSyncModel.StagingAccount" Width="1.5" PointX="9.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

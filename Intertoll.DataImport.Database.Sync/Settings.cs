@@ -48,5 +48,10 @@ namespace Intertoll.DataImport.Database.Sync
         {
             get { return int.TryParse(ConfigurationManager.AppSettings["TimeslicesIntervalInSeconds"], out var outVar) ? outVar : 10; }
         }
+
+        public static int RegisteredAccountsIntervalInSeconds
+        {
+            get { return int.TryParse(ConfigurationManager.AppSettings["RegisteredAccountsIntervalInSeconds"], out var outVar) ? outVar : 10; }
+        }
     }
 }
