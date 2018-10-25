@@ -75,5 +75,14 @@ namespace Intertoll.DataImport.Database.Sync
         {
             get { return int.TryParse(ConfigurationManager.AppSettings["RegisteredAccountUsersBatchSize"], out var outVar) ? outVar : 500; }
         }
+
+        public static string MISDBConnectionString
+        {
+            get
+            {
+                return ConfigurationManager.AppSettings["MISDBConnectionString"] ??
+                  "Host=tongaat;Server=tongaat_tcp;Service=2000;Protocol=onsoctcp;UID=informix;Password=informix123;Database=tongaat;";
+            }
+        }
     }
 }

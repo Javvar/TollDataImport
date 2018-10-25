@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IBM.Data.Informix, Version=3.0.0.2, Culture=neutral, PublicKeyToken=7c307b91aa13d208, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files\Informix Client-SDK\bin\netf40\IBM.Data.Informix.dll</HintPath>
+    </Reference>
     <Reference Include="Intertoll.EFDbContext.GenericWrapper">
       <HintPath>..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
     </Reference>

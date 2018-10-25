@@ -31,5 +31,10 @@ namespace Intertoll.DataImport.Settings
         {
             get { return "<RSAKeyValue><Modulus>ybAIVDMQF9cqNVs/S2lF3UcZcnzaCrckU2A3VBNlGIhroeyj7+UwL+3kasdZ+LNJmA2KhukyBH+7vr0RQJJ8qBkCa+MCUUaDUgAL2rwbMGUOsXmCxjqSOuVwBf5rkpGMq8bvhEG24YiJgXd6mw75SIxSi0QGm9MyQ9LAAwlouH8=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>"; }
         }
+
+        public string MISDBConnectionString
+        {
+            get { return ConfigurationManager.AppSettings["MISDBConnectionString"] ?? "Host=tongaat;Server=tongaat_tcp;Service=2000;Protocol=onsoctcp;UID=informix;Password=informix123;Database=tongaat;"; }
+        }
     }
 }

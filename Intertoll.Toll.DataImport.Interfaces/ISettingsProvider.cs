@@ -9,6 +9,7 @@
         string ServiceNotificationList { get; }
         string CardDecryptionUtilityLocation { get; }
         string EncryptionKey { get; }
+        string MISDBConnectionString { get; } 
 
         #endregion
     }

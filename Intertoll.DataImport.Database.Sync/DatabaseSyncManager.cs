@@ -849,7 +849,7 @@ namespace Intertoll.DataImport.Database.Sync
         {
             try
             {
-                var connection = new IfxConnection("Host=tongaat;Server=tongaat_tcp;Service=2000;Protocol=onsoctcp;UID=informix;Password=informix123;Database=tongaat;");
+                var connection = new IfxConnection(AppSettings.MISDBConnectionString);
                 connection.DatabaseLocale = "en_US.CP1252";
                 connection.ClientLocale = "en_US.CP1252";
                 connection.Open();
@@ -858,7 +858,9 @@ namespace Intertoll.DataImport.Database.Sync
             }
             catch (Exception ex)
             {
-                //todo:log
+                Log.LogException(ex);
+                Log.LogTrace(ex.Message + ". Check error log for more details.");
+
                 return null;
             }
         }
