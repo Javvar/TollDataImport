@@ -34,6 +34,8 @@ namespace Intertoll.DataImport.Data
         public virtual DbSet<Audit> Audits { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
         public virtual DbSet<MappingRegisteredUser> MappingRegisteredUsers { get; set; }
+        public virtual DbSet<StagingMISAccountBalance> StagingMISAccountBalances { get; set; }
+        public virtual DbSet<StagingMISAccountBalanceUpdate> StagingMISAccountBalanceUpdates { get; set; }
     
         public virtual ObjectResult<uspGetLaneSession_Result> uspGetLaneSession(string laneCode)
         {
@@ -155,6 +157,11 @@ namespace Intertoll.DataImport.Data
                 new ObjectParameter("Identifier", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspSetRegisteredMappingReported", identifierParameter);
+        }
+    
+        public virtual int uspUpdateStagingAccountBalances()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspUpdateStagingAccountBalances");
         }
     }
 }

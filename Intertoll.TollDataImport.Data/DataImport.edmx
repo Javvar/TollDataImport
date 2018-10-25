@@ -96,6 +96,26 @@
           <Property Name="TimeStamp" Type="datetime" Nullable="false" />
           <Property Name="IsSent" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="StagingMISAccountBalances">
+          <Key>
+            <PropertyRef Name="MISAccountNr" />
+          </Key>
+          <Property Name="MISAccountNr" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PCSAccountGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MISBalance" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StagingMISAccountBalanceUpdate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MISAccountNr" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="PCSAccountGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OldBalance" Type="money" Nullable="false" />
+          <Property Name="NewBalance" Type="money" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateSentToMIS" Type="datetime" />
+        </EntityType>
         <EntityType Name="Transactions">
           <Key>
             <PropertyRef Name="TransactionID" />
@@ -187,12 +207,15 @@
         <Function Name="uspSetRegisteredMappingReported" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Identifier" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="uspUpdateStagingAccountBalances" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DataImportModelStoreContainer">
           <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Incidents" EntityType="Self.Incidents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MappingRegisteredUsers" EntityType="Self.MappingRegisteredUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StaffLogins" EntityType="Self.StaffLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingMISAccountBalances" EntityType="Self.StagingMISAccountBalances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingMISAccountBalanceUpdate" EntityType="Self.StagingMISAccountBalanceUpdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Sessions_StaffLogins" Association="Self.FK_Sessions_StaffLogins">
             <End Role="StaffLogins" EntitySet="StaffLogins" />
@@ -248,8 +271,11 @@
           <FunctionImport Name="uspImportNewRegisteredUsers" />
           <EntitySet Name="MappingRegisteredUsers" EntityType="DataImportModel.MappingRegisteredUser" />
           <FunctionImport Name="uspSetRegisteredMappingReported">
-            <Parameter Name="Identifier" Mode="In" Type="String" />
+          <Parameter Name="Identifier" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="StagingMISAccountBalances" EntityType="DataImportModel.StagingMISAccountBalance" />
+          <FunctionImport Name="uspUpdateStagingAccountBalances" />
+          <EntitySet Name="StagingMISAccountBalanceUpdates" EntityType="DataImportModel.StagingMISAccountBalanceUpdate" />
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -618,6 +644,26 @@
           <Property Name="AccountGuid" Type="Guid" Nullable="false" />
           <Property Name="AccountUserGuid" Type="Guid" Nullable="false" />
           <Property Name="Reported" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StagingMISAccountBalance">
+          <Key>
+            <PropertyRef Name="MISAccountNr" />
+          </Key>
+          <Property Name="MISAccountNr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PCSAccountGuid" Type="Guid" Nullable="false" />
+          <Property Name="MISBalance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="StagingMISAccountBalanceUpdate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MISAccountNr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PCSAccountGuid" Type="Guid" Nullable="false" />
+          <Property Name="OldBalance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="NewBalance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateSentToMIS" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1003,6 +1049,29 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="uspSetRegisteredMappingReported" FunctionName="DataImportModel.Store.uspSetRegisteredMappingReported" />
+          <EntitySetMapping Name="StagingMISAccountBalances">
+            <EntityTypeMapping TypeName="DataImportModel.StagingMISAccountBalance">
+              <MappingFragment StoreEntitySet="StagingMISAccountBalances">
+                <ScalarProperty Name="MISBalance" ColumnName="MISBalance" />
+                <ScalarProperty Name="PCSAccountGuid" ColumnName="PCSAccountGuid" />
+                <ScalarProperty Name="MISAccountNr" ColumnName="MISAccountNr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspUpdateStagingAccountBalances" FunctionName="DataImportModel.Store.uspUpdateStagingAccountBalances" />
+          <EntitySetMapping Name="StagingMISAccountBalanceUpdates">
+            <EntityTypeMapping TypeName="DataImportModel.StagingMISAccountBalanceUpdate">
+              <MappingFragment StoreEntitySet="StagingMISAccountBalanceUpdate">
+                <ScalarProperty Name="DateSentToMIS" ColumnName="DateSentToMIS" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="NewBalance" ColumnName="NewBalance" />
+                <ScalarProperty Name="OldBalance" ColumnName="OldBalance" />
+                <ScalarProperty Name="PCSAccountGuid" ColumnName="PCSAccountGuid" />
+                <ScalarProperty Name="MISAccountNr" ColumnName="MISAccountNr" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

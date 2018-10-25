@@ -14,11 +14,11 @@ BEGIN
 		DECLARE @AccountIdentifiers TABLE(accountidentifier VARCHAR(50))
 
 		INSERT INTO @AccountIdentifiers
-		SELECT TOP 1000 FullIdentifier 
+		SELECT TOP 10000 FullIdentifier 
 		FROM StagingAccountIdentifiers SAI
 		JOIN StagingAccountDetails SAD ON SAD.ac_nr = SAI.ac_nr -- we are looking for identifiers whose details have been imported
-		LEFT JOIN MappingRegisteredUsers ON Identifier = SAI.FullIdentifier
-		WHERE Identifier IS NULL
+		LEFT JOIN MappingRegisteredUsers ON Identifier = SAI.FullIdentifier COLLATE DATABASE_DEFAULT
+		WHERE Identifier IS NULL 
 
 		-- call new fu user stored procedure
 		DECLARE @AccountIdentifier VARCHAR(50)
@@ -50,11 +50,16 @@ BEGIN
 
 				SELECT TOP 1 @AccountGuid = AU.AccountGUID
 				FROM StagingAccountDetails SAD
-				JOIN StagingAccountIdentifiers SAI ON SAI.ac_nr = (SELECT TOP 1 ac_nr 
-																   FROM StagingAccountIdentifiers SAI1 
-																   WHERE SAI.FullIdentifier = SAI1.FullIdentifier)
-																         AND SAI.FullIdentifier = @AccountIdentifier
-				JOIN [PCS].[dbo].AccountUsers AU ON AU.AccountUserIdentifier = SAI.FullIdentifier COLLATE DATABASE_DEFAULT
+				JOIN StagingAccountIdentifiers SAI ON SAD.ac_nr = SAI.ac_nr AND 
+										SAI.FullIdentifier = @AccountIdentifier AND
+											SAI.ac_nr = (SELECT TOP 1 ac_nr 
+														FROM StagingAccountIdentifiers SAI1 
+														WHERE SAI.FullIdentifier = SAI1.FullIdentifier)
+				JOIN [PCS].[dbo].AccountUsers AU ON AU.AccountUserGUID = (SELECT TOP 1 AccountUserGUID 
+																		  FROM [PCS].[dbo].AccountUsers 
+																		  WHERE AccountUserIdentifier IN (SELECT FullIdentifier
+																										  FROM StagingAccountIdentifiers
+																										  WHERE ac_nr = SAD.ac_nr COLLATE DATABASE_DEFAULT))
 
 				IF(@AccountGuid IS NULL) -- if accountguid is null it means that there is no identifier that has been imported that belongd to this account
 				BEGIN

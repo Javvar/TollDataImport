@@ -12,6 +12,8 @@ namespace Intertoll.DataImport.Data.DataContext
 {
     public class TollDataContext : BaseDataContext<DataImportEntities>, ITollDataProvider
     {
+        #region ctor
+
         static TollDataContext()
         {
             Mapper.CreateMap<ITollTransaction, Transaction>();
@@ -19,43 +21,12 @@ namespace Intertoll.DataImport.Data.DataContext
             Mapper.CreateMap<ITollSession, Session>();
             Mapper.CreateMap<ITollStaffLogin, StaffLogin>();
             Mapper.CreateMap<ITollHourlyAudit, Audit>();
-        }
-
-        #region Repositories
-
-        private IGenericRepository<ITollTransaction> transactions;
-        public IGenericRepository<ITollTransaction> Transactions
-        {
-            get { return transactions ?? (transactions = new GenericRepository<ITollTransaction>(context)); }
-        }
-
-        private IGenericRepository<ITollIncident> incidents;
-        public IGenericRepository<ITollIncident> Incidents
-        {
-            get { return incidents ?? (incidents = new GenericRepository<ITollIncident>(context)); }
-        }
-
-        private IGenericRepository<StaffLogin> staffLogins;
-        public IGenericRepository<StaffLogin> StaffLogins
-        {
-            get { return staffLogins ?? (staffLogins = new GenericRepository<StaffLogin>(context)); }
-        }
-
-        private IGenericRepository<ITollHourlyAudit> audits;
-        public IGenericRepository<ITollHourlyAudit> Audits
-        {
-            get { return audits ?? (audits = new GenericRepository<ITollHourlyAudit>(context)); }
-        }
-
-        private IGenericRepository<Session> sessions;
-        public IGenericRepository<Session> Sessions
-        {
-            get { return sessions ?? (sessions = new GenericRepository<Session>(context)); }
+            Mapper.CreateMap<IMISAccountBalanceUpdate, StagingMISAccountBalanceUpdate>();
         }
 
         #endregion
 
-        #region ITollDataProvider
+        #region Transactions
 
         public IList<ITollTransaction> GetNextTransactionBatch()
         {
@@ -116,6 +87,15 @@ namespace Intertoll.DataImport.Data.DataContext
             return context.uspGetTransaction(laneCode, sequenceNumber).FirstOrDefault();
         }
 
+        public void InsertTransaction(ITollTransaction newtransactions)
+        {
+            context.Transactions.Add(Mapper.Map<ITollTransaction, Transaction>(newtransactions));
+        }
+
+        #endregion
+
+        #region Incidents
+
         public IList<ITollIncident> GetNextIncidentBatch()
         {
             var returnList = new List<ITollIncident>();
@@ -124,7 +104,7 @@ namespace Intertoll.DataImport.Data.DataContext
             foreach (var batchResult in incidentBatch)
                 returnList.Add(batchResult);
 
-            return returnList;;
+            return returnList; ;
         }
 
         public IList<ITollIncident> GetIncidentBatchGreaterThanTime(DateTime dateFrom)
@@ -175,16 +155,14 @@ namespace Intertoll.DataImport.Data.DataContext
             return context.uspGetIncident(laneCode, sequenceNumber).FirstOrDefault();
         }
 
-        public IList<ITollHourlyAudit> GetNextHourlyAuditBatch(DateTime? date=null)
+        public void InsertIncident(ITollIncident newIncident)
         {
-            var returnList = new List<ITollHourlyAudit>();
-            var batch = context.uspGetNextHourlyAuditBatch(date).ToList();
-
-            foreach (var batchResult in batch)
-                returnList.Add(batchResult);
-
-            return returnList;
+            context.Incidents.Add(Mapper.Map<ITollIncident, Incident>(newIncident));
         }
+
+        #endregion
+
+        #region Sessions
 
         public ITollSession GetLaneSession(string laneCode)
         {
@@ -209,36 +187,16 @@ namespace Intertoll.DataImport.Data.DataContext
 
         public IList<ITollSession> GetUnsentSessions()
         {
-            var sess = Sessions.Where(x => !x.IsSent);
-            return Mapper.Map<IList<ITollSession>>(sess);
+            using (var repo = new GenericRepository<Session>(context))
+            {
+                var sess = repo.Where(x => !x.IsSent);
+                return Mapper.Map<IList<ITollSession>>(sess);
+            }
         }
 
-        public IList<ITollStaffLogin> GetUnsentStaffLogins()
-        {
-            var sls = StaffLogins.Where(x => !x.IsSent);
-            return Mapper.Map<IList<ITollStaffLogin>>(sls);
-        }
+        #endregion
 
-        public IList<ILaneStatus> GetLaneStatuses()
-        {
-            var laneStatuses = context.uspGetLaneAliveStatus();
-            return Mapper.Map<IList<ILaneStatus>>(laneStatuses); 
-        }
-
-        public void InsertTransaction(ITollTransaction newtransactions)
-        {
-            context.Transactions.Add(Mapper.Map<ITollTransaction, Transaction>(newtransactions));
-        }
-
-        public void InsertIncident(ITollIncident newIncident)
-        {
-            context.Incidents.Add(Mapper.Map<ITollIncident, Incident>(newIncident));
-        }
-
-        public void InsertAudit(ITollHourlyAudit newAudit)
-        {
-            context.Audits.Add(Mapper.Map<ITollHourlyAudit, Audit>(newAudit));
-        }
+        #region Staff and Users
 
         public IList<string> ImportNewStaff()
         {
@@ -264,5 +222,76 @@ namespace Intertoll.DataImport.Data.DataContext
         }
 
         #endregion
+
+        #region Audit
+
+        public IList<ITollHourlyAudit> GetNextHourlyAuditBatch(DateTime? date = null)
+        {
+            var returnList = new List<ITollHourlyAudit>();
+            var batch = context.uspGetNextHourlyAuditBatch(date).ToList();
+
+            foreach (var batchResult in batch)
+                returnList.Add(batchResult);
+
+            return returnList;
+        }
+
+        public void InsertAudit(ITollHourlyAudit newAudit)
+        {
+            context.Audits.Add(Mapper.Map<ITollHourlyAudit, Audit>(newAudit));
+        }
+
+        #endregion
+
+        #region Other
+
+        public IList<ITollStaffLogin> GetUnsentStaffLogins()
+        {
+            var sls = context.StaffLogins.Where(x => !x.IsSent);
+            return Mapper.Map<IList<ITollStaffLogin>>(sls);
+        }
+
+        public IList<ILaneStatus> GetLaneStatuses()
+        {
+            var laneStatuses = context.uspGetLaneAliveStatus();
+            return Mapper.Map<IList<ILaneStatus>>(laneStatuses);
+        }
+
+        #endregion
+
+        #region MISUpdate
+
+        public IList<IMISAccountBalanceUpdate> GetListOfMISAccountBalanceUpdates()
+        {
+            context.uspUpdateStagingAccountBalances();
+
+            var balanceUpdates = context.StagingMISAccountBalanceUpdates.Where(x => !x.DateSentToMIS.HasValue).OrderBy(x => x.DateCreated);
+            return Mapper.Map<IList<IMISAccountBalanceUpdate>>(balanceUpdates);
+        }
+
+        public void SetSentMISAccountBalanceUpdate(IMISAccountBalanceUpdate update)
+        {
+            using (var ctx = new DataImportEntities())
+            {
+                var balanceRecord = ctx.StagingMISAccountBalances.FirstOrDefault(x => x.MISAccountNr == update.MISAccountNr);
+
+                if (balanceRecord != null)
+                {
+                    balanceRecord.MISBalance = update.NewBalance;
+                    ctx.SaveChanges();
+                }
+
+                var updateRecord = ctx.StagingMISAccountBalanceUpdates.FirstOrDefault(x => x.Id == update.Id);
+
+                if (updateRecord != null)
+                {
+                    updateRecord.DateSentToMIS = DateTime.Now;
+                    ctx.SaveChanges();
+                }
+            }                
+        }
+
+        #endregion
+
     }
 }

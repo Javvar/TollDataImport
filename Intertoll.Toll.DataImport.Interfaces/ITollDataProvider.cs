@@ -36,6 +36,9 @@ namespace Intertoll.Toll.DataImport.Interfaces
         IList<string> GetNewFrequentUsersCreated();
         void SetFrequentUserMappingAsReported(IList<string> freqUserMapping);
 
+        IList<IMISAccountBalanceUpdate> GetListOfMISAccountBalanceUpdates();
+        void SetSentMISAccountBalanceUpdate(IMISAccountBalanceUpdate update);
+
         void Save();
     }
 }

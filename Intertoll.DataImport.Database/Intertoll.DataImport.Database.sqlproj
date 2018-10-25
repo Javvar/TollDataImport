@@ -129,6 +129,9 @@
     <Build Include="dbo\Tables\StagingAccountIdentifiers.sql" />
     <Build Include="dbo\Tables\StagingAccountDetails.sql" />
     <Build Include="dbo\Stored Procedures\uspSetRegisteredMappingReported.sql" />
+    <Build Include="dbo\Tables\StagingMISAccountBalanceUpdate.sql" />
+    <Build Include="dbo\Tables\StagingMISAccountBalances.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateStagingAccountBalances.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />

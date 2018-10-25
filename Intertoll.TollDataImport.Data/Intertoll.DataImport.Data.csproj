@@ -99,6 +99,7 @@
       <DependentUpon>DataImport.edmx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\Audit.cs" />
+    <Compile Include="Extensions\StagingMISAccountBalanceUpdate.cs" />
     <Compile Include="Extensions\Incident.cs" />
     <Compile Include="Extensions\Session.cs" />
     <Compile Include="Extensions\StaffLogin.cs" />
@@ -116,6 +117,12 @@
       <DependentUpon>DataImport.tt</DependentUpon>
     </Compile>
     <Compile Include="StaffLogin.cs">
+      <DependentUpon>DataImport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingMISAccountBalance.cs">
+      <DependentUpon>DataImport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingMISAccountBalanceUpdate.cs">
       <DependentUpon>DataImport.tt</DependentUpon>
     </Compile>
     <Compile Include="Transaction.cs">

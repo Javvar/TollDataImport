@@ -65,6 +65,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.Databa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.RegisteredAccountsJob", "Intertoll.DataImport.RegisteredAccounts\Intertoll.DataImport.RegisteredAccountsJob.csproj", "{86B5A024-A567-4647-A1EE-E6D6FECD67FD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.AccountBalanceUpdate", "Intertoll.DataImport.AccountBalanceUpdate\Intertoll.DataImport.AccountBalanceUpdate.csproj", "{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -163,6 +165,10 @@ Global
 		{86B5A024-A567-4647-A1EE-E6D6FECD67FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86B5A024-A567-4647-A1EE-E6D6FECD67FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86B5A024-A567-4647-A1EE-E6D6FECD67FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,6 +200,7 @@ Global
 		{0F984682-8639-462B-A881-58BED0DBFE55} = {0A554509-0B95-42F0-82DC-14282BEF2C3C}
 		{552CD29F-0ED3-49E9-9D40-8C410B11BC1C} = {0F984682-8639-462B-A881-58BED0DBFE55}
 		{86B5A024-A567-4647-A1EE-E6D6FECD67FD} = {0A554509-0B95-42F0-82DC-14282BEF2C3C}
+		{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53} = {0A554509-0B95-42F0-82DC-14282BEF2C3C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6ED33561-D4FF-44E1-9D74-236A28AABF6B}
