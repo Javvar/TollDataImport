@@ -51,6 +51,7 @@
     <Compile Include="Entities\IETCTollTransaction.cs" />
     <Compile Include="Entities\ILaneStatus.cs" />
     <Compile Include="Entities\IMISAccountBalanceUpdate.cs" />
+    <Compile Include="Entities\IMISHotlistUpdate.cs" />
     <Compile Include="Entities\ITollEntityBuilder.cs" />
     <Compile Include="Entities\ITollEtcTransaction.cs" />
     <Compile Include="Entities\ITollStaffLogin.cs" />

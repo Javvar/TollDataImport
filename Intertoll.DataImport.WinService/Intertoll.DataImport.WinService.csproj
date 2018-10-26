@@ -156,9 +156,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intertoll.DataImport.AccountBalanceUpdate\Intertoll.DataImport.AccountBalanceUpdate.csproj">
+    <ProjectReference Include="..\Intertoll.DataImport.AccountBalanceUpdate\Intertoll.DataImport.AccountBalanceUpdateJob.csproj">
       <Project>{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53}</Project>
-      <Name>Intertoll.DataImport.AccountBalanceUpdate</Name>
+      <Name>Intertoll.DataImport.AccountBalanceUpdateJob</Name>
     </ProjectReference>
     <ProjectReference Include="..\Intertoll.DataImport.DataRequest\Intertoll.DataImport.DataRequest.csproj">
       <Project>{EAB933D2-30D0-4B28-A9A7-462FC59171FC}</Project>

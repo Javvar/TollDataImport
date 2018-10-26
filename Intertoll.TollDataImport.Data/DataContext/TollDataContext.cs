@@ -259,11 +259,11 @@ namespace Intertoll.DataImport.Data.DataContext
 
         #endregion
 
-        #region MISUpdate
+        #region MIS Update
 
         public IList<IMISAccountBalanceUpdate> GetListOfMISAccountBalanceUpdates()
         {
-            context.uspUpdateStagingAccountBalances();
+            context.uspUpdateStagingHotlist();
 
             var balanceUpdates = context.StagingMISAccountBalanceUpdates.Where(x => !x.DateSentToMIS.HasValue).OrderBy(x => x.DateCreated);
             return Mapper.Map<IList<IMISAccountBalanceUpdate>>(balanceUpdates);
@@ -291,7 +291,31 @@ namespace Intertoll.DataImport.Data.DataContext
             }                
         }
 
+        public IList<IMISHotlistUpdate> GetListOfMISHotlistUpdates()
+        {
+            context.uspUpdateStagingHotlist();
+
+            var balanceUpdates = context.StagingMISHotlistUpdates.Where(x => !x.DateSentToMIS.HasValue);
+            return Mapper.Map<IList<IMISHotlistUpdate>>(balanceUpdates);
+        }
+
+        public void SetSentMISHolistUpdate(IMISHotlistUpdate update)
+        {
+            using (var ctx = new DataImportEntities())
+            {
+                var updateRecord = ctx.StagingMISHotlistUpdates.FirstOrDefault(x => x.Id == update.Id);
+
+                if (updateRecord != null)
+                {
+                    updateRecord.DateSentToMIS = DateTime.Now;
+                    ctx.SaveChanges();
+                }
+            }
+        }
+
         #endregion
+
+
 
     }
 }

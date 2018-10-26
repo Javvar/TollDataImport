@@ -39,6 +39,9 @@ namespace Intertoll.Toll.DataImport.Interfaces
         IList<IMISAccountBalanceUpdate> GetListOfMISAccountBalanceUpdates();
         void SetSentMISAccountBalanceUpdate(IMISAccountBalanceUpdate update);
 
+        IList<IMISHotlistUpdate> GetListOfMISHotlistUpdates();
+        void SetSentMISHolistUpdate(IMISHotlistUpdate update);
+
         void Save();
     }
 }

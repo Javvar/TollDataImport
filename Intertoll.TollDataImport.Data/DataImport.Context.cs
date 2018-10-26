@@ -36,6 +36,7 @@ namespace Intertoll.DataImport.Data
         public virtual DbSet<MappingRegisteredUser> MappingRegisteredUsers { get; set; }
         public virtual DbSet<StagingMISAccountBalance> StagingMISAccountBalances { get; set; }
         public virtual DbSet<StagingMISAccountBalanceUpdate> StagingMISAccountBalanceUpdates { get; set; }
+        public virtual DbSet<StagingMISHotlistUpdate> StagingMISHotlistUpdates { get; set; }
     
         public virtual ObjectResult<uspGetLaneSession_Result> uspGetLaneSession(string laneCode)
         {
@@ -162,6 +163,11 @@ namespace Intertoll.DataImport.Data
         public virtual int uspUpdateStagingAccountBalances()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspUpdateStagingAccountBalances");
+        }
+    
+        public virtual int uspUpdateStagingHotlist()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("uspUpdateStagingHotlist");
         }
     }
 }

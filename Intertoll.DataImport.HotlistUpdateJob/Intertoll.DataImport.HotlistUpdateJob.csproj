@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53}</ProjectGuid>
+    <ProjectGuid>{C654A36D-B5F8-40A4-B46B-6BEC9F63A20F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Intertoll.DataImport.AccountBalanceUpdate</RootNamespace>
-    <AssemblyName>Intertoll.DataImport.AccountBalanceUpdate</AssemblyName>
+    <RootNamespace>Intertoll.DataImport.HotlistUpdateJob</RootNamespace>
+    <AssemblyName>Intertoll.DataImport.HotlistUpdateJob</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,19 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IBM.Data.Informix, Version=3.0.0.2, Culture=neutral, PublicKeyToken=7c307b91aa13d208, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files\Informix Client-SDK\bin\netf40\IBM.Data.Informix.dll</HintPath>
-    </Reference>
+    <Reference Include="IBM.Data.Informix, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7c307b91aa13d208, processorArchitecture=AMD64" />
     <Reference Include="Intertoll.EFDbContext.GenericWrapper">
       <HintPath>..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
     </Reference>
-    <Reference Include="Intertoll.NLogger, Version=1.0.2.2, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Intertoll.DataImport.Database.Sync\bin\Debug\Intertoll.NLogger.dll</HintPath>
+    <Reference Include="Intertoll.NLogger">
+      <HintPath>..\Intertoll.DataImport.TransactionsJob\bin\Debug\Intertoll.NLogger.dll</HintPath>
     </Reference>
     <Reference Include="Quartz">
-      <HintPath>..\packages\Quartz.2.5.0\lib\net40\Quartz.dll</HintPath>
+      <HintPath>..\Intertoll.DataImport.TransactionsJob\bin\Debug\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,12 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountBalanceUpdateJob.cs" />
+    <Compile Include="HotlistUpdateJob.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Intertoll.DataImport.ISchedulable\Intertoll.DataImport.ISchedulable.csproj">
-      <Project>{94f645c7-b9f6-42d1-aabb-c9b471b43b5e}</Project>
+      <Project>{94F645C7-B9F6-42D1-AABB-C9B471B43B5E}</Project>
       <Name>Intertoll.DataImport.ISchedulable</Name>
     </ProjectReference>
     <ProjectReference Include="..\Intertoll.Toll.DataImport.Interfaces\Intertoll.Toll.DataImport.Interfaces.csproj">

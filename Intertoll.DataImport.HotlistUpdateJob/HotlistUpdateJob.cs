@@ -5,20 +5,16 @@ using Intertoll.Toll.DataImport.Interfaces;
 using Intertoll.Toll.DataImport.Interfaces.Entities;
 using Quartz;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Intertoll.DataImport.AccountBalanceUpdateJob
+namespace Intertoll.DataImport.HotlistUpdateJob
 {
     [DisallowConcurrentExecution]
-    public class AccountBalanceUpdateJob : BaseSchedulable<AccountBalanceUpdateJob>
+    public class HotlistUpdateJob : BaseSchedulable<HotlistUpdateJob>
     {
         ITollDataProvider DataProvider;
         ISettingsProvider Settings { get; set; }
 
-        public AccountBalanceUpdateJob(ITollDataProvider _dataProvider,ISettingsProvider _settings)
+        public HotlistUpdateJob(ITollDataProvider _dataProvider, ISettingsProvider _settings)
         {
             DataProvider = _dataProvider;
             Settings = _settings;
@@ -30,13 +26,13 @@ namespace Intertoll.DataImport.AccountBalanceUpdateJob
 
             try
             {
-                var balanceUpdates = DataProvider.GetListOfMISAccountBalanceUpdates();
+                var hotlistUpdates = DataProvider.GetListOfMISHotlistUpdates();
 
-                foreach (var update in balanceUpdates)
+                foreach (var update in hotlistUpdates)
                 {
-                    UpdateMISBalance(update);
-                    DataProvider.SetSentMISAccountBalanceUpdate(update);
-                }                
+                    UpdateMISHotlist(update);
+                    DataProvider.SetSentMISHolistUpdate(update);
+                }
             }
             catch (Exception ex)
             {
@@ -47,23 +43,34 @@ namespace Intertoll.DataImport.AccountBalanceUpdateJob
             Log.LogTrace("[Exit]" + JobName);
         }
 
-        private void UpdateMISBalance(IMISAccountBalanceUpdate update)
+        private void UpdateMISHotlist(IMISHotlistUpdate update)
         {
             Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
 
-            //try
-            //{
-            //    using (IfxConnection connection = EstablishConnection())
-            //    {
-            //        IfxCommand command = connection.CreateCommand();
-            //        command.CommandText = $"UPDATE AccBalances SET Balance = {update.NewBalance} WHERE ac_nr = {update.MISAccountNr} ";
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Log.LogTrace(ex.Message + ". Check error log for more details.");
-            //    Log.LogException(ex);
-            //}
+            try
+            {
+                //using (IfxConnection connection = EstablishConnection())
+                //{
+                //    IfxCommand command = connection.CreateCommand();
+
+                //    var EncryptedCarNr = update.CardNr;
+
+                //    if (update.Change == "Add")
+                //    {
+                        
+                //        command.CommandText = $"INSERT INTO Hotlist VALUES ('{EncryptedCarNr}') ";
+                //    }
+                //    else if(update.Change == "Delete")
+                //    {
+                //        command.CommandText = $"DELETE FROM Hotlist WHERE ac_nr = '{EncryptedCarNr}'";
+                //    }                    
+                //}
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+                Log.LogTrace(ex.Message + ". Check error log for more details.");
+            }
 
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
         }

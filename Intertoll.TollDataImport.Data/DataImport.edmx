@@ -116,6 +116,15 @@
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
           <Property Name="DateSentToMIS" Type="datetime" />
         </EntityType>
+        <EntityType Name="StagingMISHotlistUpdates">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CardNr" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Change" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="DateSentToMIS" Type="datetime" />
+        </EntityType>
         <EntityType Name="Transactions">
           <Key>
             <PropertyRef Name="TransactionID" />
@@ -208,6 +217,7 @@
           <Parameter Name="Identifier" Type="varchar" Mode="In" />
         </Function>
         <Function Name="uspUpdateStagingAccountBalances" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uspUpdateStagingHotlist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DataImportModelStoreContainer">
           <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Incidents" EntityType="Self.Incidents" Schema="dbo" store:Type="Tables" />
@@ -216,6 +226,7 @@
           <EntitySet Name="StaffLogins" EntityType="Self.StaffLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingMISAccountBalances" EntityType="Self.StagingMISAccountBalances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingMISAccountBalanceUpdate" EntityType="Self.StagingMISAccountBalanceUpdate" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingMISHotlistUpdates" EntityType="Self.StagingMISHotlistUpdates" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Sessions_StaffLogins" Association="Self.FK_Sessions_StaffLogins">
             <End Role="StaffLogins" EntitySet="StaffLogins" />
@@ -276,6 +287,8 @@
           <EntitySet Name="StagingMISAccountBalances" EntityType="DataImportModel.StagingMISAccountBalance" />
           <FunctionImport Name="uspUpdateStagingAccountBalances" />
           <EntitySet Name="StagingMISAccountBalanceUpdates" EntityType="DataImportModel.StagingMISAccountBalanceUpdate" />
+          <EntitySet Name="StagingMISHotlistUpdates" EntityType="DataImportModel.StagingMISHotlistUpdate" />
+          <FunctionImport Name="uspUpdateStagingHotlist" />
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -663,6 +676,15 @@
           <Property Name="OldBalance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="NewBalance" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateSentToMIS" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="StagingMISHotlistUpdate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CardNr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Change" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="DateSentToMIS" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
@@ -1072,6 +1094,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="StagingMISHotlistUpdates">
+            <EntityTypeMapping TypeName="DataImportModel.StagingMISHotlistUpdate">
+              <MappingFragment StoreEntitySet="StagingMISHotlistUpdates">
+                <ScalarProperty Name="DateSentToMIS" ColumnName="DateSentToMIS" />
+                <ScalarProperty Name="Change" ColumnName="Change" />
+                <ScalarProperty Name="CardNr" ColumnName="CardNr" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspUpdateStagingHotlist" FunctionName="DataImportModel.Store.uspUpdateStagingHotlist" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
