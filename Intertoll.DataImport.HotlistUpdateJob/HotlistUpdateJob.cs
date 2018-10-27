@@ -1,10 +1,17 @@
-﻿using IBM.Data.Informix;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
+using IBM.Data.Informix;
 using Intertoll.DataImport.Schedulable;
 using Intertoll.NLogger;
 using Intertoll.Toll.DataImport.Interfaces;
 using Intertoll.Toll.DataImport.Interfaces.Entities;
 using Quartz;
-using System;
+
 
 namespace Intertoll.DataImport.HotlistUpdateJob
 {
@@ -27,10 +34,11 @@ namespace Intertoll.DataImport.HotlistUpdateJob
             try
             {
                 var hotlistUpdates = DataProvider.GetListOfMISHotlistUpdates();
+                var encryptedDic = EncryptIdentifiers(hotlistUpdates.Select(x => x.CardNr).ToList());
 
                 foreach (var update in hotlistUpdates)
                 {
-                    UpdateMISHotlist(update);
+                    UpdateMISHotlist(update,encryptedDic[update.CardNr]);
                     DataProvider.SetSentMISHolistUpdate(update);
                 }
             }
@@ -43,28 +51,21 @@ namespace Intertoll.DataImport.HotlistUpdateJob
             Log.LogTrace("[Exit]" + JobName);
         }
 
-        private void UpdateMISHotlist(IMISHotlistUpdate update)
+        private void UpdateMISHotlist(IMISHotlistUpdate update, string encryptedIdentifier)
         {
             Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
 
             try
             {
-                //using (IfxConnection connection = EstablishConnection())
-                //{
-                //    IfxCommand command = connection.CreateCommand();
+                using (IfxConnection connection = EstablishConnection())
+                {
+                    IfxCommand command = connection.CreateCommand();
 
-                //    var EncryptedCarNr = update.CardNr;
-
-                //    if (update.Change == "Add")
-                //    {
-                        
-                //        command.CommandText = $"INSERT INTO Hotlist VALUES ('{EncryptedCarNr}') ";
-                //    }
-                //    else if(update.Change == "Delete")
-                //    {
-                //        command.CommandText = $"DELETE FROM Hotlist WHERE ac_nr = '{EncryptedCarNr}'";
-                //    }                    
-                //}
+                    if (update.Change == "Add")
+                        command.CommandText = $"INSERT INTO Hotlist VALUES ('{encryptedIdentifier}') ";
+                    else if (update.Change == "Delete")
+                        command.CommandText = $"DELETE FROM Hotlist WHERE ac_nr = '{encryptedIdentifier}'";
+                }
             }
             catch (Exception ex)
             {
@@ -93,6 +94,73 @@ namespace Intertoll.DataImport.HotlistUpdateJob
 
                 return null;
             }
+        }
+
+        private Dictionary<string, string> EncryptIdentifiers(IList<string> batch)
+        {
+            Dictionary<string, string> retDic = new Dictionary<string, string>();
+
+            var identifiersFileName = Path.Combine(Settings.HotListCardEncryptionUtilityLocation, "cards_" + batch.GetHashCode() + ".txt");
+
+            if (!batch.Any())
+                return retDic;
+
+            File.WriteAllLines(identifiersFileName, batch);
+
+            try
+            {
+                var process = new Process();
+                string fileName = Path.Combine(Settings.HotListCardEncryptionUtilityLocation, Settings.EncryptionDecryptionApplication);
+                string param = "/C" + "\" " + fileName + " " + identifiersFileName + " e\"";
+
+                var processStartInfo = new ProcessStartInfo("cmd.exe", param);
+                processStartInfo.UseShellExecute = false;
+                processStartInfo.WorkingDirectory = Settings.HotListCardEncryptionUtilityLocation;
+                processStartInfo.RedirectStandardOutput = true;
+                processStartInfo.RedirectStandardError = true;
+                processStartInfo.CreateNoWindow = true;
+
+                process.StartInfo = processStartInfo;
+                process.Start();
+
+                int RetryCount = 120;
+
+                while (!process.HasExited && RetryCount > 0)
+                {
+                    RetryCount--;
+                    Thread.Sleep(1000);
+                }
+
+                if (RetryCount > 0)
+                {
+                    foreach (var clearPAN in batch)
+                    {
+                        var encryptedPAN = File.ReadAllText(Path.Combine(Settings.HotListCardEncryptionUtilityLocation, "PAN_" + clearPAN + ".txt"));
+                        retDic[clearPAN] = Regex.Replace(encryptedPAN, @"\t|\n|\r", "");
+                    }
+                }
+
+                string filesToDelete = @"PAN_*";
+                string[] fileList = Directory.GetFiles(Settings.HotListCardEncryptionUtilityLocation, filesToDelete);
+
+                foreach (string file in fileList)
+                {
+                    if (File.Exists(file))
+                        File.Delete(file);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.LogException(ex);
+                Log.LogTrace(ex.Message + ". Check error log for more details.");
+            }
+            finally
+            {
+                if (!string.IsNullOrEmpty(identifiersFileName) && File.Exists(identifiersFileName))
+                    File.Delete(identifiersFileName);
+            }
+
+            return retDic;
         }
     }
 }

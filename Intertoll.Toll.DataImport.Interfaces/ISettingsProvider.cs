@@ -7,9 +7,11 @@
         string ServiceNotificationsMailServer { get;  }
         string ServiceServiceSender { get;  }
         string ServiceNotificationList { get; }
-        string CardDecryptionUtilityLocation { get; }
+        string TransactionsCardDecryptionUtilityLocation { get; }
+        string HotListCardEncryptionUtilityLocation { get; }
         string EncryptionKey { get; }
         string MISDBConnectionString { get; } 
+        string EncryptionDecryptionApplication { get; }
 
         #endregion
     }

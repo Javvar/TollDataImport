@@ -879,8 +879,8 @@ namespace Intertoll.DataImport.Database.Sync
             try
             {
                 var process = new Process();
-                string fileName = Path.Combine(AppSettings.IdentifiersDecryptionUtilityLocation, "DecryptUtil.exe");
-                string param = "/C" + "\" " + fileName + " " + identifiersFileName + "\"";
+                string fileName = Path.Combine(AppSettings.IdentifiersDecryptionUtilityLocation, AppSettings.EncryptionDecryptionApplication);
+                string param = "/C" + "\" " + fileName + " " + identifiersFileName + " d\"";
 
                 var processStartInfo = new ProcessStartInfo("cmd.exe", param);
                 processStartInfo.UseShellExecute = false;

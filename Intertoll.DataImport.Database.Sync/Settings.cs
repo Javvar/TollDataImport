@@ -84,5 +84,10 @@ namespace Intertoll.DataImport.Database.Sync
                   "Host=tongaat;Server=tongaat_tcp;Service=2000;Protocol=onsoctcp;UID=informix;Password=informix123;Database=tongaat;";
             }
         }
+
+        public static string EncryptionDecryptionApplication
+        {
+            get { return ConfigurationManager.AppSettings["EncryptionDecryptionApplication"] ?? "EncryptDecrypt.exe"; }
+        }
     }
 }

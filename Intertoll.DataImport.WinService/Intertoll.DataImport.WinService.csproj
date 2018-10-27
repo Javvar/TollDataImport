@@ -164,6 +164,10 @@
       <Project>{EAB933D2-30D0-4B28-A9A7-462FC59171FC}</Project>
       <Name>Intertoll.DataImport.DataRequest</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Intertoll.DataImport.HotlistUpdateJob\Intertoll.DataImport.HotlistUpdateJob.csproj">
+      <Project>{C654A36D-B5F8-40A4-B46B-6BEC9F63A20F}</Project>
+      <Name>Intertoll.DataImport.HotlistUpdateJob</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Intertoll.DataImport.HourlyJob\Intertoll.DataImport.HourlyJob.csproj">
       <Project>{fcad5c5e-0eb3-40d5-8139-986319574066}</Project>
       <Name>Intertoll.DataImport.HourlyJob</Name>
@@ -228,6 +232,7 @@
     <Content Include="Pan Decryption\Decryption description.txt" />
     <Content Include="Pan Decryption\DecryptUtil.exe" />
     <Content Include="Pan Decryption\DecryptUtilityCode.JPG" />
+    <Content Include="Pan Decryption\EncryptDecrypt.exe" />
     <Content Include="Pan Decryption\PCI_utilities.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

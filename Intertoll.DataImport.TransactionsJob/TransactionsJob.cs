@@ -43,7 +43,7 @@ namespace Intertoll.DataImport.TransactionsJob
                 CheckForUnImportedStaff();
 
                 var transactionBatch = DataProvider.GetNextTransactionBatch();
-                CardsFileName = Path.Combine(Settings.CardDecryptionUtilityLocation, "cards_" + transactionBatch.GetHashCode() + ".txt");
+                CardsFileName = Path.Combine(Settings.TransactionsCardDecryptionUtilityLocation, "cards_" + transactionBatch.GetHashCode() + ".txt");
 
                 DecryptCardNumbers(transactionBatch, CardsFileName);
 
@@ -101,12 +101,12 @@ namespace Intertoll.DataImport.TransactionsJob
             try
             {
                 var process = new Process();
-                string fileName = Path.Combine(Settings.CardDecryptionUtilityLocation, "DecryptUtil.exe");
-                string param = "/C" + "\" " + fileName + " " + CardsFileName + "\"";
+                string fileName = Path.Combine(Settings.TransactionsCardDecryptionUtilityLocation, Settings.EncryptionDecryptionApplication);
+                string param = "/C" + "\" " + fileName + " " + CardsFileName + " d\"";
 
                 var processStartInfo = new ProcessStartInfo("cmd.exe", param);
                 processStartInfo.UseShellExecute = false;
-                processStartInfo.WorkingDirectory = Settings.CardDecryptionUtilityLocation;
+                processStartInfo.WorkingDirectory = Settings.TransactionsCardDecryptionUtilityLocation;
                 processStartInfo.RedirectStandardOutput = true;
                 processStartInfo.RedirectStandardError = true;
                 processStartInfo.CreateNoWindow = true;
@@ -126,7 +126,7 @@ namespace Intertoll.DataImport.TransactionsJob
                 {
                     foreach (var cardNumber in cardNumbers)
                     {
-                        var DecryptedPAN = File.ReadAllText(Path.Combine(Settings.CardDecryptionUtilityLocation, "PAN_" + cardNumber + ".txt"));
+                        var DecryptedPAN = File.ReadAllText(Path.Combine(Settings.TransactionsCardDecryptionUtilityLocation, "PAN_" + cardNumber + ".txt"));
 
                         foreach (var tranx in TransactionBatch.Where(x => x.PaymentDetail == cardNumber))
                         {
@@ -137,7 +137,7 @@ namespace Intertoll.DataImport.TransactionsJob
                 }
 
                 string filesToDelete = @"PAN_*";
-                string[] fileList = Directory.GetFiles(Settings.CardDecryptionUtilityLocation, filesToDelete);
+                string[] fileList = Directory.GetFiles(Settings.TransactionsCardDecryptionUtilityLocation, filesToDelete);
 
                 foreach (string file in fileList)
                 {

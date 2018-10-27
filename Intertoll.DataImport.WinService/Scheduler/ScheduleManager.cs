@@ -1,4 +1,5 @@
-﻿using Quartz;
+﻿using Intertoll.DataImport.HotlistUpdateJob;
+using Quartz;
 
 namespace Intertoll.DataImport.WinService.Scheduler
 {
@@ -30,6 +31,9 @@ namespace Intertoll.DataImport.WinService.Scheduler
 
             var balUpdateJob = new AccountBalanceUpdateJob.AccountBalanceUpdateJob(null, null);
             balUpdateJob.Schedule(Scheduler);
+
+            var hotlistUpdateJob = new HotlistUpdateJob.HotlistUpdateJob(null, null);
+            hotlistUpdateJob.Schedule(Scheduler);
 
             //var wdJob = new WatchdogJob.WatchdogJob(null, null);
             //wdJob.Schedule(Scheduler);

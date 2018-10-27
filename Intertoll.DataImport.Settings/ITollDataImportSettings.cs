@@ -22,9 +22,14 @@ namespace Intertoll.DataImport.Settings
             get { return ConfigurationManager.AppSettings["ServiceNotificationList"]; }
         }
 
-        public string CardDecryptionUtilityLocation
+        public string TransactionsCardDecryptionUtilityLocation
         {
-            get { return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),"Cards"); }
+            get { return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "CardDecryption"); }
+        }
+
+        public string HotListCardEncryptionUtilityLocation
+        {
+            get { return Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "CardEncryption"); }
         }
 
         public string EncryptionKey
@@ -36,5 +41,10 @@ namespace Intertoll.DataImport.Settings
         {
             get { return ConfigurationManager.AppSettings["MISDBConnectionString"] ?? "Host=tongaat;Server=tongaat_tcp;Service=2000;Protocol=onsoctcp;UID=informix;Password=informix123;Database=tongaat;"; }
         }
+
+        public string EncryptionDecryptionApplication
+        {
+            get { return ConfigurationManager.AppSettings["EncryptionDecryptionApplication"] ?? "EncryptDecrypt.exe"; }
+        }        
     }
 }
