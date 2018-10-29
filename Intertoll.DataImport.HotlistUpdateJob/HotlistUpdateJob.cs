@@ -38,8 +38,8 @@ namespace Intertoll.DataImport.HotlistUpdateJob
 
                 foreach (var update in hotlistUpdates)
                 {
-                    UpdateMISHotlist(update,encryptedDic[update.CardNr]);
-                    DataProvider.SetSentMISHolistUpdate(update);
+                    if(UpdateMISHotlist(update, encryptedDic[update.CardNr]))
+                        DataProvider.SetSentMISHolistUpdate(update);
                 }
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace Intertoll.DataImport.HotlistUpdateJob
             Log.LogTrace("[Exit]" + JobName);
         }
 
-        private void UpdateMISHotlist(IMISHotlistUpdate update, string encryptedIdentifier)
+        private bool UpdateMISHotlist(IMISHotlistUpdate update, string encryptedIdentifier)
         {
             Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
 
@@ -71,9 +71,13 @@ namespace Intertoll.DataImport.HotlistUpdateJob
             {
                 Log.LogException(ex);
                 Log.LogTrace(ex.Message + ". Check error log for more details.");
+
+                return false;
             }
 
             Log.LogInfoMessage($"[Exit] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
+
+            return true;
         }
 
         private IfxConnection EstablishConnection()
