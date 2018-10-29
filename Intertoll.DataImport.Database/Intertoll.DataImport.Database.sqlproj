@@ -132,6 +132,9 @@
     <Build Include="dbo\Tables\StagingMISAccountBalanceUpdate.sql" />
     <Build Include="dbo\Tables\StagingMISAccountBalances.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateStagingAccountBalances.sql" />
+    <Build Include="dbo\Tables\StagingMISHotlistUpdates.sql" />
+    <Build Include="dbo\Tables\StagingMISHotlist.sql" />
+    <Build Include="dbo\Stored Procedures\uspUpdateStagingHotlist.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />
