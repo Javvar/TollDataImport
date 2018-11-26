@@ -14,13 +14,13 @@ BEGIN
 	INSERT INTO @AddedCards
 	SELECT HL.CardNr
 	FROM [PCS].[dbo].Hotlist HL
-	LEFT JOIN StagingMISHotlist SHL ON HL.CardNr = HL.CardNr
+	LEFT JOIN StagingMISHotlist SHL ON SHL.CardNr = HL.CardNr
 	WHERE SHL.CardNr IS NULL
 
 	INSERT INTO @DeletedCards
 	SELECT SHL.CardNr
 	FROM StagingMISHotlist SHL
-	LEFT JOIN [PCS].[dbo].Hotlist HL ON HL.CardNr = HL.CardNr
+	LEFT JOIN [PCS].[dbo].Hotlist HL ON SHL.CardNr = HL.CardNr
 	WHERE HL.CardNr IS NULL
 
 	INSERT INTO StagingMISHotlistUpdates

@@ -42,6 +42,9 @@ namespace Intertoll.Toll.DataImport.Interfaces
         IList<IMISHotlistUpdate> GetListOfMISHotlistUpdates();
         void SetSentMISHolistUpdate(IMISHotlistUpdate update);
 
+        IList<IMISValidationListUpdate> GetListOfMISValidationListUpdates();
+        void SetSentMISValidationUpdate(IMISValidationListUpdate update);
+
         void Save();
     }
 }

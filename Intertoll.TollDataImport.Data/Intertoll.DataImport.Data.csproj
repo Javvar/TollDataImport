@@ -129,6 +129,12 @@
     <Compile Include="StagingMISHotlistUpdate.cs">
       <DependentUpon>DataImport.tt</DependentUpon>
     </Compile>
+    <Compile Include="StagingMISValidationList.cs">
+      <DependentUpon>DataImport.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StagingMISValidationListUpdate.cs">
+      <DependentUpon>DataImport.tt</DependentUpon>
+    </Compile>
     <Compile Include="Transaction.cs">
       <DependentUpon>DataImport.tt</DependentUpon>
     </Compile>

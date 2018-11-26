@@ -125,6 +125,29 @@
           <Property Name="Change" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="DateSentToMIS" Type="datetime" />
         </EntityType>
+        <EntityType Name="StagingMISValidationList">
+          <Key>
+            <PropertyRef Name="IDVL" />
+          </Key>
+          <Property Name="IDVL" Type="bigint" Nullable="false" />
+          <Property Name="EFCMark" Type="bigint" Nullable="false" />
+          <Property Name="PAN" Type="bigint" Nullable="false" />
+          <Property Name="VehicleClass" Type="int" Nullable="false" />
+          <Property Name="ProductType" Type="int" Nullable="false" />
+          <Property Name="VLNPlateNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VehicleStateDate" Type="datetime" Nullable="false" />
+          <Property Name="VehicleState" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="StagingMISValidationListUpdate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDVL" Type="int" />
+          <Property Name="PAN" Type="varchar" MaxLength="50" />
+          <Property Name="Action" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="DateSentToMIS" Type="datetime" />
+        </EntityType>
         <EntityType Name="Transactions">
           <Key>
             <PropertyRef Name="TransactionID" />
@@ -218,6 +241,7 @@
         </Function>
         <Function Name="uspUpdateStagingAccountBalances" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="uspUpdateStagingHotlist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="uspUpdateStagingValidationlist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DataImportModelStoreContainer">
           <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Incidents" EntityType="Self.Incidents" Schema="dbo" store:Type="Tables" />
@@ -227,6 +251,8 @@
           <EntitySet Name="StagingMISAccountBalances" EntityType="Self.StagingMISAccountBalances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingMISAccountBalanceUpdate" EntityType="Self.StagingMISAccountBalanceUpdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingMISHotlistUpdates" EntityType="Self.StagingMISHotlistUpdates" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingMISValidationList" EntityType="Self.StagingMISValidationList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StagingMISValidationListUpdate" EntityType="Self.StagingMISValidationListUpdate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Transactions" EntityType="Self.Transactions" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Sessions_StaffLogins" Association="Self.FK_Sessions_StaffLogins">
             <End Role="StaffLogins" EntitySet="StaffLogins" />
@@ -289,6 +315,9 @@
           <EntitySet Name="StagingMISAccountBalanceUpdates" EntityType="DataImportModel.StagingMISAccountBalanceUpdate" />
           <EntitySet Name="StagingMISHotlistUpdates" EntityType="DataImportModel.StagingMISHotlistUpdate" />
           <FunctionImport Name="uspUpdateStagingHotlist" />
+          <EntitySet Name="StagingMISValidationLists" EntityType="DataImportModel.StagingMISValidationList" />
+          <EntitySet Name="StagingMISValidationListUpdates" EntityType="DataImportModel.StagingMISValidationListUpdate" />
+          <FunctionImport Name="uspUpdateStagingValidationlist" />
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -685,6 +714,29 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CardNr" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Change" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DateSentToMIS" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="StagingMISValidationList">
+          <Key>
+            <PropertyRef Name="IDVL" />
+          </Key>
+          <Property Name="IDVL" Type="Int64" Nullable="false" />
+          <Property Name="EFCMark" Type="Int64" Nullable="false" />
+          <Property Name="PAN" Type="Int64" Nullable="false" />
+          <Property Name="VehicleClass" Type="Int32" Nullable="false" />
+          <Property Name="ProductType" Type="Int32" Nullable="false" />
+          <Property Name="VLNPlateNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VehicleStateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="VehicleState" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="StagingMISValidationListUpdate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDVL" Type="Int32" />
+          <Property Name="PAN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Action" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DateSentToMIS" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
@@ -1105,6 +1157,32 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="uspUpdateStagingHotlist" FunctionName="DataImportModel.Store.uspUpdateStagingHotlist" />
+          <EntitySetMapping Name="StagingMISValidationLists">
+            <EntityTypeMapping TypeName="DataImportModel.StagingMISValidationList">
+              <MappingFragment StoreEntitySet="StagingMISValidationList">
+                <ScalarProperty Name="VehicleState" ColumnName="VehicleState" />
+                <ScalarProperty Name="VehicleStateDate" ColumnName="VehicleStateDate" />
+                <ScalarProperty Name="VLNPlateNo" ColumnName="VLNPlateNo" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="VehicleClass" ColumnName="VehicleClass" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="EFCMark" ColumnName="EFCMark" />
+                <ScalarProperty Name="IDVL" ColumnName="IDVL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StagingMISValidationListUpdates">
+            <EntityTypeMapping TypeName="DataImportModel.StagingMISValidationListUpdate">
+              <MappingFragment StoreEntitySet="StagingMISValidationListUpdate">
+                <ScalarProperty Name="DateSentToMIS" ColumnName="DateSentToMIS" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="PAN" ColumnName="PAN" />
+                <ScalarProperty Name="IDVL" ColumnName="IDVL" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspUpdateStagingValidationlist" FunctionName="DataImportModel.Store.uspUpdateStagingValidationlist" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -313,6 +313,28 @@ namespace Intertoll.DataImport.Data.DataContext
             }
         }
 
+        public IList<IMISValidationListUpdate> GetListOfMISValidationListUpdates()
+        {
+            context.uspUpdateStagingValidationlist();
+
+            var vlUpdates = context.StagingMISValidationListUpdates.Where(x => !x.DateSentToMIS.HasValue);
+            return Mapper.Map<IList<IMISValidationListUpdate>>(vlUpdates);
+        }
+
+        public void SetSentMISValidationUpdate(IMISValidationListUpdate update)
+        {
+            using (var ctx = new DataImportEntities())
+            {
+                var updateRecord = ctx.StagingMISValidationListUpdates.FirstOrDefault(x => x.Id == update.Id);
+
+                if (updateRecord != null)
+                {
+                    updateRecord.DateSentToMIS = DateTime.Now;
+                    ctx.SaveChanges();
+                }
+            }
+        }
+
         #endregion
 
 
