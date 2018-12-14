@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8b3af97afe4c4953b7091abfd13b5b01" Name="Diagram1" ZoomLevel="74">
+      <Diagram DiagramId="8b3af97afe4c4953b7091abfd13b5b01" Name="Diagram1" ZoomLevel="65">
         <EntityTypeShape EntityType="DatabaseSyncModel.StagingIncident" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DatabaseSyncModel.StagingETCTransaction" Width="1.5" PointX="3.375" PointY="0.75" />
         <EntityTypeShape EntityType="DatabaseSyncModel.StagingTimeSlice" Width="1.5" PointX="5.375" PointY="0.75" />
