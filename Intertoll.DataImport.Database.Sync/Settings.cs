@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 
@@ -19,6 +21,16 @@ namespace Intertoll.DataImport.Database.Sync
         public static int TransactionSelectBatchSize
         {
             get { return int.TryParse(ConfigurationManager.AppSettings["TransactionSelectBatchSize"], out var outVar) ? outVar : 1; }
+        }
+
+        public static DateTime? DataStartDate
+        {
+            get
+            {
+                return DateTime.TryParseExact(ConfigurationManager.AppSettings["DataStartDate"],"dd-MM-yyyy",
+                                              CultureInfo.InvariantCulture,
+                                              DateTimeStyles.None, out var outVar) ? (DateTime?)outVar : null;
+            }
         }
 
         public static int ETCTransactionSelectBatchSize

@@ -120,6 +120,11 @@ namespace Intertoll.DataImport.Database.Sync
                                 command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
                                                                        lastTransaction.dt_concluded?.ToString("yyyy-MM-dd HH:mm:ss"));
                             }
+                            else if(AppSettings.DataStartDate.HasValue)
+                            {
+                                command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                       AppSettings.DataStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                            }
 
                             command.CommandText = command.CommandText + " ORDER BY dt_concluded";
 
@@ -267,6 +272,11 @@ namespace Intertoll.DataImport.Database.Sync
                             command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
                                                                    lastTransaction.dt_concluded?.ToString("yyyy-MM-dd HH:mm:ss"));
                         }
+                        else if (AppSettings.DataStartDate.HasValue)
+                        {
+                            command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   AppSettings.DataStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
 
                         command.CommandText = command.CommandText + " ORDER BY dt_concluded";
 
@@ -388,6 +398,11 @@ namespace Intertoll.DataImport.Database.Sync
                             command.CommandText += string.Format("WHERE dt_generated > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
                                                                    lastIncident.dt_generated?.ToString("yyyy-MM-dd HH:mm:ss"));
                         }
+                        else if (AppSettings.DataStartDate.HasValue)
+                        {
+                            command.CommandText += string.Format("WHERE dt_generated > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   AppSettings.DataStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
 
                         command.CommandText = command.CommandText + "ORDER BY dt_generated";
 
@@ -498,6 +513,11 @@ namespace Intertoll.DataImport.Database.Sync
                         {
                             command.CommandText += string.Format("WHERE dt_started > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
                                                                    lastTS.dt_started?.ToString("yyyy-MM-dd HH:mm:ss"));
+                        }
+                        else if (AppSettings.DataStartDate.HasValue)
+                        {
+                            command.CommandText += string.Format("WHERE dt_started > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
+                                                                   AppSettings.DataStartDate.Value.ToString("yyyy-MM-dd HH:mm:ss"));
                         }
 
                         command.CommandText = command.CommandText + " ORDER BY dt_started";
