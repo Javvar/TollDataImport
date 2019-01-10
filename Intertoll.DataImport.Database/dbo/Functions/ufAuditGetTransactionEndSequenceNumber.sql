@@ -17,7 +17,7 @@ BEGIN
 		--	  AND dt_concluded BETWEEN CAST(@Date AS DATETIME) + CAST([dbo].[ufGetHourTime](@Hour,1) AS DATETIME)  
 		--							   AND CAST(@Date AS DATETIME) + CAST([dbo].[ufGetHourTime](@Hour,0) AS DATETIME)
 		
-		select @Result = ISNULL(MAX(prev_tx),0)
+		select @Result = ISNULL(MIN(prev_tx),0) + ISNULL(SUM(tx_count),0)
 		from StagingTimeSlices
 		where ln_id = @LaneCode and DATEPART(HOUR,dt_started) = @Hour AND CAST(dt_started AS DATE) = @Date
 	END	  

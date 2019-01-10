@@ -3,7 +3,7 @@
 -- Create date: 10/04/2018
 -- Description:	Calculates VAT from tariff amount
 -- =============================================
-CREATE FUNCTION ufCalculateTariffVAT(@Amount money)
+CREATE FUNCTION [dbo].[ufCalculateTariffVAT](@Amount money)
 RETURNS money
 AS
 BEGIN

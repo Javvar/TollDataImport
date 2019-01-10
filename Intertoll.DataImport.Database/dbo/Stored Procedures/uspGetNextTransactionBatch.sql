@@ -12,7 +12,7 @@ BEGIN
 	DECLARE @starttrancount int
 	
 	BEGIN TRY	
-		SELECT @starttrancount = @@TRANCOUNT
+		SELECT @starttrancount = @@TRANCOUNT		
 
 		IF @starttrancount = 0
 			BEGIN TRANSACTION
@@ -25,7 +25,7 @@ BEGIN
 		FROM Transactions
 		
 		INSERT INTO @TransBatch
-		SELECT TOP 5000 CASE WHEN NOT EXISTS(SELECT * FROM Transactions WHERE TransactionID = T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20))) 
+		SELECT TOP 10000 CASE WHEN NOT EXISTS(SELECT * FROM Transactions WHERE TransactionID = T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20))) 
 							  THEN T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20)) 
 							  ELSE T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20))  + 'D'
 						 END --<TransactionID>
@@ -38,8 +38,10 @@ BEGIN
 			   ,[dbo].[ufGetClassGuid]([dbo].ufRemoveNonNumericCharacters(T.avc))	--<AVCClassGUID>
 			   , NULL	--<RealClassGUID>
 			   ,[dbo].[ufGetClassGuid]([dbo].ufRemoveNonNumericCharacters(T.mvc))	--<AppliedClassGUID>
-			   ,[dbo].[ufGetTariffGuid](T.ft_id,T.pl_id,[dbo].ufRemoveNonNumericCharacters(T.mvc)) --<TariffGUID>
+			   ,[dbo].[ufGetTariffGuid](T.ln_id,[dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end),T.dt_concluded) --<TariffGUID>
+			   --,[dbo].[ufGetTariffAmount](T.ln_id,[dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end),T.dt_concluded) --<TariffAmount>
 			   ,T.loc_value	--<TariffAmount>
+			   --,[dbo].[ufGetTariffVat](T.ln_id,[dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end),T.dt_concluded) --<TariffVat>
 			   ,[dbo].[ufCalculateTariffVAT](T.loc_value)	--<TariffVat>
 			   ,0 --<ChangeAmount>
 			   ,0 --<TenderedAmount>
@@ -208,7 +210,7 @@ BEGIN
 			ORDER BY TransactionID			
 		END	
 		
-		SELECT top 5000 *,'' StaffID,'' AccountIdentifier
+		SELECT top 10000 *,'' StaffID,'' AccountIdentifier
 		FROM Transactions
 		WHERE IsSent = 0 AND TransactionID NOT IN (SELECT TransactionID -- exclude duplicate transactions already detected
 												   FROM Transactions 

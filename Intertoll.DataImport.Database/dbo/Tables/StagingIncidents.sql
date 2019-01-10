@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[StagingIncidents] (
     [pl_id]            VARCHAR (9)   NULL,
-    [ln_id]            VARCHAR (9)   NULL,
+    [ln_id]            VARCHAR (9)   NOT NULL,
     [dt_generated]     DATETIME      NULL,
-    [in_seq_nr]        INT           NULL,
+    [in_seq_nr]        INT           NOT NULL,
     [ir_type]          VARCHAR (3)   NULL,
     [ir_subtype]       VARCHAR (3)   NULL,
     [tx_seq_nr]        INT           NULL,
@@ -38,8 +38,16 @@
     [tg_tx_seq_nr]     INT           NULL,
     [avc_in_seq_nr]    INT           NULL,
     [avc_in_type_id]   INT           NULL,
-    [avc_dt_generated] DATETIME      NULL
+    [avc_dt_generated] DATETIME      NULL,
+    CONSTRAINT [PK_StagingIncidents] PRIMARY KEY CLUSTERED ([ln_id] ASC, [in_seq_nr] ASC)
 );
 
 
+
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20190107-221454]
+    ON [dbo].[StagingIncidents]([dt_generated] ASC);
 

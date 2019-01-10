@@ -104,7 +104,7 @@ namespace Intertoll.DataImport.Data.DataContext
             foreach (var batchResult in incidentBatch)
                 returnList.Add(batchResult);
 
-            return returnList; ;
+            return returnList; 
         }
 
         public IList<ITollIncident> GetIncidentBatchGreaterThanTime(DateTime dateFrom)
@@ -123,8 +123,8 @@ namespace Intertoll.DataImport.Data.DataContext
 
                     foreach (var sentIncident in sentIncidents)
                     {
-                        var mappedtransaction = Mapper.Map<ITollIncident, Incident>(sentIncident);
-                        ctx.context.Entry(mappedtransaction).State = EntityState.Modified;
+                        var mappedIncident = Mapper.Map<ITollIncident, Incident>(sentIncident);
+                        ctx.context.Entry(mappedIncident).State = EntityState.Modified;
                     }
 
                     ctx.Save();
@@ -187,12 +187,8 @@ namespace Intertoll.DataImport.Data.DataContext
 
         public IList<ITollSession> GetUnsentSessions()
         {
-            using (var repo = new GenericRepository<Session>(context))
-            {
-                var sess = repo.Where(x => !x.IsSent);
-                return Mapper.Map<IList<ITollSession>>(sess);
-            }
-        }
+			return Mapper.Map<IList<ITollSession>>(context.Sessions.Where(x => !x.IsSent));
+		}
 
         #endregion
 

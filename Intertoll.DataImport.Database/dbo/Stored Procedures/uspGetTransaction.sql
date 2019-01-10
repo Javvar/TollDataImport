@@ -3,7 +3,7 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [dbo].[uspGetTransaction] @LaneCode VARCHAR(10),@SequenceNumber INT
+create PROCEDURE [dbo].[uspGetTransaction] @LaneCode VARCHAR(10),@SequenceNumber INT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -128,7 +128,7 @@ BEGIN
 				  ,[ImageID],[AVCDetail],[AccountGUID],[ExchangeRate],[TotalInLocalCurrency]
 				  ,[PreviousLicensePlate],[PreviousPaymentMethodGUID] ,[ReceiptTaxInvoiceDate]
 				  ,[ANPRLicensePlate] ,[ETCTransactionGuid],[CardNumber],[BCCTransferStatus]
-				  ,ContextMarkId,PAN,CONV,IDVL,VehichleState,[IsSent],[TimeStamp]
+				  ,ContextMarkId,PAN,CONV,IDVL,VehichleState,[IsSent],[TimeStamp],NULL
 		FROM @TransBatch
 		
     END

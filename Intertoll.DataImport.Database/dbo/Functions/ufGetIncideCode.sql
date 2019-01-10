@@ -10,7 +10,14 @@ BEGIN
 	-- Declare the return variable here
 	DECLARE @Result INT
 	
-	SET @Result = 0
+	SELECT @Result = IncidentTypeCode
+	FROM MappingIncidentTypes
+	WHERE ForeignType = REPLACE(@ir_type + @ir_subtype,' ','')
+	
+	IF(@Result IS NULL OR @Result = '')
+	BEGIN
+		SET @Result = 0
+	END	
 
 	RETURN @Result
 END

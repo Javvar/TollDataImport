@@ -5,7 +5,7 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE uspCheckMappingsExistence
+CREATE PROCEDURE [dbo].[uspCheckMappingsExistence]
 AS
 BEGIN
 	SET NOCOUNT ON;

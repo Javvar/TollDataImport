@@ -3,11 +3,11 @@
 -- Create date: 10/04/2018
 -- Description:	Determines Tariff Guid From Amount based on date of transaction
 -- =============================================
-CREATE FUNCTION [dbo].[ufGetTariffGuid] (@ln varchar(5), @Class int,@date datetime)
-RETURNS uniqueidentifier
+CREATE FUNCTION [dbo].[ufGetTariffVat] (@ln varchar(5), @Class int,@date datetime)
+RETURNS money
 AS
 BEGIN
-	DECLARE @Result uniqueidentifier
+	DECLARE @Result money
 	
 	--SELECT @Result = TariffGuid
 	--FROM MappingTariffs
@@ -21,7 +21,7 @@ BEGIN
 	FRom PCS.dbo.Lanes
 	WHERE LaneCode = @ln
 
-	SELECT @Result = TariffGuid
+	SELECT @Result = TariffVAT
 	FROM PCS.dbo.Tariffs T
 	JOIN PCS.dbo.TariffSchedules TS ON TS.TariffScheduleGUID = T.TariffScheduleGUID 
 													   AND TS.TariffScheduleGUID = (SELECT TOP 1 TS1.TariffScheduleGUID 

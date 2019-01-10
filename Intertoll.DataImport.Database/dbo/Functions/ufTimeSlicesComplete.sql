@@ -9,6 +9,38 @@ AS
 BEGIN
 	DECLARE @Result BIT = 0
 	
+	DECLARE @StartSeq INT
+	DECLARE @EndSeq INT
+	DECLARE @HourStart DATETIME 
+	DECLARE @HourEnd DATETIME 
+
+
+	SELECT @StartSeq = MIN(ts_seq_nr), @EndSeq = MAX(ts_seq_nr)
+	FROM StagingTimeSlices
+	WHERE ln_id = @LaneCode 
+		  AND CAST(dt_started AS DATE) = @Date  
+		  AND DATEPART(HOUR,dt_started) = @Hour 
+
+	SELECT @HourStart = dt_started
+	FROM StagingTimeSlices
+	WHERE ln_id = @LaneCode AND ts_seq_nr =  @StartSeq
+
+	SELECT @HourEnd = dt_ended
+	FROM StagingTimeSlices
+	WHERE ln_id = @LaneCode AND ts_seq_nr =  @EndSeq
+
+	IF(DATEDIFF(MINUTE, @HourStart, @HourEnd) > 50)
+	BEGIN
+		SET @Result = 1
+	END	
+	
+	RETURN @Result
+
+END
+
+/*
+DECLARE @Result BIT = 0
+	
 	DECLARE @HourStart TIME 
 	DECLARE @HourEnd TIME 
 
@@ -31,5 +63,4 @@ BEGIN
 	END	
 	
 	RETURN @Result
-
-END
+*/

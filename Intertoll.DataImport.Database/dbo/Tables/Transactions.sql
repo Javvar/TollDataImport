@@ -8,7 +8,7 @@
     [AVCClassGUID]                UNIQUEIDENTIFIER NULL,
     [RealClassGUID]               UNIQUEIDENTIFIER NULL,
     [AppliedClassGUID]            UNIQUEIDENTIFIER NULL,
-    [TariffGUID]                  UNIQUEIDENTIFIER NULL,
+    [TariffGUID]                  UNIQUEIDENTIFIER NOT NULL,
     [TariffAmount]                MONEY            NOT NULL,
     [TariffVat]                   MONEY            NOT NULL,
     [ChangeAmount]                MONEY            NULL,
@@ -53,6 +53,8 @@
     [FullCardNumber]              VARCHAR (50)     NULL,
     CONSTRAINT [PK_Transactions_1] PRIMARY KEY CLUSTERED ([TransactionID] ASC)
 );
+
+
 
 
 

@@ -45,7 +45,7 @@ BEGIN
 			WHERE LaneCode = @LaneCode	
 		
 			INSERT INTO @IncBatch
-			SELECT TOP 250  
+			SELECT TOP 100  
 					REPLACE(ln_id,' ','') + CAST(REPLACE(in_seq_nr,' ','') AS VARCHAR(20)) --[ID] [varchar](50) NOT NULL,
 					,ln_id --[LaneCode] [varchar](10) NOT NULL,
 					,us_id--[CollectorID] [varchar](50) NULL,
@@ -67,6 +67,8 @@ BEGIN
 			WHERE ln_id = @LaneCode AND 
 				  (dt_generated > @LastIncDate OR @LastIncDate IS NULL) AND 
 				  dt_generated <= @LastTransactionDate -- incidents should never be ahead of transactions 
+				  and REPLACE(ir_type + ir_subtype,' ','') NOT IN ('OM','FL','FM','FN','FK','FQ','FR','FS','FT','OB','OI','OL','PA','PB','OH','OAG',
+																	'UA','UB','UC','UD','UE','UF','UG','UH','UI')
 			ORDER BY dt_generated
 			
 			FETCH NEXT FROM @LaneCodeCursor INTO @LaneCode;

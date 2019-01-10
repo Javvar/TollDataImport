@@ -3,7 +3,7 @@
 -- Create date: 25/10/2018
 -- Description:	
 -- =============================================
-CREATE PROCEDURE uspUpdateStagingAccountBalances
+CREATE PROCEDURE [dbo].[uspUpdateStagingAccountBalances]
 AS
 BEGIN
 

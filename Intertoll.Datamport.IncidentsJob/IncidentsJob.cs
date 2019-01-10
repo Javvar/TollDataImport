@@ -46,7 +46,9 @@ namespace Intertoll.DataImport.IncidentsJob
                         SentIncidents.Add(submittedEntity);
                 }
 
-                DataProvider.SaveIncidents(SentIncidents);
+	            Log.LogTrace("Incident sent batch count: " + SentIncidents.Count);
+
+				DataProvider.SaveIncidents(SentIncidents);
             }
             catch (Exception ex)
             {

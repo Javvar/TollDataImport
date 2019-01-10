@@ -138,6 +138,9 @@
     <Build Include="dbo\Tables\StagingMISValidationListUpdate.sql" />
     <Build Include="dbo\Tables\StagingMISValidationList.sql" />
     <Build Include="dbo\Stored Procedures\uspUpdateStagingValidationlist.sql" />
+    <Build Include="dbo\Functions\ufSkipAudit.sql" />
+    <Build Include="dbo\Functions\ufGetTariffVat.sql" />
+    <Build Include="dbo\Functions\ufGetTariffAmount.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />

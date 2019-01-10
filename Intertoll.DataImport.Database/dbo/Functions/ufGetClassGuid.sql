@@ -3,7 +3,7 @@
 -- Create date: 10/04/2018
 -- Description:	Mapps class code to class guid
 -- =============================================
-CREATE FUNCTION ufGetClassGuid(@Class int)
+CREATE FUNCTION [dbo].[ufGetClassGuid](@Class int)
 RETURNS uniqueidentifier
 AS
 BEGIN

@@ -49,14 +49,14 @@ namespace Intertoll.DataImport.Database.Sync
 
         private static void StartETCTransactionSyncProcess()
         {
-            Task.Factory.StartNew(() =>
-            {
-                while (run)
-                {
-                    ETCTransactionSyncProcess();
-                    Thread.Sleep(1000 * AppSettings.ETCTransactionsIntervalInSeconds);
-                }
-            });
+            //Task.Factory.StartNew(() =>
+            //{
+            //    while (run)
+            //    {
+            //        ETCTransactionSyncProcess();
+            //        Thread.Sleep(1000 * AppSettings.ETCTransactionsIntervalInSeconds);
+            //    }
+            //});
         }
 
         private static void StartIncidentSyncProcess()
@@ -161,12 +161,12 @@ namespace Intertoll.DataImport.Database.Sync
                                     trans.avc = dataReader[++i].ToString().Trim();
                                     trans.svc = dataReader[++i].ToString().Trim();
                                     trans.loc_curr = dataReader[++i].ToString().Trim();
-                                    trans.loc_value = ExtractBCDValue(dataReader, ++i);
+                                    trans.loc_value = dataReader.GetIfxDecimal(++i).ToString();
                                     trans.ten_curr = dataReader[++i].ToString().Trim();
-                                    trans.ten_value = ExtractBCDValue(dataReader, ++i);
-                                    trans.loc_change = ExtractBCDValue(dataReader, ++i);
-                                    trans.variance = ExtractBCDValue(dataReader, ++i);
-                                    trans.er_id = ExtractIntegerValue(dataReader[++i].ToString());
+                                    trans.ten_value = dataReader.GetIfxDecimal(++i).ToString();
+									trans.loc_change = dataReader.GetIfxDecimal(++i).ToString();
+									trans.variance = dataReader.GetIfxDecimal(++i).ToString();
+									trans.er_id = ExtractIntegerValue(dataReader[++i].ToString());
                                     trans.pm_id = dataReader[++i].ToString().Trim();
                                     trans.card_nr = dataReader[++i].ToString().Trim();
                                     trans.mask_nr = dataReader[++i].ToString().Trim();
@@ -199,8 +199,8 @@ namespace Intertoll.DataImport.Database.Sync
                                     trans.card_bank = dataReader[++i].ToString().Trim();
                                     trans.card_ac_nr = dataReader[++i].ToString().Trim();
                                     trans.tg_mfg_id = dataReader[++i].ToString().Trim();
-                                    trans.tg_post_bal = ExtractBCDValue(dataReader, ++i);
-                                    trans.tg_reader = dataReader[++i].ToString().Trim();
+                                    trans.tg_post_bal = dataReader.GetIfxDecimal(++i).ToString();
+									trans.tg_reader = dataReader[++i].ToString().Trim();
                                     trans.tg_us_cat = dataReader[++i].ToString().Trim();
                                     trans.tg_card_type = dataReader[++i].ToString().Trim();
                                     trans.tg_serv_prov_id = dataReader[++i].ToString().Trim();
@@ -465,7 +465,7 @@ namespace Intertoll.DataImport.Database.Sync
                                 {
 
                                     if ((AppSettings.CheckDuplicatesOnExistingData &&
-                                         !dataContext.ImportedIncidents.Any(x => x.ln_id == inc.ln_id && x.tx_seq_nr == inc.in_seq_nr)) ||
+                                         !dataContext.ImportedIncidents.Any(x => x.ln_id == inc.ln_id && x.in_seq_nr == inc.in_seq_nr)) ||
                                          !AppSettings.CheckDuplicatesOnExistingData)
                                     {
                                         dataContext.ImportedIncidents.Insert(inc);

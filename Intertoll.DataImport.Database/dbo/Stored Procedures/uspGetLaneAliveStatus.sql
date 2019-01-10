@@ -3,7 +3,7 @@
 -- Create date: 19-04-2018
 -- Description:	
 -- =============================================
-CREATE PROCEDURE uspGetLaneAliveStatus
+CREATE PROCEDURE [dbo].[uspGetLaneAliveStatus]
 AS
 BEGIN
 	SET NOCOUNT ON;

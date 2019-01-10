@@ -1,4 +1,4 @@
-﻿CREATE Function [ufRemoveNonNumericCharacters](@strText VARCHAR(1000))
+﻿CREATE Function [dbo].[ufRemoveNonNumericCharacters](@strText VARCHAR(1000))
 RETURNS VARCHAR(1000)
 AS
 BEGIN

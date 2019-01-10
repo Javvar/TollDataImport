@@ -48,14 +48,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\TPS\Shared Libraries\Generic DBContext\Intertoll.EFDbContext.GenericWrapper.netfx4\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
     </Reference>
-    <Reference Include="Intertoll.NLogger">
-      <HintPath>..\..\Shared Libraries\Logging\build\bin\Release\net40\Intertoll.NLogger.dll</HintPath>
+    <Reference Include="Intertoll.NLogger, Version=1.0.2.2, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Intertoll.Logging.1.0.11\lib\net40\Intertoll.NLogger.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\..\Shared Libraries\Logging\build\bin\Release\net40\NLog.dll</HintPath>
+    <Reference Include="NLog, Version=3.2.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Intertoll.Logging.1.0.11\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="NLog.Extended">
-      <HintPath>..\..\Shared Libraries\Logging\build\bin\Release\net40\NLog.Extended.dll</HintPath>
+      <HintPath>..\packages\Intertoll.Logging.1.0.11\lib\net40\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

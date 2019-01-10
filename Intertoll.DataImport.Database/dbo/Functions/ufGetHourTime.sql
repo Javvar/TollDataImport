@@ -3,7 +3,7 @@
 -- Create date: 18-04-2018
 -- Description:	
 -- =============================================
-CREATE FUNCTION ufGetHourTime(@Hour INT,@Start BIT)
+CREATE FUNCTION [dbo].[ufGetHourTime](@Hour INT,@Start BIT)
 RETURNS TIME
 AS
 BEGIN

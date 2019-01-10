@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[StagingTimeSlices] (
     [pl_id]       VARCHAR (9)  NULL,
-    [ln_id]       VARCHAR (9)  NULL,
-    [ts_seq_nr]   INT          NULL,
+    [ln_id]       VARCHAR (9)  NOT NULL,
+    [ts_seq_nr]   INT          NOT NULL,
     [dt_started]  DATETIME     NULL,
     [dt_ended]    DATETIME     NULL,
     [us_id]       VARCHAR (31) NULL,
@@ -38,6 +38,9 @@
     [rep_indic]   VARCHAR (2)  NULL,
     [rd_id]       VARCHAR (2)  NULL,
     [maint_indic] VARCHAR (2)  NULL,
-    [req_indic]   INT          NULL
+    [req_indic]   INT          NULL,
+    CONSTRAINT [PK_StagingTimeSlices] PRIMARY KEY CLUSTERED ([ln_id] ASC, [ts_seq_nr] ASC)
 );
+
+
 

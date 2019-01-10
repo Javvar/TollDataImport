@@ -3,7 +3,7 @@
 -- Create date: 23/10/2018
 -- Description:	
 -- =============================================
-CREATE PROCEDURE uspSetRegisteredMappingReported(@Identifier VARCHAR(50))
+CREATE PROCEDURE [dbo].[uspSetRegisteredMappingReported](@Identifier VARCHAR(50))
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from

@@ -3,7 +3,7 @@
 -- Create date: <Create Date, ,>
 -- Description:	<Description, ,>
 -- =============================================
-CREATE FUNCTION [ufCombineDateAndTime](@date Date,@Time Time)
+CREATE FUNCTION [dbo].[ufCombineDateAndTime](@date Date,@Time Time)
 RETURNS DATETIME
 AS
 BEGIN

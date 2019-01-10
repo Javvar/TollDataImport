@@ -3,7 +3,7 @@
 -- Create date: 29/10
 -- Description:	
 -- =============================================
-CREATE PROCEDURE uspUpdateStagingValidationlist
+CREATE PROCEDURE [dbo].[uspUpdateStagingValidationlist]
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from

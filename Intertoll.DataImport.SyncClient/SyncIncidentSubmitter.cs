@@ -38,10 +38,7 @@ namespace Intertoll.DataImport.SyncClient
                     var syncIncident = Mapper.Map<ITollIncident, Data.Incident>(builtIncident);
                     Sync.Client.SyncClient.SubmitIncident(syncIncident);
 
-                    builtIncident.IsSent = true;
-
-                    DataProvider.InsertIncident(builtIncident);
-
+	                incident.IsSent = true;
                     return builtIncident;
                 }
                 catch (Exception ex)
@@ -51,7 +48,6 @@ namespace Intertoll.DataImport.SyncClient
                 }
             }
 
-            DataProvider.InsertIncident(incident);
             return incident;
         }
     }

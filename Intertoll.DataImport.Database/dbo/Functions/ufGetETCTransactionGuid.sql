@@ -3,7 +3,7 @@
 -- Create date: 
 -- Description:	
 -- =============================================
-CREATE FUNCTION ufGetETCTransactionGuid(@TransactionSeqNo INT,@TransactionDateTime DATETIME,@LaneCode VARCHAR(5))
+CREATE FUNCTION [dbo].[ufGetETCTransactionGuid](@TransactionSeqNo INT,@TransactionDateTime DATETIME,@LaneCode VARCHAR(5))
 RETURNS uniqueidentifier
 AS
 BEGIN

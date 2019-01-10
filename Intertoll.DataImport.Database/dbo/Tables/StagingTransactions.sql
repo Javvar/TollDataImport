@@ -1,8 +1,8 @@
-﻿CREATE TABLE [dbo].[StagingTransactions] (
+CREATE TABLE [dbo].[StagingTransactions] (
     [pl_id]            VARCHAR (9)   NULL,
-    [ln_id]            VARCHAR (9)   NULL,
+    [ln_id]            VARCHAR (9)   NOT NULL,
     [dt_concluded]     DATETIME      NULL,
-    [tx_seq_nr]        INT           NULL,
+    [tx_seq_nr]        INT           NOT NULL,
     [ts_seq_nr]        INT           NULL,
     [us_id]            VARCHAR (31)  NULL,
     [ent_plz_id]       VARCHAR (9)   NULL,
@@ -75,7 +75,8 @@
     [inc_ind]          INT           NULL,
     [id_vl]            VARCHAR (21)  NULL,
     [vl_vln]           VARCHAR (21)  NULL,
-    [anpr_seq_nr]      INT           NULL
+    [anpr_seq_nr]      INT           NULL,
+    CONSTRAINT [PK_StagingTransactions] PRIMARY KEY NONCLUSTERED ([ln_id] ASC, [tx_seq_nr] ASC)
 );
 
 
@@ -83,7 +84,9 @@
 
 
 
+
+
 GO
-CREATE CLUSTERED INDEX [DateConcludedIndex]
+CREATE CLUSTERED INDEX [ClusteredIndex-20190107-221700]
     ON [dbo].[StagingTransactions]([dt_concluded] ASC);
 

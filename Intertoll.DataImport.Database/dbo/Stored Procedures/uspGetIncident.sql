@@ -3,7 +3,7 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE uspGetIncident @LaneCode VARCHAR(10),@SequenceNumber INT
+CREATE PROCEDURE [dbo].[uspGetIncident] @LaneCode VARCHAR(10),@SequenceNumber INT
 AS
 BEGIN
 	SET NOCOUNT ON;
