@@ -28,10 +28,21 @@ namespace Intertoll.DataImport.WinService
         {
             Log.LogInfoMessage("[Enter] Starting Service");
 
-            ContainerManager.Initialise();
-            ContainerManager.Container.Resolve<ScheduleManager>().RegisterJobs();
-            
-            Log.LogInfoMessage("[Exit] Starting Service");
+	        try
+	        {
+		        ContainerManager.Initialise();
+				SetupRequestService();
+		        ContainerManager.Container.Resolve<ScheduleManager>().RegisterJobs();
+	        }
+	        catch (Exception ex)
+	        {
+				Log.LogException(ex);
+		        Log.LogTrace(ex.Message + ". Check error log for more details.");
+
+				throw;
+	        }
+
+			Log.LogInfoMessage("[Exit] Starting Service");
         }
 
         protected override void OnStop()
@@ -48,7 +59,10 @@ namespace Intertoll.DataImport.WinService
         {
             try
             {
-                ServHost = new ServiceHost(ContainerManager.Container.Resolve<ITollDataRequest>());
+				if(ServHost != null)
+					ServHost.Close();
+
+				ServHost = new ServiceHost(ContainerManager.Container.Resolve<ITollDataRequest>());
                 ServHost.Faulted += ServiceHost_Faulted;
                 ServHost.Open();
             }

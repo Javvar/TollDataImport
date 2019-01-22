@@ -7,7 +7,7 @@ namespace Intertoll.DataImport.DataRequest
     public interface ITollDataRequest
     {
         [OperationContract(IsOneWay = true)]
-        void RequestData(string laneCode, DataTypeRequest dataType, List<int> _sequenceNumbers);
+        void RequestData(string laneCode, DataTypeRequest dataType, List<int> sequenceNumbers);
     }
 
     public enum DataTypeRequest
