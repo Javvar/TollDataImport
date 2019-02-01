@@ -62,7 +62,21 @@ namespace Intertoll.DataImport.Data.DataContext
                     ctx.Save();
                 }
             }
-            catch (Exception ex)
+            catch (System.Data.Entity.Validation.DbEntityValidationException e)
+            {
+	            foreach (var eve in e.EntityValidationErrors)
+	            {
+		            Log.LogErrorMessage(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State));
+
+		            foreach (var ve in eve.ValidationErrors)
+		            {
+			            Log.LogErrorMessage(string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage));
+		            }
+	            }
+
+	            throw;
+            }
+			catch (Exception ex)
             {
                 Log.LogException(ex);
                 Log.LogTrace(ex.Message + ". Check error log for more details.");
@@ -72,11 +86,32 @@ namespace Intertoll.DataImport.Data.DataContext
                 {
                     using (var ctx = new TollDataContext())
                     {
-                        ctx.context.Configuration.AutoDetectChangesEnabled = false;
+	                    try
+	                    {
+		                    ctx.context.Configuration.AutoDetectChangesEnabled = false;
 
-                        Transaction mappedtransaction = Mapper.Map<ITollTransaction, Transaction>(sentTransaction);
-                        ctx.context.Entry(mappedtransaction).State = EntityState.Modified;
-                        ctx.Save();
+		                    Transaction mappedtransaction = Mapper.Map<ITollTransaction, Transaction>(sentTransaction);
+		                    ctx.context.Entry(mappedtransaction).State = EntityState.Modified;
+		                    ctx.Save();
+	                    }
+	                    catch (System.Data.Entity.Validation.DbEntityValidationException e)
+	                    {
+		                    foreach (var eve in e.EntityValidationErrors)
+		                    {
+			                    Log.LogErrorMessage(string.Format("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType().Name, eve.Entry.State));
+
+			                    foreach (var ve in eve.ValidationErrors)
+			                    {
+				                    Log.LogErrorMessage(string.Format("- Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage));
+			                    }
+		                    }
+	                    }
+						catch (Exception e)
+	                    {
+							Log.LogException(ex);
+		                    Log.LogTrace(ex.Message + ". Check error log for more details.");
+		                    Log.LogInfoMessage("About to start saving transactions individually.");
+						}
                     }
                 }
             }
@@ -331,9 +366,20 @@ namespace Intertoll.DataImport.Data.DataContext
             }
         }
 
-        #endregion
+		public void QueueRequestedData(RequestedDataType type, string laneCode, List<string> sequenceNumbers)
+		{
+			using (var ctx = new DataImportEntities())
+			{
+				foreach (var sequenceNumber in sequenceNumbers)
+				{
+					if(!ctx.DataRequests.Any(x => x.LaneCode == laneCode && x.SequenceNumber == sequenceNumber && x.Type == (int)type))
+						ctx.DataRequests.Add(new DataRequest { LaneCode = laneCode, SequenceNumber = sequenceNumber, Type = (int)type });
+				}
 
+				ctx.SaveChanges();
+			}
+		}
 
-
-    }
+		#endregion
+	}
 }

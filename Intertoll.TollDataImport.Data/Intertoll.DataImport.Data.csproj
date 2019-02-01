@@ -98,6 +98,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataImport.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DataRequest.cs">
+      <DependentUpon>DataImport.tt</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\Audit.cs" />
     <Compile Include="Extensions\StagingMISHotlistUpdate.cs" />
     <Compile Include="Extensions\StagingMISAccountBalanceUpdate.cs" />
@@ -196,10 +199,6 @@
     <ProjectReference Include="..\Intertoll.Toll.DataImport.Interfaces\Intertoll.Toll.DataImport.Interfaces.csproj">
       <Project>{d80e6648-82ce-44d6-9ec1-b0d4e63f8b74}</Project>
       <Name>Intertoll.Toll.DataImport.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Intertoll.TollDataImport.DataRequest\Intertoll.TollDataImport.DataRequest.Data\Intertoll.TollDataImport.DataRequest.Data.csproj">
-      <Project>{5D1CEECA-B0ED-4DEA-904D-A3BB15A0B642}</Project>
-      <Name>Intertoll.TollDataImport.DataRequest.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -60,6 +60,7 @@
     <Compile Include="EntityBuilders\ITransactionCardDetailBuilder.cs" />
     <Compile Include="EntityBuilders\IHourlyAuditEntityBuilder.cs" />
     <Compile Include="EntityBuilders\IIncidentEntityBuilder.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="IEntitySubmiter.cs" />
     <Compile Include="IMailClient.cs" />
     <Compile Include="ISettingsProvider.cs" />

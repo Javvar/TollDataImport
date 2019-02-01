@@ -37,6 +37,15 @@
           <Property Name="LaneMode" Type="int" Nullable="false" />
           <Property Name="IsSent" Type="bit" Nullable="false" />
         </EntityType>
+        <EntityType Name="DataRequests">
+          <Key>
+            <PropertyRef Name="LaneCode" />
+            <PropertyRef Name="SequenceNumber" />
+          </Key>
+          <Property Name="LaneCode" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="SequenceNumber" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Incidents">
           <Key>
             <PropertyRef Name="IncidentID" />
@@ -161,7 +170,7 @@
           <Property Name="AVCClassGUID" Type="uniqueidentifier" />
           <Property Name="RealClassGUID" Type="uniqueidentifier" />
           <Property Name="AppliedClassGUID" Type="uniqueidentifier" />
-          <Property Name="TariffGUID" Type="uniqueidentifier" />
+          <Property Name="TariffGUID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TariffAmount" Type="money" Nullable="false" />
           <Property Name="TariffVat" Type="money" Nullable="false" />
           <Property Name="ChangeAmount" Type="money" />
@@ -244,6 +253,7 @@
         <Function Name="uspUpdateStagingValidationlist" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DataImportModelStoreContainer">
           <EntitySet Name="Audits" EntityType="Self.Audits" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataRequests" EntityType="Self.DataRequests" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Incidents" EntityType="Self.Incidents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MappingRegisteredUsers" EntityType="Self.MappingRegisteredUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sessions" EntityType="Self.Sessions" Schema="dbo" store:Type="Tables" />
@@ -318,6 +328,7 @@
           <EntitySet Name="StagingMISValidationLists" EntityType="DataImportModel.StagingMISValidationList" />
           <EntitySet Name="StagingMISValidationListUpdates" EntityType="DataImportModel.StagingMISValidationListUpdate" />
           <FunctionImport Name="uspUpdateStagingValidationlist" />
+          <EntitySet Name="DataRequests" EntityType="DataImportModel.DataRequest" />
         </EntityContainer>
         <EntityType Name="Session">
           <Key>
@@ -578,7 +589,7 @@
           <Property Name="AVCClassGUID" Type="Guid" />
           <Property Name="RealClassGUID" Type="Guid" />
           <Property Name="AppliedClassGUID" Type="Guid" />
-          <Property Name="TariffGUID" Type="Guid" />
+          <Property Name="TariffGUID" Type="Guid" Nullable="false" />
           <Property Name="TariffAmount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="TariffVat" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="ChangeAmount" Type="Decimal" Precision="19" Scale="4" />
@@ -738,6 +749,15 @@
           <Property Name="PAN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Action" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DateSentToMIS" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DataRequest">
+          <Key>
+            <PropertyRef Name="LaneCode" />
+            <PropertyRef Name="SequenceNumber" />
+          </Key>
+          <Property Name="LaneCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SequenceNumber" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -1183,6 +1203,15 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="uspUpdateStagingValidationlist" FunctionName="DataImportModel.Store.uspUpdateStagingValidationlist" />
+          <EntitySetMapping Name="DataRequests">
+            <EntityTypeMapping TypeName="DataImportModel.DataRequest">
+              <MappingFragment StoreEntitySet="DataRequests">
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="SequenceNumber" ColumnName="SequenceNumber" />
+                <ScalarProperty Name="LaneCode" ColumnName="LaneCode" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

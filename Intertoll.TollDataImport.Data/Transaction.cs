@@ -23,7 +23,7 @@ namespace Intertoll.DataImport.Data
         public Nullable<System.Guid> AVCClassGUID { get; set; }
         public Nullable<System.Guid> RealClassGUID { get; set; }
         public Nullable<System.Guid> AppliedClassGUID { get; set; }
-        public Nullable<System.Guid> TariffGUID { get; set; }
+        public System.Guid? TariffGUID { get; set; }
         public decimal TariffAmount { get; set; }
         public decimal TariffVat { get; set; }
         public Nullable<decimal> ChangeAmount { get; set; }

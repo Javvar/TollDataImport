@@ -5,23 +5,7 @@ VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{758425DA-1D07-4AA3-B1C2-72C27A824206}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Intertoll.TollDataImport.DataIntergrationService", "Intertoll.TollDataImport.DataIntergrationService", "{54AE7A9C-EFBD-4B18-9322-72A906427645}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Intertoll.Toll.DataImport.DataRequest", "Intertoll.Toll.DataImport.DataRequest", "{6D09AC80-A696-4759-BE99-D4E4F35215F3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.TollDataImport.DataRequest", "Intertoll.TollDataImport.DataRequest\Intertoll.TollDataImport.DataRequest\Intertoll.TollDataImport.DataRequest.csproj", "{67011CE8-DB54-4728-94D4-46850D3A9382}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.TollDataImport.DataRequest.Data", "Intertoll.TollDataImport.DataRequest\Intertoll.TollDataImport.DataRequest.Data\Intertoll.TollDataImport.DataRequest.Data.csproj", "{5D1CEECA-B0ED-4DEA-904D-A3BB15A0B642}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.Toll.DataImport.DataRequest.Client", "Intertoll.TollDataImport.DataRequest\Intertoll.Toll.DataImport.DataRequest.Client\Intertoll.Toll.DataImport.DataRequest.Client.csproj", "{0F286C94-2FBC-400A-A236-E17D8D510B5D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.TollDataImport.DataRequest.TestClient", "Intertoll.TollDataImport.DataRequest\Intertoll.TollDataImport.DataRequest.TestClient\Intertoll.TollDataImport.DataRequest.TestClient.csproj", "{4ADFAA48-CA51-400C-A0E6-23E615C2542F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.PCS.DataIntergration.Common", "Intertoll.TollDataImport.DataIntergrationService\Intertoll.PCS.DataIntergration.Common\Intertoll.PCS.DataIntergration.Common.csproj", "{C3DB2E4B-62FB-473B-BA93-5EBB4AE11329}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.PCS.DataIntergration.Data", "Intertoll.TollDataImport.DataIntergrationService\Intertoll.PCS.DataIntergration.Data\Intertoll.PCS.DataIntergration.Data.csproj", "{3C3EE2EA-0BD6-430D-9015-742C01033027}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.PCS.DataIntergrationService", "Intertoll.TollDataImport.DataIntergrationService\Intertoll.PCS.DataIntergrationService\Intertoll.PCS.DataIntergrationService.csproj", "{74D5EBDE-6969-4C92-AB9D-D7A3E0F60DBE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C60F7AC-3F10-4561-B1FD-ADE2EE8891CB}"
 EndProject
@@ -71,19 +55,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.Hotlis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.ValidationListUpdateJob", "Intertoll.DataImport.ValidationListUpdateJob\Intertoll.DataImport.ValidationListUpdateJob.csproj", "{258D8013-73EC-40CF-9BE0-7F7FC0AA100C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DCS Import", "DCS Import", "{435E362C-493C-486B-AA69-E80A3E9424F5}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7B6B2678-5739-4AB8-98D6-0FAB745F7820}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.DCS.Database.Sync", "Intertoll.DataImport.DCS.WinService\Intertoll.DataImport.DCS.Database.Sync.csproj", "{95072BF5-A01F-4556-BFE6-22B33F3FE173}"
-EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Intertoll.DataImport.DCS.Database", "Intertoll.DataImport.DCS.Database\Intertoll.DataImport.DCS.Database.sqlproj", "{40040028-3EE5-4D32-A14C-C778987DF6F6}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data Request", "Data Request", "{71C46929-3820-4B8A-9E87-C7D0FCB72AF7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.DataRequest.Client", "Intertoll.DataImport.DataRequest.Client\Intertoll.DataImport.DataRequest.Client.csproj", "{7DF08149-0AB9-4E11-A534-5FF765C4906F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.DataRequest.WinService", "Intertoll.DataImport.DataRequest.WinService\Intertoll.DataImport.DataRequest.WinService.csproj", "{6A4B50EC-9A4E-42CC-8BBD-2C8D6F300869}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Intertoll.DataImport.DataRequest.TestClient", "Intertoll.DataImport.DataRequest.TestClient\Intertoll.DataImport.DataRequest.TestClient.csproj", "{D47EDE95-147E-4C4D-9791-88E65E7E707B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,28 +69,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{67011CE8-DB54-4728-94D4-46850D3A9382}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67011CE8-DB54-4728-94D4-46850D3A9382}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67011CE8-DB54-4728-94D4-46850D3A9382}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D1CEECA-B0ED-4DEA-904D-A3BB15A0B642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D1CEECA-B0ED-4DEA-904D-A3BB15A0B642}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D1CEECA-B0ED-4DEA-904D-A3BB15A0B642}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0F286C94-2FBC-400A-A236-E17D8D510B5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0F286C94-2FBC-400A-A236-E17D8D510B5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0F286C94-2FBC-400A-A236-E17D8D510B5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4ADFAA48-CA51-400C-A0E6-23E615C2542F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4ADFAA48-CA51-400C-A0E6-23E615C2542F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4ADFAA48-CA51-400C-A0E6-23E615C2542F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C3DB2E4B-62FB-473B-BA93-5EBB4AE11329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C3DB2E4B-62FB-473B-BA93-5EBB4AE11329}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C3DB2E4B-62FB-473B-BA93-5EBB4AE11329}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C3DB2E4B-62FB-473B-BA93-5EBB4AE11329}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3C3EE2EA-0BD6-430D-9015-742C01033027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3C3EE2EA-0BD6-430D-9015-742C01033027}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3C3EE2EA-0BD6-430D-9015-742C01033027}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74D5EBDE-6969-4C92-AB9D-D7A3E0F60DBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74D5EBDE-6969-4C92-AB9D-D7A3E0F60DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74D5EBDE-6969-4C92-AB9D-D7A3E0F60DBE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D80E6648-82CE-44D6-9EC1-B0D4E63F8B74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D80E6648-82CE-44D6-9EC1-B0D4E63F8B74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D80E6648-82CE-44D6-9EC1-B0D4E63F8B74}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -195,16 +154,6 @@ Global
 		{258D8013-73EC-40CF-9BE0-7F7FC0AA100C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{258D8013-73EC-40CF-9BE0-7F7FC0AA100C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{258D8013-73EC-40CF-9BE0-7F7FC0AA100C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95072BF5-A01F-4556-BFE6-22B33F3FE173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{95072BF5-A01F-4556-BFE6-22B33F3FE173}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{95072BF5-A01F-4556-BFE6-22B33F3FE173}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{95072BF5-A01F-4556-BFE6-22B33F3FE173}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40040028-3EE5-4D32-A14C-C778987DF6F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{40040028-3EE5-4D32-A14C-C778987DF6F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{40040028-3EE5-4D32-A14C-C778987DF6F6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{40040028-3EE5-4D32-A14C-C778987DF6F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{40040028-3EE5-4D32-A14C-C778987DF6F6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{40040028-3EE5-4D32-A14C-C778987DF6F6}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{7DF08149-0AB9-4E11-A534-5FF765C4906F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7DF08149-0AB9-4E11-A534-5FF765C4906F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DF08149-0AB9-4E11-A534-5FF765C4906F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -213,18 +162,16 @@ Global
 		{6A4B50EC-9A4E-42CC-8BBD-2C8D6F300869}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A4B50EC-9A4E-42CC-8BBD-2C8D6F300869}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A4B50EC-9A4E-42CC-8BBD-2C8D6F300869}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D47EDE95-147E-4C4D-9791-88E65E7E707B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D47EDE95-147E-4C4D-9791-88E65E7E707B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D47EDE95-147E-4C4D-9791-88E65E7E707B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D47EDE95-147E-4C4D-9791-88E65E7E707B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{67011CE8-DB54-4728-94D4-46850D3A9382} = {6D09AC80-A696-4759-BE99-D4E4F35215F3}
-		{5D1CEECA-B0ED-4DEA-904D-A3BB15A0B642} = {6D09AC80-A696-4759-BE99-D4E4F35215F3}
-		{0F286C94-2FBC-400A-A236-E17D8D510B5D} = {6D09AC80-A696-4759-BE99-D4E4F35215F3}
 		{4ADFAA48-CA51-400C-A0E6-23E615C2542F} = {758425DA-1D07-4AA3-B1C2-72C27A824206}
-		{C3DB2E4B-62FB-473B-BA93-5EBB4AE11329} = {54AE7A9C-EFBD-4B18-9322-72A906427645}
-		{3C3EE2EA-0BD6-430D-9015-742C01033027} = {54AE7A9C-EFBD-4B18-9322-72A906427645}
-		{74D5EBDE-6969-4C92-AB9D-D7A3E0F60DBE} = {54AE7A9C-EFBD-4B18-9322-72A906427645}
 		{D80E6648-82CE-44D6-9EC1-B0D4E63F8B74} = {7C60F7AC-3F10-4561-B1FD-ADE2EE8891CB}
 		{ECA0C8B0-D27F-424E-A00E-B586D4B88A54} = {0F984682-8639-462B-A881-58BED0DBFE55}
 		{619FDF8C-05B6-405B-AFCF-6E41BBF4BBD2} = {F7C0B0E0-31AA-4A20-A896-D7B85EDAEDDB}
@@ -247,12 +194,10 @@ Global
 		{E6FAE0FB-B699-4A88-AC6B-A3E0E0183D53} = {0A554509-0B95-42F0-82DC-14282BEF2C3C}
 		{C654A36D-B5F8-40A4-B46B-6BEC9F63A20F} = {0A554509-0B95-42F0-82DC-14282BEF2C3C}
 		{258D8013-73EC-40CF-9BE0-7F7FC0AA100C} = {0A554509-0B95-42F0-82DC-14282BEF2C3C}
-		{7B6B2678-5739-4AB8-98D6-0FAB745F7820} = {435E362C-493C-486B-AA69-E80A3E9424F5}
-		{95072BF5-A01F-4556-BFE6-22B33F3FE173} = {7B6B2678-5739-4AB8-98D6-0FAB745F7820}
-		{40040028-3EE5-4D32-A14C-C778987DF6F6} = {7B6B2678-5739-4AB8-98D6-0FAB745F7820}
 		{71C46929-3820-4B8A-9E87-C7D0FCB72AF7} = {0A554509-0B95-42F0-82DC-14282BEF2C3C}
 		{7DF08149-0AB9-4E11-A534-5FF765C4906F} = {71C46929-3820-4B8A-9E87-C7D0FCB72AF7}
 		{6A4B50EC-9A4E-42CC-8BBD-2C8D6F300869} = {71C46929-3820-4B8A-9E87-C7D0FCB72AF7}
+		{D47EDE95-147E-4C4D-9791-88E65E7E707B} = {758425DA-1D07-4AA3-B1C2-72C27A824206}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6ED33561-D4FF-44E1-9D74-236A28AABF6B}

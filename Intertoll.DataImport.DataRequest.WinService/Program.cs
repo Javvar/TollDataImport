@@ -1,4 +1,5 @@
-﻿using System.ServiceProcess;
+﻿using System;
+using System.ServiceProcess;
 
 namespace Intertoll.DataImport.DataRequest.WinService
 {
@@ -9,18 +10,17 @@ namespace Intertoll.DataImport.DataRequest.WinService
 		/// </summary>
 		static void Main()
 		{
-			#if DEBUG
-
-            WinService svc = new WinService();
-            svc.DebugStart();
-            System.Threading.Thread.Sleep(System.Threading.Timeout.Infinite);
-
-			#else
-
-			ServiceBase[] ServicesToRun = { new WinService() };
-			ServiceBase.Run(ServicesToRun);
-
-			#endif
+			if (System.Environment.UserInteractive)
+			{
+				WinService service = new WinService();
+				service.ConsoleStart();
+				Console.ReadLine();
+				service.ConsoleStop();
+			}
+			else
+			{
+				ServiceBase.Run(new WinService());
+			}
 		}
 	}
 }

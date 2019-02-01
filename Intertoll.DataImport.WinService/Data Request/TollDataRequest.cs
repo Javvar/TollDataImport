@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Intertoll.DataImport.DataRequest;
 using Intertoll.NLogger;
 using Intertoll.Toll.DataImport.Interfaces;
 using Intertoll.Toll.DataImport.Interfaces.Entities;
 using Unity;
 using Unity.Resolution;
 
-namespace Intertoll.DataImport.DataRequest
+namespace Intertoll.DataImport.WinService.DataRequest
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class TollDataRequest : ITollDataRequest
@@ -65,7 +66,8 @@ namespace Intertoll.DataImport.DataRequest
        
         void RequestTransactions(string laneCode,List<int> sequenceNumbers)
         {
-            List<ITollTransaction> SentTransactions = new List<ITollTransaction>();
+            List<ITollTransaction> sentTransactions = new List<ITollTransaction>();
+	        var remotelyRequestedData = new List<string>();
 
             foreach (var seqNr in sequenceNumbers)
             {
@@ -75,17 +77,20 @@ namespace Intertoll.DataImport.DataRequest
 
                 if (tollTransaction != null)
                 {
-                    Log.LogTrace("Found Transaction: " + laneCode + " " + seqNr);
+                    Log.LogTrace("Found Transaction Locally: " + laneCode + " " + seqNr);
+	                tollTransaction.IsSent = false;
+	                sentTransactions.Add(tollTransaction);
 
-                    var submitter = Container.Resolve<ITransactionSubmitter>(new ParameterOverride("_dataProvider", DataProvider));
-                    var submittedEntity = submitter.Submit(tollTransaction);
-
-                    if (submittedEntity.IsSent)
-                        SentTransactions.Add(submittedEntity); 
-                }
+				}
+                else
+                {
+	                Log.LogTrace("Transaction to request remotely: " + laneCode + " " + seqNr);
+					remotelyRequestedData.Add(seqNr.ToString());
+				}
             }
 
-            DataProvider.SaveTransactions(SentTransactions);
+            DataProvider.SaveTransactions(sentTransactions);
+			DataProvider.QueueRequestedData(RequestedDataType.Transaction, laneCode, remotelyRequestedData);
         }
 
         private void RequestIncidents(string laneCode, List<int> sequenceNumbers)

@@ -39,6 +39,7 @@ namespace Intertoll.DataImport.Data
         public virtual DbSet<StagingMISHotlistUpdate> StagingMISHotlistUpdates { get; set; }
         public virtual DbSet<StagingMISValidationList> StagingMISValidationLists { get; set; }
         public virtual DbSet<StagingMISValidationListUpdate> StagingMISValidationListUpdates { get; set; }
+        public virtual DbSet<DataRequest> DataRequests { get; set; }
     
         public virtual ObjectResult<uspGetLaneSession_Result> uspGetLaneSession(string laneCode)
         {

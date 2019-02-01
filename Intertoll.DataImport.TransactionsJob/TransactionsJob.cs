@@ -91,7 +91,7 @@ namespace Intertoll.DataImport.TransactionsJob
             if(!TransactionBatch.Any())
                 return;
 
-            List<string> cardNumbers = TransactionBatch.Where(x => !string.IsNullOrEmpty(x.PaymentDetail))
+            List<string> cardNumbers = TransactionBatch.Where(x => !string.IsNullOrEmpty(x.PaymentDetail) && x.PaymentDetail.Length < 70)
                                                        .Select(transaction => transaction.PaymentDetail)
                                                        .Distinct()
                                                        .ToList();

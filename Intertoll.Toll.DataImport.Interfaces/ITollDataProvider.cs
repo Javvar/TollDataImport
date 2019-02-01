@@ -45,6 +45,8 @@ namespace Intertoll.Toll.DataImport.Interfaces
         IList<IMISValidationListUpdate> GetListOfMISValidationListUpdates();
         void SetSentMISValidationUpdate(IMISValidationListUpdate update);
 
+	    void QueueRequestedData(RequestedDataType type, string laneCode, List<string> sequenceNumbers);
+
         void Save();
     }
 }

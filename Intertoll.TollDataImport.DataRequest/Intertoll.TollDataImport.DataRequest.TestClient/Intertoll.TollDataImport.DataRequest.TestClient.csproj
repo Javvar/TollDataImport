@@ -9,12 +9,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Intertoll.TollDataImport.DataRequest.TestClient</RootNamespace>
     <AssemblyName>Intertoll.TollDataImport.DataRequest.TestClient</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,10 +37,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging.Core">
-      <HintPath>..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="IBM.Data.Informix, Version=3.0.0.2, Culture=neutral, PublicKeyToken=7c307b91aa13d208, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Intertoll.DataImport.WinService\bin\Release\IBM.Data.Informix.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.DataImport.Database.Sync.Data">
+      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.DataImport.Database.Sync.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.EFDbContext.GenericWrapper">
+      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Intertoll.NLogger">
+      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.NLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog.Extended">
+      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\NLog.Extended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
@@ -51,15 +75,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Intertoll.Toll.DataImport.DataRequest.Client\Intertoll.Toll.DataImport.DataRequest.Client.csproj">
-      <Project>{0f286c94-2fbc-400a-a236-e17d8d510b5d}</Project>
-      <Name>Intertoll.Toll.DataImport.DataRequest.Client</Name>
+    <ProjectReference Include="..\..\Intertoll.TollDataImport.Data\Intertoll.DataImport.Data.csproj">
+      <Project>{eca0c8b0-d27f-424e-a00e-b586d4b88a54}</Project>
+      <Name>Intertoll.DataImport.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

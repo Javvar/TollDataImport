@@ -75,6 +75,7 @@ namespace Intertoll.DataImport.WinService
 
         void ServiceHost_Faulted(object sender, EventArgs e)
         {
+
             Log.LogFatal(new Exception("ServiceHost_Faulted"), "ServiceHost_Faulted");
             ServHost.Abort();
             SetupRequestService();

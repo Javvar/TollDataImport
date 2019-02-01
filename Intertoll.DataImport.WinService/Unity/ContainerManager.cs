@@ -12,6 +12,7 @@ using Intertoll.Toll.DataImport.Interfaces.EntityBuilders;
 using Intertoll.DataImport.Data.DataContext;
 using Quartz;
 using Unity;
+using Intertoll.DataImport.WinService.DataRequest;
 
 namespace Intertoll.DataImport.WinService.Unity
 {
