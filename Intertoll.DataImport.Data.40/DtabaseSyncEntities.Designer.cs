@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\INTERTOLL\EFKON_DEV\TollDataImport\Intertoll.DataImport.Data.40\DtabaseSyncEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Temp\TollDataImport\TollDataImport\Intertoll.DataImport.Data.40\DtabaseSyncEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

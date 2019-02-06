@@ -118,7 +118,7 @@ namespace Intertoll.DataImport.Database.Sync
                             if (lastTransaction != null)
                             {
                                 command.CommandText += string.Format("WHERE dt_concluded > TO_DATE('{0}','%Y-%m-%d %H:%M:%S')",
-                                                                       lastTransaction.dt_concluded?.ToString("yyyy-MM-dd HH:mm:ss"));
+                                                                       lastTransaction.dt_concluded.ToString("yyyy-MM-dd HH:mm:ss"));
                             }
                             else if(AppSettings.DataStartDate.HasValue)
                             {
@@ -142,7 +142,7 @@ namespace Intertoll.DataImport.Database.Sync
 
                                     trans.pl_id = dataReader[i].ToString().Trim();
                                     trans.ln_id = dataReader[++i].ToString().Trim();
-                                    trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]);
+                                    trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]).Value;
                                     trans.tx_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt) ? outInt :
                                                                     throw new InvalidDataException("Invalid transaction sequence number.");
 
@@ -220,17 +220,24 @@ namespace Intertoll.DataImport.Database.Sync
                                     trans.vl_vln = dataReader[++i].ToString().Trim();
                                     trans.anpr_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
 
-                                    if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr))
+                                    if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr + trans.dt_concluded))
                                     {
-                                        if ((AppSettings.CheckDuplicatesOnExistingData &&
-                                             !dataContext.ImportedTransactions.Any(x => x.ln_id == trans.ln_id && x.tx_seq_nr == trans.tx_seq_nr)) ||
-                                             !AppSettings.CheckDuplicatesOnExistingData)
-                                        {
-                                            dataContext.ImportedTransactions.Insert(trans);
-                                        }
+	                                    if (AppSettings.CheckDuplicatesOnExistingData)
+	                                    {
+		                                    if (!dataContext.ImportedTransactions.Any(x => x.ln_id == trans.ln_id
+		                                                                                    && x.tx_seq_nr == trans.tx_seq_nr
+		                                                                                    && x.dt_concluded == trans.dt_concluded)) 
+		                                    {
+			                                    dataContext.ImportedTransactions.Insert(trans);
+		                                    }
+										}
+	                                    else
+	                                    {
+		                                    dataContext.ImportedTransactions.Insert(trans);
+	                                    }
                                     }
 
-                                    processedTrans.Add(trans.ln_id + trans.tx_seq_nr);
+                                    processedTrans.Add(trans.ln_id + trans.tx_seq_nr + trans.dt_concluded);
                                 }
                                 catch (Exception ex)
                                 {

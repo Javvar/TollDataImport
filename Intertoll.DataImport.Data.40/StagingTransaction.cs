@@ -16,7 +16,7 @@ namespace Intertoll.DataImport.Database.Sync.Data
     {
         public string pl_id { get; set; }
         public string ln_id { get; set; }
-        public Nullable<System.DateTime> dt_concluded { get; set; }
+        public System.DateTime dt_concluded { get; set; }
         public int tx_seq_nr { get; set; }
         public Nullable<int> ts_seq_nr { get; set; }
         public string us_id { get; set; }
