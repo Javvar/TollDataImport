@@ -12,6 +12,8 @@ namespace Intertoll.DataImport.Database.Sync.Data
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class DatabaseSyncEntities : DbContext
     {
@@ -32,5 +34,18 @@ namespace Intertoll.DataImport.Database.Sync.Data
         public virtual DbSet<StagingETCTransaction> StagingETCTransactions { get; set; }
         public virtual DbSet<StagingIncident> StagingIncidents { get; set; }
         public virtual DbSet<StagingTimeSlice> StagingTimeSlices { get; set; }
+    
+        public virtual ObjectResult<uspGetListOfSequenceNrGaps_Result> uspGetListOfSequenceNrGaps(Nullable<System.DateTime> from, Nullable<System.DateTime> to)
+        {
+            var fromParameter = from.HasValue ?
+                new ObjectParameter("from", from) :
+                new ObjectParameter("from", typeof(System.DateTime));
+    
+            var toParameter = to.HasValue ?
+                new ObjectParameter("to", to) :
+                new ObjectParameter("to", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<uspGetListOfSequenceNrGaps_Result>("uspGetListOfSequenceNrGaps", fromParameter, toParameter);
+        }
     }
 }

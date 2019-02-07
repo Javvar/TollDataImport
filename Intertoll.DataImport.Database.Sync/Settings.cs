@@ -101,5 +101,20 @@ namespace Intertoll.DataImport.Database.Sync
         {
             get { return ConfigurationManager.AppSettings["EncryptionDecryptionApplication"] ?? "EncryptDecrypt.exe"; }
         }
+
+	    public static int MissingDatacheckMonthInThePast
+	    {
+		    get
+		    {
+			    if (ConfigurationManager.AppSettings["MissingDatacheckMonthInThePast"] != null)
+			    {
+					return int.TryParse(ConfigurationManager.AppSettings["MissingDatacheckMonthInThePast"], out var outVar) ? outVar : 0;
+				}
+			    else
+			    {
+				    return 0;
+			    }
+		    }
+		}
     }
 }

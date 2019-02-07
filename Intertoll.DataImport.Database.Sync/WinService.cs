@@ -15,6 +15,7 @@ namespace Intertoll.DataImport.Database.Sync
             Log.LogInfoMessage("[Enter] Starting Service");
 
             DatabaseSyncManager.StartSynchingProcess();
+	        MissingDataSyncManager.StartProcess();
 
             Log.LogInfoMessage("[Exit] Starting Service");
         }
@@ -23,8 +24,10 @@ namespace Intertoll.DataImport.Database.Sync
         {
             Log.LogInfoMessage("[Enter] Stopping Service");
 
+	        DatabaseSyncManager.EndSynchingProcess();
+	        MissingDataSyncManager.EndProcess();
 
-            Log.LogInfoMessage("[Exit] Stopping Service");
+			Log.LogInfoMessage("[Exit] Stopping Service");
         }
 
         #region Debug

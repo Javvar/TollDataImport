@@ -286,6 +286,10 @@
           <Property Name="vl_vln" Type="varchar" MaxLength="21" />
           <Property Name="anpr_seq_nr" Type="int" />
         </EntityType>
+        <Function Name="uspGetListOfSequenceNrGaps" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="from" Type="date" Mode="In" />
+          <Parameter Name="to" Type="date" Mode="In" />
+        </Function>
         <EntityContainer Name="DatabaseSyncModelStoreContainer">
           <EntitySet Name="StagingAccountDetails" EntityType="Self.StagingAccountDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StagingAccountIdentifiers" EntityType="Self.StagingAccountIdentifiers" Schema="dbo" store:Type="Tables" />
@@ -307,6 +311,10 @@
           <EntitySet Name="StagingETCTransactions" EntityType="DatabaseSyncModel.StagingETCTransaction" />
           <EntitySet Name="StagingIncidents" EntityType="DatabaseSyncModel.StagingIncident" />
           <EntitySet Name="StagingTimeSlices" EntityType="DatabaseSyncModel.StagingTimeSlice" />
+          <FunctionImport Name="uspGetListOfSequenceNrGaps" ReturnType="Collection(DatabaseSyncModel.uspGetListOfSequenceNrGaps_Result)">
+            <Parameter Name="from" Mode="In" Type="DateTime" />
+            <Parameter Name="to" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="StagingTransaction">
           <Key>
@@ -589,6 +597,10 @@
           <Property Name="maint_indic" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="req_indic" Type="Int32" />
         </EntityType>
+        <ComplexType Name="uspGetListOfSequenceNrGaps_Result">
+          <Property Type="String" Name="Lane" Nullable="false" MaxLength="1" />
+          <Property Type="Int32" Name="Sequencenr" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -878,6 +890,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="uspGetListOfSequenceNrGaps" FunctionName="DatabaseSyncModel.Store.uspGetListOfSequenceNrGaps">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DatabaseSyncModel.uspGetListOfSequenceNrGaps_Result">
+                <ScalarProperty Name="Lane" ColumnName="Lane" />
+                <ScalarProperty Name="Sequencenr" ColumnName="Sequencenr" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -1,4 +1,7 @@
-﻿using Intertoll.EFDbContext.GenericWrapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Intertoll.EFDbContext.GenericWrapper;
 
 namespace Intertoll.DataImport.Database.Sync.Data.DataContext
 {
@@ -53,5 +56,10 @@ namespace Intertoll.DataImport.Database.Sync.Data.DataContext
         }
 
         #endregion
+
+	    public List<uspGetListOfSequenceNrGaps_Result> GetTransactionSequenceNrGaps(DateTime from,DateTime to)
+	    {
+		    return context.uspGetListOfSequenceNrGaps(from,to).ToList();
+	    }
     }
 }

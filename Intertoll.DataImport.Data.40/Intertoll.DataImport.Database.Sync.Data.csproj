@@ -94,6 +94,9 @@
     <Compile Include="StagingTransaction.cs">
       <DependentUpon>DtabaseSyncEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="uspGetListOfSequenceNrGaps_Result.cs">
+      <DependentUpon>DtabaseSyncEntities.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
