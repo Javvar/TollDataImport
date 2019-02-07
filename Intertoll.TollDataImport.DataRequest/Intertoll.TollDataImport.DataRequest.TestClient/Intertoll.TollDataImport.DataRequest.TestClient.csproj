@@ -47,9 +47,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Intertoll.DataImport.WinService\bin\Release\IBM.Data.Informix.dll</HintPath>
     </Reference>
-    <Reference Include="Intertoll.DataImport.Database.Sync.Data">
-      <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.DataImport.Database.Sync.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Intertoll.EFDbContext.GenericWrapper">
       <HintPath>..\..\Intertoll.DataImport.Database.Sync\bin\Release\Intertoll.EFDbContext.GenericWrapper.dll</HintPath>
     </Reference>
@@ -82,9 +79,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Intertoll.TollDataImport.Data\Intertoll.DataImport.Data.csproj">
-      <Project>{eca0c8b0-d27f-424e-a00e-b586d4b88a54}</Project>
-      <Name>Intertoll.DataImport.Data</Name>
+    <ProjectReference Include="..\..\Intertoll.DataImport.Data.40\Intertoll.DataImport.Database.Sync.Data.csproj">
+      <Project>{552cd29f-0ed3-49e9-9d40-8c410b11bc1c}</Project>
+      <Name>Intertoll.DataImport.Database.Sync.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

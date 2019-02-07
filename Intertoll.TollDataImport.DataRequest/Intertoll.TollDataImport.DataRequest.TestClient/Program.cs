@@ -20,7 +20,9 @@ namespace Intertoll.TollDataImport.DataRequest.TestClient
             {
                 try
                 {
-	                TransactionSyncProcess();
+	                //TableCounts();
+
+					TransactionSyncProcess();
 
 					Console.WriteLine("Done");
                 }
@@ -33,7 +35,84 @@ namespace Intertoll.TollDataImport.DataRequest.TestClient
 			}
         }
 
-		private static void TransactionSyncProcess()
+	    private static void TableCounts()
+	    {
+		    using (var dataContext = new DatabaseSyncDataContext())
+			using (IfxConnection connection = EstablishConnection())
+		    {
+			    IfxCommand command = connection.CreateCommand();
+			    command.CommandText =
+				    $"select count(*), ln_id, tx_seq_nr  " +
+				    $"from informix.p_trans " +
+				    $"where dt_concluded >= TO_DATE('2018-11-01 00:00:00', '%Y-%m-%d %H:%M:%S') " +
+				    $"and dt_concluded < TO_DATE('2018-12-01 00:00:00','%Y-%m-%d %H:%M:%S') and ln_id='04RS' " +
+				    $"Group by ln_id,tx_seq_nr " +
+				    $"order by tx_seq_nr  ";
+
+
+				
+
+			    IfxDataReader dataReader = command.ExecuteReader();
+
+				List<string> s = new List<string>();
+
+			    while (dataReader.Read())
+			    {
+					var d = $"{dataReader[0].ToString().Trim()} : {dataReader[1].ToString().Trim()}";
+				    s.Add(d);
+					//if (!dataContext.ImportedTransactions.Any(x => x.ln_id == "03RS" && x.tx_seq_nr.ToString() == d))
+					//	Console.WriteLine(d);
+				}
+
+				File.WriteAllLines("seqNrs.txt",s);
+
+			    /*IfxCommand command2 = connection.CreateCommand();
+			    command2.CommandText =
+				    $"select count(*) from informix.p_trans where dt_concluded >= TO_DATE('2018-11-01 00:00:00', '%Y-%m-%d %H:%M:%S') and dt_concluded<TO_DATE('2018-12-01 00:00:00','%Y-%m-%d %H:%M:%S')";
+
+
+
+
+			    IfxDataReader dataReader2 = command2.ExecuteReader();
+
+			    while (dataReader2.Read())
+			    {
+				    Console.WriteLine(dataReader2[0].ToString().Trim());
+			    }
+
+			    IfxCommand command3 = connection.CreateCommand();
+			    command3.CommandText =
+				    $"select count(*) from informix.p_trans where dt_concluded >= TO_DATE('2018-12-01 00:00:00', '%Y-%m-%d %H:%M:%S') and dt_concluded<TO_DATE('2019-01-01 00:00:00','%Y-%m-%d %H:%M:%S')";
+
+
+
+
+			    IfxDataReader dataReader3 = command3.ExecuteReader();
+
+			    while (dataReader3.Read())
+			    {
+				    Console.WriteLine(dataReader3[0].ToString().Trim());
+			    }
+
+			    IfxCommand command4 = connection.CreateCommand();
+			    command4.CommandText =
+				    $"select count(*) from informix.p_trans where dt_concluded >= TO_DATE('2019-01-01 00:00:00', '%Y-%m-%d %H:%M:%S') and dt_concluded<TO_DATE('2019-02-01 00:00:00','%Y-%m-%d %H:%M:%S')";
+
+
+
+
+			    IfxDataReader dataReader4 = command4.ExecuteReader();
+
+			    while (dataReader4.Read())
+			    {
+				    Console.WriteLine(dataReader4[0].ToString().Trim());
+			    }*/
+
+
+			}
+	    }
+
+	    private static void TransactionSyncProcess()
 		{
 			//Log.LogInfoMessage($"[Enter] {System.Reflection.MethodBase.GetCurrentMethod().Name}");
 
@@ -61,7 +140,7 @@ namespace Intertoll.TollDataImport.DataRequest.TestClient
 
 									while (dataReader.Read())
 									{
-										Console.WriteLine($"Trans found {reqItem.Value}");
+										Console.WriteLine($"Trans found {reqItem.Value} : {reqItem.Key} ");
 
 										var trans = new StagingTransaction();
 
@@ -71,7 +150,7 @@ namespace Intertoll.TollDataImport.DataRequest.TestClient
 
 											trans.pl_id = dataReader[i].ToString().Trim();
 											trans.ln_id = dataReader[++i].ToString().Trim();
-											trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]);
+											trans.dt_concluded = ExtractDatetimeValue(dataReader[++i]).Value;
 											trans.tx_seq_nr = int.TryParse(dataReader[++i].ToString(), out var outInt)
 												? outInt
 												: throw new InvalidDataException("Invalid transaction sequence number.");
@@ -150,15 +229,19 @@ namespace Intertoll.TollDataImport.DataRequest.TestClient
 											trans.vl_vln = dataReader[++i].ToString().Trim();
 											trans.anpr_seq_nr = ExtractIntegerValue(dataReader[++i].ToString());
 
-											if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr))
+											if (!processedTrans.Any(x => x == trans.ln_id + trans.tx_seq_nr + trans.dt_concluded))
 											{
-												if (!dataContext.ImportedTransactions.Any(x => x.ln_id == trans.ln_id && x.tx_seq_nr == trans.tx_seq_nr))
+												if (!dataContext.ImportedTransactions.Any(x => x.ln_id == trans.ln_id 
+																						 	   && x.tx_seq_nr == trans.tx_seq_nr 
+												                                               && x.dt_concluded == trans.dt_concluded))
 												{
 													dataContext.ImportedTransactions.Insert(trans);
 												}
 											}
 
-											processedTrans.Add(trans.ln_id + trans.tx_seq_nr);
+											processedTrans.Add(trans.ln_id + trans.tx_seq_nr + trans.dt_concluded);
+
+											Console.WriteLine($"Trans found {trans.ln_id} : {trans.tx_seq_nr} : {trans.dt_concluded}");
 										}
 										catch (Exception ex)
 										{
