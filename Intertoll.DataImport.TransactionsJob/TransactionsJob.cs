@@ -63,7 +63,7 @@ namespace Intertoll.DataImport.TransactionsJob
                     else
                     {
                         var submitter = Container.Resolve<IETCTransactionSubmitter>(new ParameterOverride("_dataProvider", DataProvider));
-                        submittedEntity = submitter.Submit(tollTransaction);
+                        submittedEntity = submitter.Submit((IETCTollTransaction)tollTransaction);
                     }
 
                     if (submittedEntity.IsSent)
@@ -91,7 +91,7 @@ namespace Intertoll.DataImport.TransactionsJob
             if(!TransactionBatch.Any())
                 return;
 
-            List<string> cardNumbers = TransactionBatch.Where(x => !string.IsNullOrEmpty(x.PaymentDetail) && x.PaymentDetail.Length < 70)
+            List<string> cardNumbers = TransactionBatch.Where(x => !string.IsNullOrEmpty(x.PaymentDetail) && x.PaymentDetail.Length < 70 && x.ETCTransactionGuid == null)
                                                        .Select(transaction => transaction.PaymentDetail)
                                                        .Distinct()
                                                        .ToList();
@@ -131,7 +131,7 @@ namespace Intertoll.DataImport.TransactionsJob
                         foreach (var tranx in TransactionBatch.Where(x => x.PaymentDetail == cardNumber))
                         {
                             tranx.FullCardNumber = DecryptedPAN;
-                            tranx.PaymentDetail  = Regex.Replace(DecryptedPAN, @"\t|\n|\r", "");
+                            tranx.PaymentDetail  = DecryptedPAN.Replace("\t|\r|\n", string.Empty);
                         }
                     }
                 }

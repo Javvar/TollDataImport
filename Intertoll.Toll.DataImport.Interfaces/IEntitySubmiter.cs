@@ -17,8 +17,8 @@ namespace Intertoll.Toll.DataImport.Interfaces
 
     public interface IETCTransactionSubmitter 
     {
-        ITollTransaction Submit(ITollTransaction transaction);
-        ITransactionEntityBuilder EntityBuilder { get; set; }
+	    IETCTollTransaction Submit(IETCTollTransaction transaction);
+        IETCTransactionEntityBuilder EntityBuilder { get; set; }
         IETCTransactionEntityBuilder ETCEntityBuilder { get; set; }
     }
 

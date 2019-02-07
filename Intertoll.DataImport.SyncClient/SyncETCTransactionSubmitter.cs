@@ -11,7 +11,7 @@ namespace Intertoll.DataImport.SyncClient
     public class SyncETCTransactionSubmitter : IETCTransactionSubmitter
     {
         public ITollDataProvider DataProvider { get; set; }
-        public ITransactionEntityBuilder EntityBuilder { get; set; }
+        public IETCTransactionEntityBuilder EntityBuilder { get; set; }
         public IETCTransactionEntityBuilder ETCEntityBuilder { get; set; }
 
         static SyncETCTransactionSubmitter()
@@ -20,7 +20,7 @@ namespace Intertoll.DataImport.SyncClient
             Mapper.CreateMap<IETCTollTransaction, ETCTransaction>().ForMember(dest => dest.LaneTransSeqNr,opt => opt.MapFrom(src => src.LaneTransSeqNr));
         }
 
-        public SyncETCTransactionSubmitter(ITollDataProvider _dataProvider, ITransactionEntityBuilder _entityBuilder, IETCTransactionEntityBuilder _etcEntityBuilder)
+        public SyncETCTransactionSubmitter(ITollDataProvider _dataProvider, IETCTransactionEntityBuilder _entityBuilder, IETCTransactionEntityBuilder _etcEntityBuilder)
         {
             DataProvider = _dataProvider;
             EntityBuilder = _entityBuilder;
@@ -28,7 +28,7 @@ namespace Intertoll.DataImport.SyncClient
         }
 
 
-        public ITollTransaction Submit(ITollTransaction transaction)
+        public IETCTollTransaction Submit(IETCTollTransaction transaction)
         {
             var builtTransaction = EntityBuilder.Build(transaction);
 
@@ -36,7 +36,7 @@ namespace Intertoll.DataImport.SyncClient
             {
                 try
                 {
-                    var builtETCTransaction = ETCEntityBuilder.Build((IETCTollTransaction) transaction);
+                    var builtETCTransaction = ETCEntityBuilder.Build(transaction);
 
                     var syncTransaction = Mapper.Map<ITollTransaction, Transaction>(builtTransaction);
                     var syncETCTransaction = Mapper.Map<IETCTollTransaction, ETCTransaction>(builtETCTransaction);
