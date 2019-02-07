@@ -59,6 +59,19 @@ BEGIN
 				SET @NextAuditHour = @NextAuditHour + 1
 			END
 
+			WHILE([dbo].[ufTimeSlicesComplete] (@LaneCode,@NextAuditDate,@NextAuditHour) = 0 AND @NextAuditDate < GETDATE())
+			BEGIN
+				IF(@NextAuditHour = 23)
+				BEGIN
+					SET @NextAuditHour = 0
+					SET @NextAuditDate = DATEADD(DAY,1,@NextAuditDate)
+				END
+				ELSE
+				BEGIN
+					SET @NextAuditHour = @NextAuditHour + 1
+				END
+			END
+
 			IF([dbo].[ufTimeSlicesComplete] (@LaneCode,@NextAuditDate,@NextAuditHour) = 1)
 			BEGIN
 				INSERT INTO @AuditsBatch

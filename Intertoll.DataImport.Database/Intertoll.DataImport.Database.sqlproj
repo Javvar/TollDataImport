@@ -141,6 +141,7 @@
     <Build Include="dbo\Functions\ufSkipAudit.sql" />
     <Build Include="dbo\Functions\ufGetTariffVat.sql" />
     <Build Include="dbo\Functions\ufGetTariffAmount.sql" />
+    <Build Include="dbo\Stored Procedures\uspGetListOfSequenceNrGaps.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SchemaCompare.scmp" />

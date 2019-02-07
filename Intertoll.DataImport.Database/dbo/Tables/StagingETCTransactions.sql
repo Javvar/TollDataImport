@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[StagingETCTransactions] (
     [pl_id]            VARCHAR (9)   NULL,
-    [ln_id]            VARCHAR (9)   NULL,
+    [ln_id]            VARCHAR (9)   NOT NULL,
     [dt_concluded]     DATETIME      NULL,
-    [tx_seq_nr]        INT           NULL,
+    [tx_seq_nr]        INT           NOT NULL,
     [ops_dt]           DATE          NULL,
     [ops_sh]           INT           NULL,
     [ts_seq_nr]        INT           NULL,
@@ -52,13 +52,15 @@
     [inc_ind]          INT           NULL,
     [id_vl]            VARCHAR (21)  NULL,
     [loc_tax]          VARCHAR (100) NULL,
-    [act_disc]         VARCHAR (100) NULL
+    [act_disc]         VARCHAR (100) NULL,
+    CONSTRAINT [PK_StagingETCTransactions] PRIMARY KEY NONCLUSTERED ([ln_id] ASC, [tx_seq_nr] ASC)
 );
 
 
 
 
+
+
 GO
-CREATE CLUSTERED INDEX [DateConcludedIndex]
-    ON [dbo].[StagingETCTransactions]([dt_concluded] ASC);
+
 

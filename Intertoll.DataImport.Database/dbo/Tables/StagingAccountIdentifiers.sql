@@ -7,7 +7,9 @@
     [his_dt]         DATETIME      NULL,
     [his_us_id]      VARCHAR (31)  NULL,
     [his_change1]    VARCHAR (256) NULL,
-    [FullIdentifier] VARCHAR (76)  NULL,
+    [FullIdentifier] VARCHAR (31)  NULL,
     CONSTRAINT [PK_StagingAccountIdentifiers] PRIMARY KEY CLUSTERED ([ri_id] ASC)
 );
+
+
 

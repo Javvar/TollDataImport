@@ -1,7 +1,7 @@
-CREATE TABLE [dbo].[StagingTransactions] (
+﻿CREATE TABLE [dbo].[StagingTransactions] (
     [pl_id]            VARCHAR (9)   NULL,
     [ln_id]            VARCHAR (9)   NOT NULL,
-    [dt_concluded]     DATETIME      NULL,
+    [dt_concluded]     DATETIME      NOT NULL,
     [tx_seq_nr]        INT           NOT NULL,
     [ts_seq_nr]        INT           NULL,
     [us_id]            VARCHAR (31)  NULL,
@@ -76,8 +76,10 @@ CREATE TABLE [dbo].[StagingTransactions] (
     [id_vl]            VARCHAR (21)  NULL,
     [vl_vln]           VARCHAR (21)  NULL,
     [anpr_seq_nr]      INT           NULL,
-    CONSTRAINT [PK_StagingTransactions] PRIMARY KEY NONCLUSTERED ([ln_id] ASC, [tx_seq_nr] ASC)
+    CONSTRAINT [PK_StagingTransactions] PRIMARY KEY NONCLUSTERED ([ln_id] ASC, [dt_concluded] ASC, [tx_seq_nr] ASC)
 );
+
+
 
 
 

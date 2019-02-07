@@ -130,8 +130,8 @@ namespace Intertoll.DataImport.TransactionsJob
 
                         foreach (var tranx in TransactionBatch.Where(x => x.PaymentDetail == cardNumber))
                         {
-                            tranx.FullCardNumber = DecryptedPAN;
-                            tranx.PaymentDetail  = DecryptedPAN.Replace("\t|\r|\n", string.Empty);
+                            tranx.FullCardNumber = DecryptedPAN.Replace("\t|\r|\n", string.Empty);
+							tranx.PaymentDetail  = DecryptedPAN.Replace("\t|\r|\n", string.Empty);
                         }
                     }
                 }

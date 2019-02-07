@@ -45,7 +45,7 @@ BEGIN
 			WHERE LaneCode = @LaneCode	
 		
 			INSERT INTO @IncBatch
-			SELECT TOP 100  
+			SELECT TOP 300  
 					REPLACE(ln_id,' ','') + CAST(REPLACE(in_seq_nr,' ','') AS VARCHAR(20)) --[ID] [varchar](50) NOT NULL,
 					,ln_id --[LaneCode] [varchar](10) NOT NULL,
 					,us_id--[CollectorID] [varchar](50) NULL,
@@ -154,7 +154,7 @@ BEGIN
 			FROM @IncBatch
 		END		
 		
-		SELECT top 5000 *,'' StaffID
+		SELECT top 10000 *,'' StaffID
 		FROM Incidents
 		WHERE IsSent = 0 AND IncidentTypeGUID <> 'B6AB99E8-5DA4-4C33-9EDD-08298A1A2104' 
 		ORDER BY IncidentSetDate 

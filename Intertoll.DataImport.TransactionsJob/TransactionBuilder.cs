@@ -50,6 +50,7 @@ namespace Intertoll.DataImport.TransactionsJob
                 MailClient.SendMessage<DuplicateTransactionMailFormatter>("Duplicate etc transaction", "Duplicate etc transaction detected: " + entity.TransactionID);
             }
 
+	        entity.LicensePlate = entity.ANPRLicensePlate;
             entity.ClassGUID = entity.AppliedClassGUID;
             entity.IssuerAuthenticatorGuid = Guid.NewGuid();
             entity.OperatorAuthenticatorGuid = Guid.NewGuid();

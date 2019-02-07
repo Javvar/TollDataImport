@@ -62,3 +62,10 @@
 
 
 
+
+
+
+GO
+CREATE NONCLUSTERED INDEX [NonClusteredIndex-20190205-145310]
+    ON [dbo].[Transactions]([LaneCode] ASC, [TransDate] ASC, [LaneTransSeqNr] ASC);
+

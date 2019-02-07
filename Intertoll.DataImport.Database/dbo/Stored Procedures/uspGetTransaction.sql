@@ -3,7 +3,7 @@
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-create PROCEDURE [dbo].[uspGetTransaction] @LaneCode VARCHAR(10),@SequenceNumber INT
+CREATE PROCEDURE [dbo].[uspGetTransaction] @LaneCode VARCHAR(10),@SequenceNumber INT
 AS
 BEGIN
 	SET NOCOUNT ON;
@@ -22,7 +22,7 @@ BEGIN
 		END	
 		
 		INSERT INTO @TransBatch
-		SELECT TOP 5000  CASE WHEN NOT EXISTS(SELECT * FROM Transactions WHERE TransactionID = T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20))) 
+		SELECT CASE WHEN NOT EXISTS(SELECT * FROM Transactions WHERE TransactionID = T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20))) 
 							  THEN T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20)) 
 							  ELSE T.ln_id + CAST(T.tx_seq_nr AS VARCHAR(20))  + 'D'
 						 END --<TransactionID>
@@ -31,12 +31,14 @@ BEGIN
 			   ,NEWID() --<TransGUID>
 			   ,T.dt_started --<TransStartDate>
 			   ,T.dt_concluded --<TransDate>
-			   ,[dbo].[ufGetClassGuid]([dbo].ufRemoveNonNumericCharacters(T.mvc))	--<ColClassGUID>
+			   ,[dbo].[ufGetClassGuid]([dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end))	--<ColClassGUID>
 			   ,[dbo].[ufGetClassGuid]([dbo].ufRemoveNonNumericCharacters(T.avc))	--<AVCClassGUID>
 			   , NULL	--<RealClassGUID>
-			   ,[dbo].[ufGetClassGuid]([dbo].ufRemoveNonNumericCharacters(T.mvc))	--<AppliedClassGUID>
-			   ,[dbo].[ufGetTariffGuid](T.ft_id,T.pl_id,[dbo].ufRemoveNonNumericCharacters(T.mvc)) --<TariffGUID>
+			   ,[dbo].[ufGetClassGuid]([dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end))	--<AppliedClassGUID>
+			   ,[dbo].[ufGetTariffGuid](T.ln_id,[dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end),T.dt_concluded) --<TariffGUID>
+			   --,[dbo].[ufGetTariffAmount](T.ln_id,[dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end),T.dt_concluded) --<TariffAmount>
 			   ,T.loc_value	--<TariffAmount>
+			   --,[dbo].[ufGetTariffVat](T.ln_id,[dbo].ufRemoveNonNumericCharacters(case when T.mvc = 'nc' then T.avc else T.mvc end),T.dt_concluded) --<TariffVat>
 			   ,[dbo].[ufCalculateTariffVAT](T.loc_value)	--<TariffVat>
 			   ,0 --<ChangeAmount>
 			   ,0 --<TenderedAmount>
@@ -50,7 +52,7 @@ BEGIN
 			   ,[dbo].[ufGetTransactionPaymentFieldTypeGuid](pm_id,4)	--<PaymentGroupGUID>
 			   ,[dbo].[ufGetTransactionPaymentFieldTypeGuid](pm_id,2)	--<PaymentMechGUID>
 			   ,[dbo].[ufGetTransactionPaymentFieldTypeGuid](pm_id,3)	--<PaymentTypeGUID>
-			   ,NULL	--<PaymentDetail> (STEP 2)
+			   ,T.card_nr	--<PaymentDetail> (STEP 2)
 			   ,''	--<LicensePlate>
 			   ,T.iv_nr	--<TaxInvNr, nvarchar(50),>
 			   ,0	--<ReceiptCount>
@@ -75,7 +77,7 @@ BEGIN
 			   ,ET.card_nr --<PAN>,
 			   ,NULL --<CONV>,
 			   ,ET.id_vl -- <IDVL> ,
-			   ,NULL -- <VehichleState>,
+			   ,'' -- <VehichleState>,
 			   ,0 -- <IsSent>,
 			   ,GETDATE() -- [TimeStamp]
 		FROM [dbo].[StagingTransactions] T
@@ -117,23 +119,34 @@ BEGIN
 		SET AccountGUID = @AccountGuid,AccountUserGUID = @AccountUserGuid
 		WHERE LaneCode = @LaneCode AND LaneTransSeqNr = @TranSeq
 		
-		INSERT INTO Transactions
-		SELECT [TransactionID],[LaneCode],[TransGUID],[TransStartDate],[TransDate]
-				  ,[ColClassGUID],[AVCClassGUID],[RealClassGUID],[AppliedClassGUID]
-				  ,[TariffGUID],[TariffAmount],[TariffVat],[ChangeAmount],[TenderedAmount]
-				  ,[CurrencyGUID],[LaneStatusGUID],[SessionGUID],[LaneTransSeqNr],[AVCSeqNr]
-				  ,[AvcStatusGUID],[PaymentMethodGUID],[PaymentGroupGUID],[PaymentMechGUID]
-				  ,[PaymentTypeGUID],[PaymentDetail],[LicensePlate],[TaxInvNr],[ReceiptCount]
-				  ,[AdditionalTransactionDetail],[AccountUserGUID],[SupervisorLoginGUID],[IsKeyed]
-				  ,[ImageID],[AVCDetail],[AccountGUID],[ExchangeRate],[TotalInLocalCurrency]
-				  ,[PreviousLicensePlate],[PreviousPaymentMethodGUID] ,[ReceiptTaxInvoiceDate]
-				  ,[ANPRLicensePlate] ,[ETCTransactionGuid],[CardNumber],[BCCTransferStatus]
-				  ,ContextMarkId,PAN,CONV,IDVL,VehichleState,[IsSent],[TimeStamp],NULL
-		FROM @TransBatch
-		
+		SELECT  [TransactionID],[LaneCode],[TransGUID],[TransStartDate],[TransDate]
+				,[ColClassGUID],[AVCClassGUID],[RealClassGUID],[AppliedClassGUID]
+				,[TariffGUID],[TariffAmount],[TariffVat],[ChangeAmount],[TenderedAmount]
+				,[CurrencyGUID],[LaneStatusGUID],[SessionGUID],[LaneTransSeqNr],[AVCSeqNr]
+				,[AvcStatusGUID],[PaymentMethodGUID],[PaymentGroupGUID],[PaymentMechGUID]
+				,[PaymentTypeGUID],[PaymentDetail],[LicensePlate],[TaxInvNr],[ReceiptCount]
+				,[AdditionalTransactionDetail],[AccountUserGUID],[SupervisorLoginGUID],[IsKeyed]
+				,[ImageID],[AVCDetail],[AccountGUID],[ExchangeRate],[TotalInLocalCurrency]
+				,[PreviousLicensePlate],[PreviousPaymentMethodGUID] ,[ReceiptTaxInvoiceDate]
+				,[ANPRLicensePlate] ,[ETCTransactionGuid],[CardNumber],[BCCTransferStatus]
+				,ContextMarkId,PAN,CONV,IDVL,VehichleState,[IsSent],[TimeStamp],'' FullCardNumber,'' StaffID,'' AccountIdentifier
+		FROM @TransBatch	 
+		WHERE LaneCode = @LaneCode AND LaneTransSeqNr = @SequenceNumber 	
     END
-    
-    SELECT * 
-	FROM Transactions 
-	WHERE LaneCode = @LaneCode AND LaneTransSeqNr = @SequenceNumber 
+	ELSE
+	BEGIN
+		SELECT  [TransactionID],[LaneCode],[TransGUID],[TransStartDate],[TransDate]
+				,[ColClassGUID],[AVCClassGUID],[RealClassGUID],[AppliedClassGUID]
+				,[TariffGUID],[TariffAmount],[TariffVat],[ChangeAmount],[TenderedAmount]
+				,[CurrencyGUID],[LaneStatusGUID],[SessionGUID],[LaneTransSeqNr],[AVCSeqNr]
+				,[AvcStatusGUID],[PaymentMethodGUID],[PaymentGroupGUID],[PaymentMechGUID]
+				,[PaymentTypeGUID],[PaymentDetail],[LicensePlate],[TaxInvNr],[ReceiptCount]
+				,[AdditionalTransactionDetail],[AccountUserGUID],[SupervisorLoginGUID],[IsKeyed]
+				,[ImageID],[AVCDetail],[AccountGUID],[ExchangeRate],[TotalInLocalCurrency]
+				,[PreviousLicensePlate],[PreviousPaymentMethodGUID] ,[ReceiptTaxInvoiceDate]
+				,[ANPRLicensePlate] ,[ETCTransactionGuid],[CardNumber],[BCCTransferStatus]
+				,ContextMarkId,PAN,CONV,IDVL,VehichleState,[IsSent],[TimeStamp],'' FullCardNumber,'' StaffID,'' AccountIdentifier
+		FROM Transactions	 
+		WHERE LaneCode = @LaneCode AND LaneTransSeqNr = @SequenceNumber 
+	END    
 END

@@ -17,7 +17,7 @@ BEGIN
 	SET @Result = [dbo].[ufAuditGetTransactionEndSequenceNumber](@LaneCode,@Date,@Hour) - 
 				  [dbo].[ufAuditGetTransactionStartSequenceNumber](@LaneCode,@Date,@Hour)
 	
-	SET @Result = CASE WHEN ISNULL(@Result,0) = -1 THEN 0 ELSE ISNULL(@Result,0) END
+	SET @Result = CASE WHEN ISNULL(@Result,0) = -1 THEN 0 ELSE (CASE WHEN ISNULL(@Result,0) = 0 THEN 0 ELSE ISNULL(@Result,0) - 1 END)  END
 
 	RETURN @Result
 
